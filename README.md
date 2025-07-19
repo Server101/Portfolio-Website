@@ -9,6 +9,34 @@ This project showcases a full-stack developer portfolio deployed on an Amazon Li
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ________________________________________
+--------------------------------------------------------------------------------------------------------------------
+
+
+---
+
+## 🧱 Tech Stack
+
+**Frontend**: React.js  
+**Backend**: Node.js + Express  
+**Database**: PostgreSQL 15  
+**Hosting**: AWS EC2 (Amazon Linux 2023)
+
+---
+
+## 🔧 Manual Configuration Summary
+
+- EC2 instance provisioned and secured
+- SSH access configured via `.pem` key
+- Node.js, Git, and PostgreSQL installed from source
+- PostgreSQL initialized and secured
+- React app built and ready for deployment
+- Node backend prepared to serve API requests
+
+---
+
+
+
+
 🧱 Tech Stack
 🌐 Frontend
 •	React.js – Built with create-react-app for a responsive, component-based UI
@@ -54,30 +82,5 @@ ________________________________________
 
 
 
-
---------------------------------------------------------------------------------------------------------------------
-
-
----
-
-## 🧱 Tech Stack
-
-**Frontend**: React.js  
-**Backend**: Node.js + Express  
-**Database**: PostgreSQL 15  
-**Hosting**: AWS EC2 (Amazon Linux 2023)
-
----
-
-## 🔧 Manual Configuration Summary
-
-- EC2 instance provisioned and secured
-- SSH access configured via `.pem` key
-- Node.js, Git, and PostgreSQL installed from source
-- PostgreSQL initialized and secured
-- React app built and ready for deployment
-- Node backend prepared to serve API requests
-
----
 
 
