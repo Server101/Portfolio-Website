@@ -9,10 +9,7 @@ This project showcases a full-stack developer portfolio deployed on an Amazon Li
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ________________________________________
---------------------------------------------------------------------------------------------------------------------
 
-
----
 
 ## 🧱 Tech Stack
 
@@ -37,7 +34,7 @@ ________________________________________
 
 
 
-🧱 Tech Stack
+
 🌐 Frontend
 •	React.js – Built with create-react-app for a responsive, component-based UI
 •	Optional: Tailwind CSS or CSS Modules for styling
