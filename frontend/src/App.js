@@ -25,10 +25,16 @@ function App() {
   );
 }  */
 
-// Function to connect the backend to front
+// Function to connect the backend to front when deployed to EC2
+
+fetch('http://3.142.144.88:3001/api/projects')
+  .then(res => res.json())
+  .then(data => console.log(data));
 function App() {
   const [projects, setProjects] = useState([]);
 
+
+  // Function to connect the backend to front in local machine
   useEffect(() => {
     fetch('http://localhost:3001/api/projects')
       .then((res) => res.json())
