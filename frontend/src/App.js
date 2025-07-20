@@ -5,6 +5,14 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import './App.css';
+import HomeTemplate from './pages/HomeTemplate';
+
+
+// Route for Home Template
+<Route path="/" element={<HomeTemplate />} />
+
+
+
 
 
 
