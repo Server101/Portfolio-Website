@@ -1,61 +1,34 @@
-import logo from './logo.svg';
+import Navbar from './components/Navbar';
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import Contact from './pages/Contact';
 import './App.css';
 
 
- /* This is the react logo
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}  */
 
-// Function to connect the backend to front when deployed to EC2
-
-fetch('http://3.142.144.88:3001/api/projects')
-  .then(res => res.json())
-  .then(data => console.log(data));
 function App() {
   const [projects, setProjects] = useState([]);
 
-
-  // Function to connect the backend to front in local machine
+  // 🔁 Fetch projects from backend on EC2
   useEffect(() => {
-    fetch('http://localhost:3001/api/projects')
+    fetch('http://3.142.144.88:3001/api/projects')
       .then((res) => res.json())
       .then((data) => setProjects(data))
       .catch((err) => console.error('API Error:', err));
   }, []);
 
   return (
-    <div>
-      <h1>My Projects</h1>
-      <ul>
-        {projects.map((project) => (
-          <li key={project.id}>
-            <strong>{project.title}</strong> — {project.tech}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects projects={projects} />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
   );
-
 }
-
 
 export default App;
