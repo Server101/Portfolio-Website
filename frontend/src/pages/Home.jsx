@@ -35,21 +35,43 @@ function Home() {
   }, []);
 
   return (
-    <div className="container-fluid" id="main">
-      {/* Home Section */}
-      <section className="parallax-window tm-section tm-section-home" id="home" data-parallax="scroll" data-image-src="/img/bg-01.jpg">
-        <div className="tm-page-content-width tm-padding-b">
-          <div className="text-center tm-site-title-wrap">
-            <h1 className="tm-site-title">Page One</h1>
+   <div className="container-fluid" id="main">
+  {/* Home Section */}
+  <section
+    className="parallax-window tm-section tm-section-home d-flex align-items-center"
+    id="home"
+    data-parallax="scroll"
+    data-image-src="/img/bg-01.jpg"
+    style={{ minHeight: '100vh' }} // ensures vertical centering
+  >
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-lg-8 text-center">
+          <div className="tm-site-title-wrap mb-4">
+            <h1 className="tm-site-title">Welcome to My Portfolio</h1>
           </div>
-          <div className="tm-textbox tm-white-bg">
-            <h2 className="tm-green-text tm-section-title">Welcome!</h2>
-            <p>Page One is a parallax clean layout with beautiful images from <a rel="nofollow" href="https://unsplash.com" target="_blank">Unsplash</a>.</p>
+          <div className="tm-textbox tm-white-bg p-4 rounded shadow">
+            <h2 className="tm-green-text tm-section-title">Richard James!</h2>
+            <p>
+              Coding is my passion, and I apply it to solve real-world problems in security and
+              risk management. With experience in web development, IAM, database administration,
+              and security, I build secure systems and manage access to protect people, data, and
+              platforms.{' '}
+              <a rel="nofollow" href="https://unsplash.com" target="_blank">
+                Unsplash
+              </a>
+              .
+            </p>
             <p>Please mention TemplateMo site to your friends. Thank you.</p>
-            <a href="#services" className="tm-btn">Let's Begin</a>
+            <a href="#services" className="tm-btn">
+              Let's Begin
+            </a>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+
 
       {/* Services Section */}
       <section className="parallax-window tm-section tm-section-services" id="services" data-parallax="scroll" data-image-src="/img/bg-02.jpg">
