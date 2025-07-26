@@ -3,11 +3,14 @@ import '../assets/css/bootstrap.min.css';
 import '../assets/css/magnific-popup.css';
 import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
-
 import WordSlider from '../components/WordSlider'; // Typing animation
+import '../assets/css/CustomAnimations.css';
+
 // import Typewriter from '../components/Typewriter'; // Optional if still used
 
+
 function Home() {
+  const [activeTab, setActiveTab] = React.useState("portfolio");
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -181,6 +184,67 @@ function Home() {
     </div>
   </div>
 </section>
+
+
+{/* Project Showcase Section inside Gallery Parallax */}
+<section
+  className="parallax-window tm-section tm-section-gallery tm-flex"
+  id="projects"
+  data-parallax="scroll"
+  data-image-src="/img/bg-03.jpg"
+>
+  <div className="tm-page-content-width tm-flex-col tm-gallery-content">
+    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow">
+      <h2 className="tm-section-title tm-blue-text">Live Project Demos</h2>
+
+      {/* Navigation Tabs */}
+      <ul className="nav nav-tabs justify-content-center mb-4 mt-3" id="projectTabs">
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "portfolio" ? "active" : ""}`}
+            onClick={() => setActiveTab("portfolio")}
+          >
+            Full-Stack Portfolio
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "threat" ? "active" : ""}`}
+            onClick={() => setActiveTab("threat")}
+          >
+            Threat Monitoring
+          </button>
+        </li>
+      </ul>
+
+      {/* Tab Content */}
+      <div className="tab-content text-start px-3">
+        {activeTab === "portfolio" && (
+          <div>
+            <h4 className="tm-blue-text">AWS EC2 Site Health Status</h4>
+            <p>Instance: <strong>t2.micro</strong></p>
+            <p>Status: <span className="text-success">Healthy ✅</span></p>
+            <p>Uptime: 3 days 12 hours</p>
+          </div>
+        )}
+
+        {activeTab === "threat" && (
+          <div>
+            <h4 className="tm-blue-text">Security Dashboard</h4>
+            <p>Real-time log ingestion, threat scoring, and behavior alerts</p>
+            <ul className="text-start">
+              <li>✓ Web App Access Logs</li>
+              <li>✓ AWS CloudTrail Integration</li>
+              <li>✓ Suspicious IP alerts</li>
+              <li>✓ API key misuse detection</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Gallery Section */}
       <section className="parallax-window tm-section tm-section-gallery tm-flex" id="gallery" data-parallax="scroll" data-image-src="/img/bg-03.jpg">
