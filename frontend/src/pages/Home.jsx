@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import '../assets/css/bootstrap.min.css';
 import '../assets/css/magnific-popup.css';
 import '../assets/css/templatemo-style.css';
+import '../assets/css/PortraitFade.css';
 
 import WordSlider from '../components/WordSlider'; // Typing animation
 // import Typewriter from '../components/Typewriter'; // Optional if still used
@@ -16,7 +17,29 @@ function Home() {
         script.onload = resolve;
         script.onerror = reject;
         document.body.appendChild(script);
-      });
+
+        // Image fade-in logic
+   const img = document.getElementById('fadeImage');
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      } else {
+        entry.target.classList.remove('visible');
+      }
+    },
+    { threshold: 0.3 }
+  );
+
+  if (img) observer.observe(img);
+  return () => {
+    if (img) observer.unobserve(img);
+  };
+}, []);
+
+
+
     };
 
     (async () => {
@@ -59,6 +82,17 @@ function Home() {
               </div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
                 <h2 className="tm-green-text tm-section-title">Hello, I'm Richard James!</h2>
+
+                {/* Begining of the image fade effect */}
+            <div className="fade-in-image-container">
+            <img
+      src="/img/gallery-img-03.jpg"
+      alt="Portrait"
+      className="fade-in-image"
+      id="fadeImage"
+    />
+  </div>
+
                 <WordSlider />
                 <p>
                   Coding is my passion, and I apply it to solve real-world problems in security and
