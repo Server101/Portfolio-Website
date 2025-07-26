@@ -1,0 +1,22 @@
+.fade-in-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.fade-in-image {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 2s ease-out, transform 2s ease-out; /* Slowed down */
+  border: 5px solid #96C700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.fade-in-image.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

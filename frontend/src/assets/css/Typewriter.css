@@ -1,0 +1,20 @@
+.typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  color: #000;
+  white-space: nowrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: #000;
+  animation: blink 0.8s infinite;
+  margin-left: 4px;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
