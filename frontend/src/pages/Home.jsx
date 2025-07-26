@@ -3,8 +3,10 @@ import '../assets/css/bootstrap.min.css';
 import '../assets/css/magnific-popup.css';
 import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
-import WordSlider from '../components/WordSlider'; // Typing animation
 import '../assets/css/CustomAnimations.css';
+import WordSlider from '../components/WordSlider'; // Typing animation
+import ThreatDashboard from '../components/ThreatDashboard';
+
 
 // import Typewriter from '../components/Typewriter'; // Optional if still used
 
@@ -228,18 +230,12 @@ function Home() {
           </div>
         )}
 
-        {activeTab === "threat" && (
-          <div>
-            <h4 className="tm-blue-text">Security Dashboard</h4>
-            <p>Real-time log ingestion, threat scoring, and behavior alerts</p>
-            <ul className="text-start">
-              <li>✓ Web App Access Logs</li>
-              <li>✓ AWS CloudTrail Integration</li>
-              <li>✓ Suspicious IP alerts</li>
-              <li>✓ API key misuse detection</li>
-            </ul>
-          </div>
-        )}
+     {activeTab === "threat" && (
+  <div className="tab-pane fade show active">
+    <ThreatDashboard />
+  </div>
+)}
+
       </div>
     </div>
   </div>
