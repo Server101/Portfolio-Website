@@ -77,9 +77,9 @@ function Home() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
-              <div className="tm-site-title-wrap mb-4">
-                <h1 className="tm-site-title">WELCOME</h1>
-              </div>
+              <div className="tm-site-title-wrap mb-4 d-flex justify-content-center align-items-center" style={{ minHeight: '150px' }}>
+  <h1 className="tm-site-title text-center">WELCOME</h1>
+</div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
                 <h2 className="tm-green-text tm-section-title">Hello, I'm Richard James!</h2>
 
@@ -122,9 +122,9 @@ function Home() {
   data-image-src="/img/bg-02.jpg"
 >
   <div className="tm-page-content-width">
-    <div className="row d-flex align-items-stretch">
+    <div className="row d-flex align-items-stretch flex-row-reverse">
       
-      {/* Left Column: Content Box */}
+      {/* Right Column: Content Box */}
       <div className="col-md-6 tm-translucent-white-bg tm-content-box tm-textbox-full-height">
         <div className="tm-content-box-inner">
           <h2 className="tm-section-title tm-blue-text">Our Services</h2>
@@ -160,18 +160,22 @@ function Home() {
         </div>
       </div>
 
-      {/* Right Column: Video */}
+      {/* Left Column: Video */}
       <div className="col-md-6 d-flex justify-content-center align-items-center">
-        <video
-          width="100%"
-          height="auto"
-          controls
-          className="rounded shadow"
-          poster="/img/video-poster.jpg" // optional
-        >
-          <source src="/videos/services-preview.mkv" type="video/x-matroska" />
-          Your browser does not support the video tag.
-        </video>
+ <video
+  width="100%"
+  height="auto"
+  controls
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="rounded shadow"
+  poster="/img/video-poster.jpg"
+>
+  <source src="/videos/services-preview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
       </div>
 
     </div>
@@ -186,9 +190,9 @@ function Home() {
             <div className="iso-section">
               <ul className="filter-wrapper clearfix">
                 <li><a href="#" data-filter="*" className="selected opc-main-bg">Show All</a></li>
-                <li><a href="#" className="opc-main-bg" data-filter=".design">Data Analytics</a></li>
-                <li><a href="#" className="opc-main-bg" data-filter=".artwork">Software Engineer</a></li>
-                <li><a href="#" className="opc-main-bg" data-filter=".website">Community Software</a></li>
+                <li><a href="#" className="opc-main-bg" data-filter=".design">CyberSecurity</a></li>
+                <li><a href="#" className="opc-main-bg" data-filter=".artwork">Data Analytics</a></li>
+                <li><a href="#" className="opc-main-bg" data-filter=".website">Full-Stack Engineer</a></li>
               </ul>
             </div>
             <div className="iso-box-section">
@@ -209,12 +213,37 @@ function Home() {
         </div>
       </section>
 
+
+{/* Upcoming Events */}
+<section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/bg-04.jpg">
+  <div className="tm-page-content-width d-flex justify-content-center">
+    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center">
+      <h2 className="tm-section-title tm-red-text">Upcoming Events</h2>
+      <p>I will be attending the following upcoming events.</p>
+      <img 
+        src="/img/black_hat_event.PNG" 
+        alt="Portrait" 
+        style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', marginTop: '10px' }} 
+      />
+    </div>
+  </div>
+  <div className="tm-copyright-div text-center">
+    <p className="tm-copyright-text">
+      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com 
+    </p>
+  </div>
+</section>
+   
+
+
+
+
       {/* Contact Section */}
       <section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/bg-04.jpg">
         <div className="tm-page-content-width">
           <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
             <h2 className="tm-section-title tm-red-text">Contact Me</h2>
-            <p>Suspendisse commodo, quam eget viverra ultrices, est erat condimentum est, in elementum diam erat ut lacus.</p>
+            <p>I will be attanding the following events upcoming.</p>
             <form action="index.html" method="post" className="tm-contact-form">
               <div className="form-group">
                 <input type="text" id="contact_name" name="contact_name" className="form-control" placeholder="Name" required />
