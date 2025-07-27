@@ -4,6 +4,7 @@ import '../assets/css/magnific-popup.css';
 import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
+import '../assets/css/styles.css';
 import WordSlider from '../components/WordSlider'; // Typing animation
 import ThreatDashboard from '../components/ThreatDashboard';
 
@@ -195,8 +196,12 @@ function Home() {
   data-parallax="scroll"
   data-image-src="/img/bg-03.jpg"
 >
-  <div className="tm-page-content-width tm-flex-col tm-gallery-content">
-    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow">
+  <div className="tm-page-content-width tm-flex-col tm-gallery-content d-flex justify-content-center">
+  <div
+    className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow"
+    style={{ maxWidth: '1140px', width: '100%' }}
+  >
+
       <h2 className="tm-section-title tm-blue-text">Live Project Demos</h2>
 
       {/* Navigation Tabs */}
