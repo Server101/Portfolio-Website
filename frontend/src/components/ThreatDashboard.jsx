@@ -11,7 +11,7 @@ function ThreatDashboard() {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('/api/threat/analyze', { websiteUrl: url });
+      const response = axios.post('http://3.142.144.88:3001/api/threat/analyze', { websiteUrl })
       setLogs(prev => [response.data, ...prev]);
     } catch (err) {
       console.error(err);
