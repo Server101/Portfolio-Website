@@ -20,7 +20,7 @@ function App() {
 
   // 🔁 Fetch projects from backend on EC2
   useEffect(() => {
-    fetch('http://3.142.144.88:3001/api/projects')
+    fetch('http://localhost:3001/api/projects')
       .then((res) => res.json())
       .then((data) => setProjects(data))
       .catch((err) => console.error('API Error:', err));
