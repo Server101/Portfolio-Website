@@ -84,7 +84,7 @@ function Home() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <div className="tm-site-title-wrap mb-4 d-flex justify-content-center align-items-center" style={{ minHeight: '150px' }}>
-  <h1 className="tm-site-title text-center">WELCOME</h1>
+  
 </div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
                 <h2 className="tm-green-text tm-section-title">Hello, I'm Richard James!</h2>
@@ -101,18 +101,43 @@ function Home() {
 
                 <WordSlider />
                 <p>
+                  
                   Coding is my passion, and I apply it to solve real-world problems in security and
                   risk management. With experience in web development, IAM, database administration,
                   and security, I build secure systems and manage access to protect people, data, and
                   platforms.{' '}
-                  <a rel="nofollow" href="https://unsplash.com" target="_blank">
-                    Unsplash
-                  </a>.
-                </p>
-                <p>Please mention TemplateMo site to your friends. Thank you.</p>
+                  {/* Social Media Icons */}
+<div className="social-links mt-3 mb-4">
+  <a
+    href="https://github.com/yourusername"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="me-3"
+  >
+    <i className="fab fa-github fa-lg"></i>
+  </a>
+
+  <a
+    href="https://www.linkedin.com/in/your-profile"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="me-3"
+  >
+    <i className="fab fa-linkedin fa-lg"></i>
+  </a>
+
+  <a href="mailto:your.email@example.com" className="me-3">
+    <i className="fas fa-envelope fa-lg"></i>
+  </a>
+
+  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+    <i className="fas fa-file-alt fa-lg"></i>
+  </a>
+</div>
+                </p>{/* Social Media Icons 
                 <a href="#services" className="tm-btn">
                   Let's Begin
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
@@ -133,10 +158,10 @@ function Home() {
       {/* Right Column: Content Box */}
       <div className="col-md-6 tm-translucent-white-bg tm-content-box tm-textbox-full-height">
         <div className="tm-content-box-inner">
-          <h2 className="tm-section-title tm-blue-text">Our Services</h2>
+          <h2 className="tm-section-title tm-blue-text">About Me</h2>
           <p>
-            Etiam sed diam hendrerit dolor posuere dignissim. Integer eget
-            nunc consequat, posuere augue maximus, elementum metus.
+           Masters degree in CyberSecurity and Analytics.
+           Bachelor Degree in Computer science
           </p>
           <div className="media tm-media">
             <i className="fa fa-4x fa-podcast tm-media-icon" />
@@ -251,7 +276,7 @@ function Home() {
       <section className="parallax-window tm-section tm-section-gallery tm-flex" id="gallery" data-parallax="scroll" data-image-src="/img/bg-03.jpg">
         <div className="tm-page-content-width tm-flex-col tm-gallery-content">
           <div className="tm-content-box-inner">
-            <h2 className="tm-section-title">Projects</h2>
+            <h2 className="tm-section-title">Project Gallery</h2>
             <div className="iso-section">
               <ul className="filter-wrapper clearfix">
                 <li><a href="#" data-filter="*" className="selected opc-main-bg">Show All</a></li>
