@@ -11,18 +11,17 @@ function ThreatDashboard() {
   const [error, setError] = useState('');
   const logsPerPage = 5;
 
-  // Fetch logs on mount
   useEffect(() => {
     fetchLogs();
   }, []);
 
-  // Validate URL
-  const validateUrl = (input) => {
-    const pattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
-    return pattern.test(input);
+  // Accept IP or URL
+  const validateUrlOrIp = (input) => {
+    const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+    const ipPattern = /^\d{1,3}(\.\d{1,3}){3}$/;
+    return urlPattern.test(input) || ipPattern.test(input);
   };
 
-  // Fetch logs with optional threatLevel
   const fetchLogs = async (level = '') => {
     setLogsLoading(true);
     setError('');
@@ -39,19 +38,18 @@ function ThreatDashboard() {
     }
   };
 
-  // Analyze URL
   const analyzeUrl = async () => {
     setError('');
-    if (!validateUrl(url)) {
-      setError('Please enter a valid website URL.');
+    if (!validateUrlOrIp(url)) {
+      setError('Please enter a valid website URL or IP address.');
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post('http://3.142.144.88:3001/api/threat/analyze', { websiteUrl: url });
-      await fetchLogs(); // refresh logs after insert
-      setUrl(''); // clear input
+      await axios.post('http://3.142.144.88:3001/api/threat/analyze', { websiteUrl: url });
+      await fetchLogs(); // refresh logs
+      setUrl('');
     } catch (err) {
       console.error(err);
       setError('Failed to analyze the URL.');
@@ -60,7 +58,6 @@ function ThreatDashboard() {
     }
   };
 
-  // Pagination
   const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
   const currentLogs = filteredLogs.slice((currentPage - 1) * logsPerPage, currentPage * logsPerPage);
 
@@ -68,11 +65,11 @@ function ThreatDashboard() {
     <div>
       <h4>Security Dashboard</h4>
 
-      {/* URL Input & Analyze */}
+      {/* Input */}
       <div className="text-center mb-3">
         <input
           type="text"
-          placeholder="Enter URL"
+          placeholder="Enter URL or IP address"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           className="form-control mb-2 mx-auto"
@@ -83,7 +80,7 @@ function ThreatDashboard() {
         </button>
       </div>
 
-      {/* Threat level filter */}
+      {/* Filter */}
       <div className="mb-3" style={{ maxWidth: '200px' }}>
         <select
           className="form-select custom-dropdown"
@@ -105,7 +102,7 @@ function ThreatDashboard() {
       {/* Error */}
       {error && <p className="text-danger text-center">{error}</p>}
 
-      {/* Loading */}
+      {/* Logs */}
       {logsLoading ? (
         <div className="text-center mt-3">
           <div className="spinner-border text-primary" role="status">
@@ -114,13 +111,14 @@ function ThreatDashboard() {
         </div>
       ) : (
         <>
-          {/* Log Table */}
           <table className="table table-striped mt-3">
             <thead>
               <tr>
                 <th>Website</th>
                 <th>Threat Level</th>
                 <th>Description</th>
+                <th>Score</th>
+                <th>Flags</th>
                 <th>Detected At</th>
               </tr>
             </thead>
@@ -142,6 +140,8 @@ function ThreatDashboard() {
                     </span>
                   </td>
                   <td>{log.description}</td>
+                  <td>{log.score}</td>
+                  <td>{Array.isArray(log.flags) ? log.flags.join(', ') : log.flags}</td>
                   <td>{new Date(log.detected_at).toLocaleString()}</td>
                 </tr>
               ))}
