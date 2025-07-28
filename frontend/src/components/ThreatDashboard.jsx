@@ -28,7 +28,10 @@ function ThreatDashboard() {
     try {
       const res = await axios.get(`http://3.142.144.88:3001/api/threat/logs${level ? `?threatLevel=${level}` : ''}`);
       setLogs(res.data);
-      setFilteredLogs(res.data);
+const filtered = level
+  ? res.data.filter((log) => log.threat_level === level)
+  : res.data;
+setFilteredLogs(filtered);
       setCurrentPage(1);
     } catch (err) {
       console.error(err);
