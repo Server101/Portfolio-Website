@@ -16,20 +16,7 @@ import ThreatDashboard from '../components/ThreatDashboard';
 function Home() {
   const [activeTab, setActiveTab] = React.useState("portfolio");
 
-// This is for the word cloud  
-const [selectedCategory, setSelectedCategory] = React.useState('');
-  const [loadingWords, setLoadingWords] = React.useState(false);
 
-const handleCategoryChange = (category) => {
-  setSelectedCategory(category);
-  setLoadingWords(true);
-
-  // Simulate API call
-  setTimeout(() => {
-    // Replace with real API logic
-    setLoadingWords(false);
-  }, 2000);
-}; // End of wordcloud
 
   useEffect(() => {
     const loadScript = (src) => {
