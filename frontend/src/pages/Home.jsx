@@ -5,7 +5,7 @@ import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
-import WordCloudVisualizer from '../components/WordCloudVisualizer';
+
 import WordSlider from '../components/WordSlider'; // Typing animation
 import ThreatDashboard from '../components/ThreatDashboard';
 
@@ -334,54 +334,7 @@ const handleCategoryChange = (category) => {
           </div>
         )}
 
-        {/* Word Cloud */}
-        {activeTab === "wordcloud" && (
-          <div className="tab-pane fade show active">
-            <h4 className="tm-blue-text">Word Cloud Analytics</h4>
-            <p>Visualize keyword trends in real time using external APIs.</p>
-
-            <div className="mb-3" style={{ maxWidth: '300px' }}>
-              <select
-                className="form-select"
-                value={selectedCategory}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-              >
-                <option value="">Select Category</option>
-                <option value="trending">Trending Now</option>
-                <option value="cars">Cars</option>
-                <option value="music">Music</option>
-                <option value="ai">Artificial Intelligence</option>
-              </select>
-            </div>
-
-            {loadingWords ? (
-              <div className="text-center mt-4">
-                <div className="spinner-border text-primary" role="status" />
-                <p className="mt-2">Generating word cloud...</p>
-              </div>
-            ) : (
-                 <WordCloudVisualizer category={selectedCategory} />
-    
-            )}
-
-            <div className="mt-4">
-              <h5>Description:</h5>
-              <p>
-                This tool allows users to explore keyword density and trends by category using real-time data from Google and The New York Times APIs. The word cloud updates dynamically as users select different categories.
-              </p>
-            </div>
-
-            <div className="mt-3">
-              <h6>Tech Stack:</h6>
-              <span className="badge bg-info me-2">React</span>
-              <span className="badge bg-info me-2">Python</span>
-              <span className="badge bg-info me-2">Node.js</span>
-              <span className="badge bg-info me-2">Google API</span>
-              <span className="badge bg-info me-2">NY Times API</span>
-              <span className="badge bg-info me-2">Chart.js / D3</span>
-            </div>
-          </div>
-        )}
+        
       </div>
     </div>
   </div>
