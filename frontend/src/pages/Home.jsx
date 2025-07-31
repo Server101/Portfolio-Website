@@ -5,6 +5,7 @@ import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
+import WordCloudVisualizer from '../components/WordCloudVisualizer';
 import WordSlider from '../components/WordSlider'; // Typing animation
 import ThreatDashboard from '../components/ThreatDashboard';
 
@@ -14,6 +15,22 @@ import ThreatDashboard from '../components/ThreatDashboard';
 
 function Home() {
   const [activeTab, setActiveTab] = React.useState("portfolio");
+
+// This is for the word cloud  
+const [selectedCategory, setSelectedCategory] = React.useState('');
+  const [loadingWords, setLoadingWords] = React.useState(false);
+
+const handleCategoryChange = (category) => {
+  setSelectedCategory(category);
+  setLoadingWords(true);
+
+  // Simulate API call
+  setTimeout(() => {
+    // Replace with real API logic
+    setLoadingWords(false);
+  }, 2000);
+}; // End of wordcloud
+
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -214,7 +231,6 @@ function Home() {
 </section>
 
 
-{/* Project Showcase Section inside Gallery Parallax */}
 <section
   className="parallax-window tm-section tm-section-gallery tm-flex"
   id="projects"
@@ -222,11 +238,10 @@ function Home() {
   data-image-src="/img/bg-03.jpg"
 >
   <div className="tm-page-content-width tm-flex-col tm-gallery-content d-flex justify-content-center">
-  <div
-    className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow"
-    style={{ maxWidth: '1140px', width: '100%' }}
-  >
-
+    <div
+      className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow"
+      style={{ maxWidth: '1140px', width: '100%' }}
+    >
       <h2 className="tm-section-title tm-blue-text">Live Project Demos</h2>
 
       {/* Navigation Tabs */}
@@ -247,29 +262,132 @@ function Home() {
             Threat Monitoring
           </button>
         </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "wordcloud" ? "active" : ""}`}
+            onClick={() => setActiveTab("wordcloud")}
+          >
+            Word Cloud Analytics
+          </button>
+        </li>
       </ul>
 
       {/* Tab Content */}
       <div className="tab-content text-start px-3">
+        {/* Full-Stack Portfolio */}
         {activeTab === "portfolio" && (
-          <div>
-            <h4 className="tm-blue-text">AWS EC2 Site Health Status</h4>
-            <p>Instance: <strong>t2.micro</strong></p>
-            <p>Status: <span className="text-success">Healthy ✅</span></p>
-            <p>Uptime: 3 days 12 hours</p>
+          <div className="tab-pane fade show active">
+            <h4 className="tm-blue-text">Full-Stack Portfolio</h4>
+            <p>Monitor deployment status for your live projects hosted on AWS EC2.</p>
+
+            <div className="mt-4">
+              <h5>Description:</h5>
+              <p>
+                This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio. It confirms server uptime, instance type, and availability for external monitoring.
+              </p>
+            </div>
+
+            <div className="mt-3">
+              <h6>Tech Stack:</h6>
+              <span className="badge bg-info me-2">React</span>
+              <span className="badge bg-info me-2">Node.js</span>
+              <span className="badge bg-info me-2">Express</span>
+              <span className="badge bg-info me-2">AWS EC2</span>
+              <span className="badge bg-info me-2">Nginx</span>
+              <span className="badge bg-info me-2">PM2</span>
+            </div>
+
+            <div className="mt-4">
+              <p>Instance: <strong>t2.micro</strong></p>
+              <p>Status: <span className="text-success">Healthy ✅</span></p>
+              <p>Uptime: 3 days 12 hours</p>
+            </div>
           </div>
         )}
 
-     {activeTab === "threat" && (
-  <div className="tab-pane fade show active">
-    <ThreatDashboard />
-  </div>
-)}
+        {/* Threat Monitoring */}
+        {activeTab === "threat" && (
+          <div className="tab-pane fade show active">
+            <h4 className="tm-blue-text">Threat Monitoring Tool</h4>
+            <p>Scan URLs for threats using custom logic and external threat intelligence APIs.</p>
 
+            <div className="mt-4">
+              <h5>Description:</h5>
+              <p>
+                This app analyzes user-submitted URLs using both local pattern detection and live threat intelligence lookups via VirusTotal and AbuseIPDB. Logs are stored in PostgreSQL and displayed with filtering by severity.
+              </p>
+            </div>
+
+            <div className="mt-3">
+              <h6>Tech Stack:</h6>
+              <span className="badge bg-info me-2">React</span>
+              <span className="badge bg-info me-2">Node.js</span>
+              <span className="badge bg-info me-2">Express</span>
+              <span className="badge bg-info me-2">PostgreSQL</span>
+              <span className="badge bg-info me-2">VirusTotal API</span>
+              <span className="badge bg-info me-2">AbuseIPDB API</span>
+            </div>
+
+            <div className="mt-4">
+              <ThreatDashboard />
+            </div>
+          </div>
+        )}
+
+        {/* Word Cloud */}
+        {activeTab === "wordcloud" && (
+          <div className="tab-pane fade show active">
+            <h4 className="tm-blue-text">Word Cloud Analytics</h4>
+            <p>Visualize keyword trends in real time using external APIs.</p>
+
+            <div className="mb-3" style={{ maxWidth: '300px' }}>
+              <select
+                className="form-select"
+                value={selectedCategory}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+              >
+                <option value="">Select Category</option>
+                <option value="trending">Trending Now</option>
+                <option value="cars">Cars</option>
+                <option value="music">Music</option>
+                <option value="ai">Artificial Intelligence</option>
+              </select>
+            </div>
+
+            {loadingWords ? (
+              <div className="text-center mt-4">
+                <div className="spinner-border text-primary" role="status" />
+                <p className="mt-2">Generating word cloud...</p>
+              </div>
+            ) : (
+                 <WordCloudVisualizer category={selectedCategory} />
+    
+            )}
+
+            <div className="mt-4">
+              <h5>Description:</h5>
+              <p>
+                This tool allows users to explore keyword density and trends by category using real-time data from Google and The New York Times APIs. The word cloud updates dynamically as users select different categories.
+              </p>
+            </div>
+
+            <div className="mt-3">
+              <h6>Tech Stack:</h6>
+              <span className="badge bg-info me-2">React</span>
+              <span className="badge bg-info me-2">Python</span>
+              <span className="badge bg-info me-2">Node.js</span>
+              <span className="badge bg-info me-2">Google API</span>
+              <span className="badge bg-info me-2">NY Times API</span>
+              <span className="badge bg-info me-2">Chart.js / D3</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   </div>
 </section>
+
+
 
 
       {/* Gallery Section */}
