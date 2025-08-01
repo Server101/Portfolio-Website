@@ -9,7 +9,7 @@ function ThreatDashboard() {
   const [logsLoading, setLogsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const logsPerPage = 5;
+  const logsPerPage = 3;
 
   useEffect(() => {
     fetchLogs();

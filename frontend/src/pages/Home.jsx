@@ -123,7 +123,7 @@ function Home() {
 {/* Social Media Icons */}
 <div className="social-links mt-4 d-flex justify-content-center flex-wrap gap-4">
   <a
-    href="https://github.com/yourusername"
+    href="https://github.com/Server101"
     target="_blank"
     rel="noopener noreferrer"
     className="d-flex align-items-center"
@@ -338,12 +338,7 @@ function Home() {
             <h4 className="tm-blue-text">Threat Monitoring Tool</h4>
             <p>Scan URLs for threats using custom logic and external threat intelligence APIs.</p>
 
-            <div className="mt-4">
-              <h5>Description:</h5>
-              <p>
-                This app analyzes user-submitted URLs using both local pattern detection and live threat intelligence lookups via VirusTotal and AbuseIPDB. Logs are stored in PostgreSQL and displayed with filtering by severity.
-              </p>
-            </div>
+         
 
             <div className="mt-3">
               <h6>Tech Stack:</h6>
