@@ -5,12 +5,15 @@ import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
+import Navbar from '../components/Navbar';
+
 
 import WordSlider from '../components/WordSlider'; // Typing animation
 import ThreatDashboard from '../components/ThreatDashboard';
 
 
 // import Typewriter from '../components/Typewriter'; // Optional if still used
+
 
 
 function Home() {
@@ -65,6 +68,8 @@ function Home() {
       }
     })();
 
+    
+
     return () => {
       document.querySelectorAll('script[src*="/js/"]').forEach(script => script.remove());
     };
@@ -72,16 +77,18 @@ function Home() {
 
   return (
     <div className="container-fluid" id="main">
-      
+    
+   
 
 
 
       {/* Home Section */}
+      
       <section
         className="parallax-window tm-section tm-section-home d-flex align-items-center"
         id="home"
         data-parallax="scroll"
-        data-image-src="/img/bg-01.jpg"
+        data-image-src="/img/City_Image_RicardoTech.jpg"
         style={{ minHeight: '100vh' }}
       >
         <div className="container">
@@ -91,12 +98,12 @@ function Home() {
   
 </div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
-                <h2 className="tm-green-text tm-section-title">Hello, I'm Richard James!</h2>
+                <h2 className="tm-green-text tm-section-title">Hello, I'm Ricardo!</h2>
 
                 {/* Begining of the image fade effect */}
             <div className="fade-in-image-container">
             <img
-      src="/img/gallery-img-03.jpg"
+      src="/img/gfhuf7f7.jpg"
       alt="Portrait"
       className="fade-in-image"
       id="fadeImage"
@@ -110,38 +117,69 @@ function Home() {
                   risk management. With experience in web development, IAM, database administration,
                   and security, I build secure systems and manage access to protect people, data, and
                   platforms.{' '}
-                  {/* Social Media Icons */}
-<div className="social-links mt-3 mb-4">
+            
+
+                </p>
+{/* Social Media Icons */}
+<div className="social-links mt-4 d-flex justify-content-center flex-wrap gap-4">
   <a
     href="https://github.com/yourusername"
     target="_blank"
     rel="noopener noreferrer"
-    className="me-3"
+    className="d-flex align-items-center"
   >
-    <i className="fab fa-github fa-lg"></i>
+    <img
+      src="/img/github_original_wordmark_logo.png"
+      alt="GitHub"
+      width="32"
+      height="32"
+      style={{ objectFit: 'contain' }}
+    />
   </a>
 
   <a
     href="https://www.linkedin.com/in/your-profile"
     target="_blank"
     rel="noopener noreferrer"
-    className="me-3"
+    className="d-flex align-items-center"
   >
-    <i className="fab fa-linkedin fa-lg"></i>
+    <img
+      src="/img/linkedin-logo-png.png"
+      alt="LinkedIn"
+      width="32"
+      height="32"
+      style={{ objectFit: 'contain' }}
+    />
   </a>
 
-  <a href="mailto:your.email@example.com" className="me-3">
-    <i className="fas fa-envelope fa-lg"></i>
+  <a
+    href="mailto:your.email@example.com"
+    className="d-flex align-items-center"
+  >
+    <img
+      src="/img/email-message-icon.png"
+      alt="Email"
+      width="32"
+      height="32"
+      style={{ objectFit: 'contain' }}
+    />
   </a>
 
-  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-    <i className="fas fa-file-alt fa-lg"></i>
+  <a
+    href="/resume.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="d-flex align-items-center"
+  >
+    <img
+      src="/img/resume-io-logo-png.png"
+      alt="Resume"
+      width="32"
+      height="32"
+      style={{ objectFit: 'contain' }}
+    />
   </a>
 </div>
-                </p>{/* Social Media Icons 
-                <a href="#services" className="tm-btn">
-                  Let's Begin
-                </a> */}
               </div>
             </div>
           </div>
@@ -149,12 +187,13 @@ function Home() {
       </section>
 
 
-{/* Services Section */}
+{/* Services About Me */}
+
 <section
   className="parallax-window tm-section tm-section-services"
   id="services"
   data-parallax="scroll"
-  data-image-src="/img/bg-02.jpg"
+  data-image-src="/img/Sucesss_img02_ RicardoTech.jpg"
 >
   <div className="tm-page-content-width">
     <div className="row d-flex align-items-stretch flex-row-reverse">
@@ -164,58 +203,59 @@ function Home() {
         <div className="tm-content-box-inner">
           <h2 className="tm-section-title tm-blue-text">About Me</h2>
           <p>
-           Masters degree in CyberSecurity and Analytics.
-           Bachelor Degree in Computer science
+            I hold a Master’s degree in CyberSecurity and Analytics, and a Bachelor’s degree in Computer Science. Below are the institutions where I studied:
           </p>
-          <div className="media tm-media">
-            <i className="fa fa-4x fa-podcast tm-media-icon" />
+
+          <div className="media tm-media mb-4">
+            <img src="/img/st-thomas-university-fl_540.png" alt="St. Thomas University" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
             <div className="media-body tm-media-body">
-              <p className="tm-small-font">
-                Integer iaculis sollicitudin ex vel condimentum.
-              </p>
+              <h5 className="tm-small-font">St. Thomas University</h5>
+              <p className="tm-small-font">Master’s in CyberSecurity and Data Analytics</p>
             </div>
           </div>
-          <div className="media tm-media">
-            <i className="fa fa-3x fa-calendar tm-media-icon" />
+
+          <div className="media tm-media mb-4">
+            <img src="/img/Thomas_Edison_State_University_seal.png" alt="TESU Logo" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
             <div className="media-body tm-media-body">
-              <p className="tm-small-font">
-                Integer iaculis sollicitudin ex vel condimentum.
-              </p>
+              <h5 className="tm-small-font">Thomas Edison State University</h5>
+              <p className="tm-small-font">Bachelor’s in Computer Science</p>
             </div>
           </div>
-          <div className="media tm-media">
-            <i className="fa fa-3x fa-bell-o tm-media-icon" />
+
+          <div className="media tm-media mb-4">
+            <img src="/img/profed-2024.png" alt="mit_univ_logo" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
             <div className="media-body tm-media-body">
-              <p className="tm-small-font">
-                Integer iaculis sollicitudin ex vel condimentum.
-              </p>
+              <h5 className="tm-small-font">Georgia Tech University (AWS)</h5>
+              <p className="tm-small-font">Cloud Practitioner Certification</p>
             </div>
           </div>
-          <a href="#gallery" className="tm-btn">More Info.</a>
+
+          
         </div>
       </div>
 
       {/* Left Column: Video */}
       <div className="col-md-6 d-flex justify-content-center align-items-center">
- <video
-  width="100%"
-  height="auto"
-  controls
-  autoPlay
-  muted
-  loop
-  playsInline
-  className="rounded shadow"
-  poster="/img/video-poster.jpg"
->
-  <source src="/videos/services-preview.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+        <video
+          width="100%"
+          height="auto"
+          controls
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="rounded shadow"
+          poster="/img/video-poster.jpg"
+        >
+          <source src="/videos/services-preview.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
     </div>
   </div>
 </section>
+
 
 
 <section
@@ -363,32 +403,8 @@ function Home() {
 
 
 {/* Upcoming Events */}
-<section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/bg-04.jpg">
-  <div className="tm-page-content-width d-flex justify-content-center">
-    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center">
-      <h2 className="tm-section-title tm-red-text">Upcoming Events</h2>
-      <p>I will be attending the following upcoming events.</p>
-      <img 
-        src="/img/black_hat_event.PNG" 
-        alt="Portrait" 
-        style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', marginTop: '10px' }} 
-      />
-    </div>
-  </div>
-  <div className="tm-copyright-div text-center">
-    <p className="tm-copyright-text">
-      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com 
-    </p>
-  </div>
-</section>
-   
-
-
-
-
-      {/* Contact Section */}
-      <section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/bg-04.jpg">
-        <div className="tm-page-content-width">
+<section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/Sucesss_img01RicardoTech.jpg">
+   <div className="tm-page-content-width">
           <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
             <h2 className="tm-section-title tm-red-text">Contact Me</h2>
             <p>I will be attanding the following events upcoming.</p>
@@ -406,12 +422,20 @@ function Home() {
             </form>
           </div>
         </div>
-        <div className="tm-copyright-div">
-          <p className="tm-copyright-text">
-            Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com 
-          </p>
-        </div>
-      </section>
+
+  <div className="tm-copyright-div text-center">
+    <p className="tm-copyright-text">
+      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com 
+    </p>
+  </div>
+</section>
+   
+
+
+
+
+      {/* Contact Section */}
+   
     </div>
   );
 }
