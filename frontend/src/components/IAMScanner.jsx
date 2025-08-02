@@ -9,12 +9,23 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  // Normalize result format
+  const normalizeResult = (data) =>
+    data.map((item, idx) => ({
+      id: item.id || idx,
+      roleName: item.roleName || item.role_name,
+      score: item.score || 0,
+      analysis: item.analysis || "No analysis available.",
+      createdAt: item.created_at || new Date().toISOString(),
+    }));
+
   // Fetch logs on load
   const fetchLogs = async () => {
     try {
       setLoading(true);
       const res = await axios.get("/api/iam/logs");
-      setResults(res.data.logs || []);
+      const normalized = normalizeResult(res.data.logs || []);
+      setResults(normalized);
     } catch (err) {
       setError("Failed to load IAM scan logs.");
     } finally {
@@ -32,10 +43,12 @@ const IAMScanner = () => {
       setError("");
       setMessage("");
       setScanning(true);
+
       const res = await axios.get("/api/iam/scan");
 
       if (res.data?.success && Array.isArray(res.data.results)) {
-        setResults(res.data.results); // Use fresh data immediately
+        const normalized = normalizeResult(res.data.results);
+        setResults(normalized);
         setMessage("✅ New IAM scan completed and results updated.");
       } else {
         setError("Scan completed but no results returned.");
@@ -50,7 +63,6 @@ const IAMScanner = () => {
   return (
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
-
       <p className="text-muted small">
         This scan automatically inspects IAM roles in your AWS account — no input required.
       </p>
@@ -91,11 +103,13 @@ const IAMScanner = () => {
                       : "table-success"
                   }
                 >
-                  <td>{row.role_name}</td>
+                  <td>{row.roleName}</td>
                   <td>{row.score}</td>
-                  <td>{new Date(row.created_at).toLocaleString()}</td>
+                  <td>{new Date(row.createdAt).toLocaleString()}</td>
                   <td style={{ maxWidth: "500px", whiteSpace: "pre-wrap" }}>
-                    {row.analysis}
+                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                      {row.analysis}
+                    </div>
                   </td>
                 </tr>
               ))}
