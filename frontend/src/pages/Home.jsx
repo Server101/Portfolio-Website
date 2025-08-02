@@ -297,6 +297,16 @@ function Home() {
             Word Cloud Analytics
           </button>
         </li>
+
+        <li className="nav-item">
+  <button
+    className={`nav-link ${activeTab === "iamScanner" ? "active" : ""}`}
+    onClick={() => setActiveTab("iamScanner")}
+  >
+    IAM Misconfiguration Detector
+  </button>
+</li>
+
       </ul>
 
       {/* Tab Content */}
@@ -356,6 +366,48 @@ function Home() {
           </div>
         )}
 
+        {/* IAM Scanner */}
+        
+      {activeTab === "iamScanner" && (
+  <div className="tab-pane fade show active">
+    <h4 className="tm-blue-text">Gemini-Powered IAM Misconfiguration Detector</h4>
+    <p className="text-muted">Scan your AWS IAM setup for risks using AI.</p>
+
+    {/* Placeholder for Live Demo Button */}
+    <div className="my-3">
+      <button className="btn btn-danger">🚧 Live Demo Coming Soon</button>
+    </div>
+
+    {/* Project Description */}
+    <div className="mt-4">
+      <h5>Description:</h5>
+      <p>
+        This tool scans AWS IAM configurations and uses Gemini to detect misconfigurations like wildcard permissions,
+        missing MFA, publicly accessible resources, and risky trust relationships. It returns human-readable summaries
+        and remediation steps.
+      </p>
+    </div>
+
+    {/* Features List */}
+    <ul className="mb-3">
+      <li>✅ Scan IAM policies, users, groups, and roles via AWS SDK</li>
+      <li>🧠 Analyze risks using Gemini LLM (Google's API)</li>
+      <li>📘 Get policy recommendations in plain English</li>
+      <li>📤 Export findings as PDF or CSV (optional)</li>
+    </ul>
+
+    {/* Tech Stack */}
+    <div className="mt-3">
+      <h6>Tech Stack:</h6>
+      <span className="badge bg-info me-2">React</span>
+      <span className="badge bg-info me-2">Node.js</span>
+      <span className="badge bg-info me-2">Express</span>
+      <span className="badge bg-info me-2">AWS SDK</span>
+      <span className="badge bg-info me-2">Google Gemini API</span>
+      <span className="badge bg-info me-2">Optional: PostgreSQL, Docker, Nginx</span>
+    </div>
+  </div>
+)}
         
       </div>
     </div>

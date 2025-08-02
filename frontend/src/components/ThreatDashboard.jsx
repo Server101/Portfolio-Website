@@ -126,6 +126,7 @@ setFilteredLogs(filtered);
               </tr>
             </thead>
             <tbody>
+              
               {currentLogs.map((log, idx) => (
                 <tr key={idx}>
                   <td>{log.website_url}</td>
