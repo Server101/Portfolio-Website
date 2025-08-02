@@ -5,6 +5,8 @@ import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
+import IAMScanner from "../components/IAMScanner";
+
 
 
 import Navbar from '../components/Navbar';
@@ -379,7 +381,7 @@ function Home() {
     <div className="my-3">
       <button className="btn btn-danger">🚧 Live Demo Coming Soon</button>
     </div>
-
+         
     {/* Project Description */}
     <div className="mt-4">
       <h5>Description:</h5>
@@ -389,7 +391,7 @@ function Home() {
         and remediation steps.
       </p>
     </div>
-
+<IAMScanner />
     {/* Features List */}
     <ul className="mb-3">
       <li>✅ Scan IAM policies, users, groups, and roles via AWS SDK</li>
