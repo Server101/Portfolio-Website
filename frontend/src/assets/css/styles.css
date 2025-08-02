@@ -26,14 +26,24 @@
 }
 */
 
-/* Social Media links*/
-
-social-links a {
+/* Corrected Social Media links */
+.social-links a {
   color: #333;
   margin-right: 15px;
   transition: color 0.3s;
 }
 
 .social-links a:hover {
-  color: #0077b5; /* Adjust based on platform, e.g., LinkedIn blue */
+  color: #0077b5; /* Adjust based on platform */
+}
+
+.social-links a {
+  color: #333;
+  margin-right: 15px;
+  transition: color 0.3s;
+  font-size: 1.5rem;
+}
+
+.social-links a:hover {
+  color: #0077b5; /* Example hover color */
 }

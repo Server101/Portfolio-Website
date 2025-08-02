@@ -1,13 +1,46 @@
-// src/components/Navbar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <nav style={{ padding: '1rem', background: '#222' }}>
-      <Link to="/" style={{ color: '#fff', marginRight: '1rem' }}>Home</Link>
-      <Link to="/projects" style={{ color: '#fff', marginRight: '1rem' }}>Projects</Link>
-      <Link to="/contact" style={{ color: '#fff' }}>Contact</Link>
+    <nav
+      className="navbar navbar-dark bg-dark fixed-top shadow"
+      style={{ zIndex: 1000 }}
+    >
+      <div className="container-fluid d-flex justify-content-start align-items-center">
+        {/* Logo/Brand on far left */}
+        <a className="navbar-brand fw-bold me-4" href="#home">
+          RicardoTech
+        </a>
+
+        {/* Navigation links right next to brand */}
+        <ul className="navbar-nav flex-row">
+          <li className="nav-item mx-2">
+            <a className="nav-link" href="#home">
+              Home
+            </a>
+          </li>
+          <li className="nav-item mx-2">
+            <a className="nav-link" href="#services">
+              About Me
+            </a>
+          </li>
+          <li className="nav-item mx-2">
+            <a className="nav-link" href="#projects">
+              Projects
+            </a>
+          </li>
+          <li className="nav-item mx-2">
+            <a className="nav-link" href="#gallery">
+              Gallery
+            </a>
+          </li>
+          <li className="nav-item mx-2">
+            <a className="nav-link" href="#contact">
+              Contact
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }
