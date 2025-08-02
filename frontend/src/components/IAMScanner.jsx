@@ -38,27 +38,63 @@ const IAMScanner = () => {
   }, []);
 
   // Trigger Gemini-powered scan
-  const runScan = async () => {
-    try {
-      setError("");
-      setMessage("");
-      setScanning(true);
+const runScan = async () => {
+  if (scanning) return;
 
-      const res = await axios.get("/api/iam/scan");
+  try {
+    setError("");
+    setMessage("");
+    setScanning(true);
 
-      if (res.data?.success && Array.isArray(res.data.results)) {
-        const normalized = normalizeResult(res.data.results);
-        setResults(normalized);
-        setMessage("✅ New IAM scan completed and results updated.");
+    const res = await axios.get("/api/iam/scan");
+
+    if (res.data?.success && Array.isArray(res.data.results)) {
+      const normalized = normalizeResult(res.data.results);
+      setResults(normalized);
+
+      if (normalized.length === 0) {
+        setMessage("✅ Scan complete. No misconfigurations or risky IAM roles detected.");
       } else {
-        setError("⚠️ Scan completed but no usable results returned.");
+        setMessage("✅ New IAM scan completed and results updated.");
       }
-    } catch (err) {
-      console.error(err);
-      setError("❌ Scan failed. Check backend logs.");
-    } finally {
-      setScanning(false);
+    } else {
+      setError("⚠️ Scan completed but no usable results returned.");
     }
+  } catch (err) {
+    console.error(err);
+    setError("❌ Scan failed. Check backend logs.");
+  } finally {
+    setTimeout(() => setScanning(false), 2000); // Anti-spam cooldown
+  }
+};
+
+  // Export handler
+  const handleExport = (format) => {
+    const filename = `iam_scan_results_${new Date().toISOString().slice(0, 10)}`;
+    let content, mimeType;
+
+    if (format === "json") {
+      content = JSON.stringify(results, null, 2);
+      mimeType = "application/json";
+    } else if (format === "csv") {
+      const header = Object.keys(results[0]).join(",");
+      const rows = results.map((obj) =>
+        Object.values(obj)
+          .map((val) => `"${String(val).replace(/"/g, '""')}"`)
+          .join(",")
+      );
+      content = [header, ...rows].join("\n");
+      mimeType = "text/csv";
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${filename}.${format}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -72,12 +108,29 @@ const IAMScanner = () => {
       {message && <div className="alert alert-success">{message}</div>}
 
       <button
-        className="btn btn-primary mb-3"
+        className="btn btn-primary mb-3 me-2"
         onClick={runScan}
         disabled={scanning}
       >
         {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
+
+      {results.length > 0 && (
+        <>
+          <button
+            className="btn btn-outline-secondary mb-3 me-2"
+            onClick={() => handleExport("json")}
+          >
+            ⬇️ Export JSON
+          </button>
+          <button
+            className="btn btn-outline-secondary mb-3"
+            onClick={() => handleExport("csv")}
+          >
+            ⬇️ Export CSV
+          </button>
+        </>
+      )}
 
       {loading || scanning ? (
         <p>Loading IAM scan results...</p>
