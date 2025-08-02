@@ -9,17 +9,17 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Normalize result format
+  // Normalize API/DB result shapes
   const normalizeResult = (data) =>
     data.map((item, idx) => ({
       id: item.id || idx,
-      roleName: item.roleName || item.role_name,
+      roleName: item.roleName || item.role_name || "Unknown",
       score: item.score || 0,
       analysis: item.analysis || "No analysis available.",
-      createdAt: item.created_at || new Date().toISOString(),
+      createdAt: item.created_at || item.createdAt || new Date().toISOString(),
     }));
 
-  // Fetch logs on load
+  // Fetch logs from DB
   const fetchLogs = async () => {
     try {
       setLoading(true);
@@ -27,7 +27,7 @@ const IAMScanner = () => {
       const normalized = normalizeResult(res.data.logs || []);
       setResults(normalized);
     } catch (err) {
-      setError("Failed to load IAM scan logs.");
+      setError("❌ Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ const IAMScanner = () => {
     fetchLogs();
   }, []);
 
-  // Trigger new scan
+  // Trigger Gemini-powered scan
   const runScan = async () => {
     try {
       setError("");
@@ -51,10 +51,11 @@ const IAMScanner = () => {
         setResults(normalized);
         setMessage("✅ New IAM scan completed and results updated.");
       } else {
-        setError("Scan completed but no results returned.");
+        setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
-      setError("Scan failed. Check server logs.");
+      console.error(err);
+      setError("❌ Scan failed. Check backend logs.");
     } finally {
       setScanning(false);
     }
@@ -64,7 +65,7 @@ const IAMScanner = () => {
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
       <p className="text-muted small">
-        This scan automatically inspects IAM roles in your AWS account — no input required.
+        This tool inspects IAM roles in your AWS account and flags risky trust policies using Gemini AI.
       </p>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -80,6 +81,8 @@ const IAMScanner = () => {
 
       {loading || scanning ? (
         <p>Loading IAM scan results...</p>
+      ) : results.length === 0 ? (
+        <p className="text-muted">No scan results available yet. Try running a scan.</p>
       ) : (
         <div className="table-responsive">
           <table className="table table-bordered table-striped small">
@@ -106,7 +109,7 @@ const IAMScanner = () => {
                   <td>{row.roleName}</td>
                   <td>{row.score}</td>
                   <td>{new Date(row.createdAt).toLocaleString()}</td>
-                  <td style={{ maxWidth: "500px", whiteSpace: "pre-wrap" }}>
+                  <td style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}>
                     <div style={{ maxHeight: "300px", overflowY: "auto" }}>
                       {row.analysis}
                     </div>
