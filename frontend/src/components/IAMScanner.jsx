@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const IAMScanner = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,6 +19,18 @@ const IAMScanner = () => {
       analysis: item.analysis || "No analysis available.",
       createdAt: item.created_at || item.createdAt || new Date().toISOString(),
     }));
+
+
+// Recently added
+    useEffect(() => {
+  console.log("✅ IAMScanner component mounted");
+ 
+
+}, []);
+
+
+
+// End
 
   // Fetch logs from DB
   const fetchLogs = async () => {
