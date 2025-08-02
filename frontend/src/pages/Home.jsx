@@ -66,7 +66,7 @@ function Home() {
         await loadScript('/js/imagesloaded.pkgd.min.js');
         await loadScript('/js/jquery.magnific-popup.min.js');
         await loadScript('/js/parallax.min.js');
-        //await loadScript('/js/init.js');
+        await loadScript('/js/init.js');
       } catch (err) {
         console.error('Failed to load script:', err);
       }
@@ -406,7 +406,7 @@ function Home() {
     </div>
   </div>
 </section>
-<div style={{ color: 'blue' }}><IAMScanner /></div>
+
 
 
 
