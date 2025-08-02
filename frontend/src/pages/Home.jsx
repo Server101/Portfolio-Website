@@ -5,6 +5,8 @@ import '../assets/css/templatemo-style.css';
 import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
+
+
 import Navbar from '../components/Navbar';
 
 
@@ -153,7 +155,7 @@ function Home() {
   </a>
 
   <a
-    href="mailto:your.email@example.com"
+    href="mailto:hello@ricardotech.com"
     className="d-flex align-items-center"
   >
     <img
@@ -367,7 +369,7 @@ function Home() {
         )}
 
         {/* IAM Scanner */}
-        
+
       {activeTab === "iamScanner" && (
   <div className="tab-pane fade show active">
     <h4 className="tm-blue-text">Gemini-Powered IAM Misconfiguration Detector</h4>
@@ -449,7 +451,7 @@ function Home() {
       </section>
 
 
-{/* Upcoming Events */}
+{/* Contact ME */}
 <section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/Sucesss_img01RicardoTech.jpg">
    <div className="tm-page-content-width">
           <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
