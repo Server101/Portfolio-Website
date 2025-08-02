@@ -7,6 +7,7 @@ const IAMScanner = () => {
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   // Fetch logs on load
   const fetchLogs = async () => {
@@ -28,10 +29,16 @@ const IAMScanner = () => {
   // Trigger new scan
   const runScan = async () => {
     try {
+      setError("");
+      setMessage("");
       setScanning(true);
       const res = await axios.get("/api/iam/scan");
-      if (res.data?.success) {
-        await fetchLogs(); // Refresh log view
+
+      if (res.data?.success && Array.isArray(res.data.results)) {
+        setResults(res.data.results); // Use fresh data immediately
+        setMessage("✅ New IAM scan completed and results updated.");
+      } else {
+        setError("Scan completed but no results returned.");
       }
     } catch (err) {
       setError("Scan failed. Check server logs.");
@@ -43,17 +50,24 @@ const IAMScanner = () => {
   return (
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
+
+      <p className="text-muted small">
+        This scan automatically inspects IAM roles in your AWS account — no input required.
+      </p>
+
       {error && <div className="alert alert-danger">{error}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
+
       <button
         className="btn btn-primary mb-3"
         onClick={runScan}
         disabled={scanning}
       >
-        {scanning ? "Scanning..." : "🔍 Run New Scan"}
+        {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
-      {loading ? (
-        <p>Loading logs...</p>
+      {loading || scanning ? (
+        <p>Loading IAM scan results...</p>
       ) : (
         <div className="table-responsive">
           <table className="table table-bordered table-striped small">
