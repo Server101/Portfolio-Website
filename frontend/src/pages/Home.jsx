@@ -375,13 +375,8 @@ function Home() {
       {activeTab === "iamScanner" && (
   <div className="tab-pane fade show active">
     <h4 className="tm-blue-text">Gemini-Powered IAM Misconfiguration Detector</h4>
-    <p className="text-muted">Scan your AWS IAM setup for risks using AI.</p>
+  
 
-    {/* Placeholder for Live Demo Button */}
-    <div className="my-3">
-      <button className="btn btn-danger">🚧 Live Demo Coming Soon</button>
-    </div>
-         
     {/* Project Description */}
     <div className="mt-4">
       <h5>Description:</h5>
@@ -393,12 +388,6 @@ function Home() {
     </div>
 <IAMScanner />
     {/* Features List */}
-    <ul className="mb-3">
-      <li>✅ Scan IAM policies, users, groups, and roles via AWS SDK</li>
-      <li>🧠 Analyze risks using Gemini LLM (Google's API)</li>
-      <li>📘 Get policy recommendations in plain English</li>
-      <li>📤 Export findings as PDF or CSV (optional)</li>
-    </ul>
 
     {/* Tech Stack */}
     <div className="mt-3">
