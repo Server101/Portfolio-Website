@@ -117,10 +117,9 @@ function Home() {
                 <WordSlider />
                 <p>
                   
-                  Coding is my passion, and I apply it to solve real-world problems in security and
-                  risk management. With experience in web development, IAM, database administration,
-                  and security, I build secure systems and manage access to protect people, data, and
-                  platforms.{' '}
+                I’m passionate about coding and use it to tackle real-world challenges in cybersecurity and risk management. With a strong foundation in computing logic, I build secure, full-stack systems and manage access controls(AIM) across platforms. I thrive in agile environments and have hands-on experience integrating AI into security workflows to enhance threat detection and decision-making.
+
+{' '}
             
 
                 </p>
@@ -142,7 +141,7 @@ function Home() {
   </a>
 
   <a
-    href="https://www.linkedin.com/in/your-profile"
+    href="https://www.linkedin.com/in/Ricardo-Tech"
     target="_blank"
     rel="noopener noreferrer"
     className="d-flex align-items-center"
@@ -193,7 +192,7 @@ function Home() {
 
 {/* Services About Me */}
 
-<section
+<section 
   className="parallax-window tm-section tm-section-services"
   id="services"
   data-parallax="scroll"
@@ -201,45 +200,35 @@ function Home() {
 >
   <div className="tm-page-content-width">
     <div className="row d-flex align-items-stretch flex-row-reverse">
-      
-      {/* Right Column: Content Box */}
+
+      {/* RIGHT COLUMN: About Me Text */}
       <div className="col-md-6 tm-translucent-white-bg tm-content-box tm-textbox-full-height">
         <div className="tm-content-box-inner">
           <h2 className="tm-section-title tm-blue-text">About Me</h2>
-          <p>
-            I hold a Master’s degree in CyberSecurity and Analytics, and a Bachelor’s degree in Computer Science. Below are the institutions where I studied:
+
+          <p className="about-intro">
+            <strong>My journey into tech began with a deep interest for problem-solving and computing logic</strong>,
+            and over the years, that passion has evolved into a mission: using code and security strategy to solve real-world challenges.
           </p>
 
-          <div className="media tm-media mb-4">
-            <img src="/img/st-thomas-university-fl_540.png" alt="St. Thomas University" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
-            <div className="media-body tm-media-body">
-              <h5 className="tm-small-font">St. Thomas University</h5>
-              <p className="tm-small-font">Master’s in CyberSecurity and Data Analytics</p>
-            </div>
-          </div>
+          <p className="about-body">
+            At <strong>Dream Coders Academy</strong>, I’ve grown from a full-stack developer into a cybersecurity specialist—
+            building secure applications with <strong>Java</strong> and <strong>React</strong>, deploying on <strong>AWS</strong>,
+            and managing <strong>IAM</strong> and <strong>RBAC</strong> systems. I work in <strong>agile environments</strong>,
+            collaborate across teams, and apply <strong>AI tools</strong> to improve threat detection and access control.
+          </p>
 
-          <div className="media tm-media mb-4">
-            <img src="/img/Thomas_Edison_State_University_seal.png" alt="TESU Logo" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
-            <div className="media-body tm-media-body">
-              <h5 className="tm-small-font">Thomas Edison State University</h5>
-              <p className="tm-small-font">Bachelor’s in Computer Science</p>
-            </div>
-          </div>
-
-          <div className="media tm-media mb-4">
-            <img src="/img/profed-2024.png" alt="mit_univ_logo" style={{ width: '64px', height: '64px' }} className="me-3 rounded" />
-            <div className="media-body tm-media-body">
-              <h5 className="tm-small-font">Georgia Tech University (AWS)</h5>
-              <p className="tm-small-font">Cloud Practitioner Certification</p>
-            </div>
-          </div>
-
-          
+          <p className="about-goal">
+            I’m currently preparing for the <strong>CISSP certification</strong> as I work toward becoming a
+            security leader who bridges <strong>engineering, risk, and governance</strong>.
+          </p>
         </div>
       </div>
 
-      {/* Left Column: Video */}
-      <div className="col-md-6 d-flex justify-content-center align-items-center">
+      {/* LEFT COLUMN: Video + Education Logos */}
+      <div className="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
+
+        {/* Video Section */}
         <video
           width="100%"
           height="auto"
@@ -248,17 +237,46 @@ function Home() {
           muted
           loop
           playsInline
-          className="rounded shadow"
+          className="rounded shadow mb-4"
           poster="/img/video-poster.jpg"
         >
           <source src="/videos/services-preview.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+
+<div className="w-100 px-3 tm-translucent-white-bg p-3 rounded">
+  <div className="media tm-media mb-3 align-items-center">
+    <img src="/img/st-thomas-university-fl_540.png" alt="St. Thomas University" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
+    <div className="media-body tm-media-body text-start">
+      <h3 className="tm-small-font fw-bold mb-1"><strong>St. Thomas University(STU)</strong></h3>
+      <p className="tm-small-font fw-semibold mb-0">Master of Science in CyberSecurity and Data Analytics</p>
+    </div>
+  </div>
+
+  <div className="media tm-media mb-3 align-items-center">
+    <img src="/img/Thomas_Edison_State_University_seal.png" alt="TESU Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
+    <div className="media-body tm-media-body text-start">
+      <h3 className="tm-small-font fw-bold mb-1"><strong>Thomas Edison State University(TESU)</strong></h3>
+      <p className="tm-small-font fw-semibold mb-0">Bachelor of Science in Computer Science</p>
+    </div>
+  </div>
+
+  <div className="media tm-media align-items-center">
+    <img src="/img/MIT_logo_1.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
+    <div className="media-body tm-media-body text-start">
+      <h3 className="tm-small-font fw-bold mb-1"><strong>Massachusetts Institute of Technology(MIT)</strong></h3>
+      <p className="tm-small-font fw-semibold mb-0">Professional Certificate in Cybersecurity</p>
+    </div>
+  </div>
+</div>
+
+
       </div>
 
     </div>
   </div>
 </section>
+
 
 
 
@@ -293,6 +311,7 @@ function Home() {
             Threat Monitoring
           </button>
         </li>
+        {/* Tab Content 
         <li className="nav-item">
           <button
             className={`nav-link ${activeTab === "wordcloud" ? "active" : ""}`}
@@ -300,7 +319,7 @@ function Home() {
           >
             Word Cloud Analytics
           </button>
-        </li>
+        </li>*/}
 
         <li className="nav-item">
   <button
@@ -410,14 +429,15 @@ function Home() {
 
 
 
-      {/* Gallery Section */}
+      {/* Gallery Section 
       <section className="parallax-window tm-section tm-section-gallery tm-flex" id="gallery" data-parallax="scroll" data-image-src="/img/bg-03.jpg">
         <div className="tm-page-content-width tm-flex-col tm-gallery-content">
           <div className="tm-content-box-inner">
-            <h2 className="tm-section-title">Project Gallery</h2>
+            <h2 className="tm-section-title">Gallery</h2>
             <div className="iso-section">
               <ul className="filter-wrapper clearfix">
                 <li><a href="#" data-filter="*" className="selected opc-main-bg">Show All</a></li>
+                 Gallery Options for additional Images
                 <li><a href="#" className="opc-main-bg" data-filter=".design">CyberSecurity</a></li>
                 <li><a href="#" className="opc-main-bg" data-filter=".artwork">Data Analytics</a></li>
                 <li><a href="#" className="opc-main-bg" data-filter=".website">Full-Stack Engineer</a></li>
@@ -439,15 +459,15 @@ function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>*/}
 
 
 {/* Contact ME */}
 <section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/Sucesss_img01RicardoTech.jpg">
    <div className="tm-page-content-width">
           <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
-            <h2 className="tm-section-title tm-red-text">Contact Me</h2>
-            <p>I will be attanding the following events upcoming.</p>
+            <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
+            <p>Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.</p>
             <form action="index.html" method="post" className="tm-contact-form">
               <div className="form-group">
                 <input type="text" id="contact_name" name="contact_name" className="form-control" placeholder="Name" required />
