@@ -9,14 +9,13 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Normalize API response keys to camelCase
   const normalizeResult = (data) =>
     data.map((item, idx) => ({
       id: item.id ?? idx,
-      roleName: item.role_name ?? "Unknown",
+      roleName: item.roleName || item.role_name || "Unknown",
       score: item.score ?? 0,
-      analysis: item.analysis ?? "No analysis available.",
-      createdAt: item.created_at ?? new Date().toISOString(),
+      analysis: item.analysis || "No analysis available.",
+      createdAt: item.createdAt || item.created_at || new Date().toISOString(),
     }));
 
   const fetchLogs = async () => {
@@ -25,43 +24,46 @@ const IAMScanner = () => {
       const res = await axios.get("/api/iam/logs");
       const normalized = normalizeResult(res.data.logs || []);
       setResults(normalized);
-      setMessage(`✅ Loaded ${normalized.length} IAM scans.`);
+      setMessage(`✅ Loaded ${normalized.length} IAM scan${normalized.length !== 1 ? "s" : ""}.`);
     } catch (err) {
-      console.error("❌ Failed to fetch logs:", err);
       setError("❌ Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchLogs();
-  }, []);
-
   const runScan = async () => {
     if (scanning) return;
-    setScanning(true);
-    setError("");
-    setMessage("");
+
     try {
+      setError("");
+      setMessage("");
+      setScanning(true);
+
       const res = await axios.get("/api/iam/scan");
       if (res.data?.success && Array.isArray(res.data.results)) {
-        await fetchLogs();
-        setMessage(`✅ IAM scan completed. ${res.data.results.length} role(s) analyzed.`);
+        const normalized = normalizeResult(res.data.results);
+        setResults(normalized);
+        if (normalized.length > 0) {
+          setMessage(`✅ New IAM scan completed and ${normalized.length} role(s) analyzed.`);
+        } else {
+          setMessage("✅ IAM scan completed. No misconfigurations detected — great job!");
+        }
       } else {
         setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
-      console.error("❌ Scan error:", err);
       setError("❌ Scan failed. Check backend logs.");
     } finally {
-      setScanning(false);
+      setTimeout(() => setScanning(false), 1500);
     }
   };
 
   const handleExport = (format) => {
     const filename = `iam_scan_results_${new Date().toISOString().slice(0, 10)}`;
     let content, mimeType;
+
+    if (results.length === 0) return;
 
     if (format === "json") {
       content = JSON.stringify(results, null, 2);
@@ -87,6 +89,10 @@ const IAMScanner = () => {
     document.body.removeChild(link);
   };
 
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
   return (
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
@@ -98,7 +104,7 @@ const IAMScanner = () => {
       {message && <div className="alert alert-success">{message}</div>}
 
       <button className="btn btn-primary mb-3 me-2" onClick={runScan} disabled={scanning}>
-        {scanning ? "🔄 Scanning..." : "🔍 Run New Scan"}
+        {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
       {results.length > 0 && (
@@ -132,10 +138,8 @@ const IAMScanner = () => {
                 <tr
                   key={row.id}
                   className={
-                    row.score >= 90
-                      ? "table-danger"
-                      : row.score >= 70
-                      ? "table-warning"
+                    row.score >= 90 ? "table-danger"
+                      : row.score >= 70 ? "table-warning"
                       : "table-success"
                   }
                 >
