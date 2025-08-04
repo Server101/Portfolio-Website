@@ -111,7 +111,7 @@ const IAMScanner = () => {
       <p className="text-muted small">
         This tool scans IAM trust policies using Gemini AI and flags risky configurations like wildcard permissions, missing MFA, and publicly accessible roles.
       </p>
-
+<p style={{ color: 'red' }}>🔥 Debug: This is the live IAMScanner</p>
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
 
