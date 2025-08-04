@@ -1,3 +1,4 @@
+// src/components/IAMScanner.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -8,14 +9,14 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // ✅ Ensure we handle both camelCase and snake_case
+  // Normalize API fields from snake_case to camelCase
   const normalizeResult = (data) =>
     data.map((item, idx) => ({
       id: item.id ?? idx,
-      roleName: item.roleName ?? item.role_name ?? "Unknown",
+      roleName: item.role_name ?? "Unknown",
       score: item.score ?? 0,
-      analysis: item.analysis ?? "No analysis provided",
-      createdAt: item.createdAt ?? item.created_at ?? new Date().toISOString(),
+      analysis: item.analysis ?? "No analysis available.",
+      createdAt: item.created_at ?? new Date().toISOString(),
     }));
 
   const fetchLogs = async () => {
@@ -23,40 +24,76 @@ const IAMScanner = () => {
       setLoading(true);
       const res = await axios.get("/api/iam/logs");
       const normalized = normalizeResult(res.data.logs || []);
-      console.log("✅ Loaded IAM logs:", normalized);
       setResults(normalized);
+      console.log(`✅ Loaded ${normalized.length} IAM scans`);
     } catch (err) {
-      console.error("❌ Log load error:", err);
-      setError("Failed to load IAM scan logs.");
+      setError("❌ Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
   const runScan = async () => {
     if (scanning) return;
     try {
-      setError("");
-      setMessage("");
       setScanning(true);
+      setMessage("");
+      setError("");
 
       const res = await axios.get("/api/iam/scan");
-      const normalized = normalizeResult(res.data.results || []);
-      console.log("✅ New scan results:", normalized);
+      console.log("🚀 Scan response:", res.data);
 
-      setResults(normalized);
+      if (res.data?.success && Array.isArray(res.data.results)) {
+        const normalized = normalizeResult(res.data.results);
+        setResults(normalized);
 
-      if (normalized.length > 0) {
-        setMessage(`✅ Scan completed. ${normalized.length} IAM role(s) analyzed.`);
+        if (normalized.length > 0) {
+          setMessage(`✅ IAM scan completed. ${normalized.length} roles analyzed.`);
+        } else {
+          setMessage("✅ IAM scan completed. No issues detected.");
+        }
       } else {
         setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
-      console.error("❌ Scan error:", err);
+      console.error("❌ Scan failed:", err);
       setError("❌ Scan failed. Check backend logs.");
     } finally {
       setTimeout(() => setScanning(false), 1500);
     }
+  };
+
+  const handleExport = (format) => {
+    if (!results.length) return;
+
+    const filename = `iam_scan_results_${new Date().toISOString().slice(0, 10)}`;
+    let content = "", mimeType = "";
+
+    if (format === "json") {
+      content = JSON.stringify(results, null, 2);
+      mimeType = "application/json";
+    } else if (format === "csv") {
+      const header = Object.keys(results[0]).join(",");
+      const rows = results.map(obj =>
+        Object.values(obj)
+          .map(val => `"${String(val).replace(/"/g, '""')}"`)
+          .join(",")
+      );
+      content = [header, ...rows].join("\n");
+      mimeType = "text/csv";
+    }
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${filename}.${format}`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -72,6 +109,17 @@ const IAMScanner = () => {
       <button className="btn btn-primary mb-3 me-2" onClick={runScan} disabled={scanning}>
         {scanning ? "🔄 Scanning..." : "🔍 Run New Scan"}
       </button>
+
+      {results.length > 0 && (
+        <>
+          <button className="btn btn-outline-secondary mb-3 me-2" onClick={() => handleExport("json")}>
+            ⬇️ Export JSON
+          </button>
+          <button className="btn btn-outline-secondary mb-3" onClick={() => handleExport("csv")}>
+            ⬇️ Export CSV
+          </button>
+        </>
+      )}
 
       {loading || scanning ? (
         <p>Loading IAM scan results...</p>
@@ -104,9 +152,7 @@ const IAMScanner = () => {
                   <td>{row.score}</td>
                   <td>{new Date(row.createdAt).toLocaleString()}</td>
                   <td style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}>
-                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-                      {row.analysis}
-                    </div>
+                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>{row.analysis}</div>
                   </td>
                 </tr>
               ))}
