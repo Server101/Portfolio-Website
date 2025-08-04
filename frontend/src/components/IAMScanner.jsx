@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const IAMScanner = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -10,36 +9,28 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Normalize API/DB result shapes
   const normalizeResult = (data) =>
     data.map((item, idx) => ({
-      id: item.id || idx,
+      id: item.id ?? idx,
       roleName: item.roleName || item.role_name || "Unknown",
-      score: item.score || 0,
+      score: item.score ?? 0,
       analysis: item.analysis || "No analysis available.",
       createdAt: item.created_at || item.createdAt || new Date().toISOString(),
     }));
 
+  useEffect(() => {
+    console.log("✅ IAMScanner component mounted");
+  }, []);
 
-// Recently added
-    useEffect(() => {
-  console.log("✅ IAMScanner component mounted");
- 
-
-}, []);
-
-
-
-// End
-
-  // Fetch logs from DB
   const fetchLogs = async () => {
     try {
       setLoading(true);
       const res = await axios.get("/api/iam/logs");
       const normalized = normalizeResult(res.data.logs || []);
+      console.log("📄 Loaded logs:", normalized);
       setResults(normalized);
     } catch (err) {
+      console.error("❌ Failed to fetch logs:", err);
       setError("❌ Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
@@ -50,38 +41,39 @@ const IAMScanner = () => {
     fetchLogs();
   }, []);
 
-  // Trigger Gemini-powered scan
-const runScan = async () => {
-  if (scanning) return;
+  const runScan = async () => {
+    if (scanning) return;
 
-  try {
-    setError("");
-    setMessage("");
-    setScanning(true);
+    try {
+      setError("");
+      setMessage("");
+      setScanning(true);
 
-    const res = await axios.get("/api/iam/scan");
+      const res = await axios.get("/api/iam/scan");
+      console.log("🚀 Scan response:", res.data);
 
-    if (res.data?.success && Array.isArray(res.data.results)) {
-      const normalized = normalizeResult(res.data.results);
-      setResults(normalized);
+      if (res.data?.success && Array.isArray(res.data.results)) {
+        const normalized = normalizeResult(res.data.results);
+        console.log("📊 Normalized scan results:", normalized);
+        setResults(normalized);
 
-      if (normalized.length === 0) {
-        setMessage("✅ Scan complete. No misconfigurations or risky IAM roles detected.");
+        if (normalized.length === 0) {
+          setMessage("✅ Scan complete. No misconfigurations or risky IAM roles detected.");
+        } else {
+          setMessage(`✅ New IAM scan completed and results updated. ${normalized.length} roles analyzed.`);
+        }
       } else {
-        setMessage("✅ New IAM scan completed and results updated.");
+        console.warn("⚠️ Unexpected scan response structure:", res.data);
+        setError("⚠️ Scan completed but no usable results returned.");
       }
-    } else {
-      setError("⚠️ Scan completed but no usable results returned.");
+    } catch (err) {
+      console.error("❌ Scan error:", err);
+      setError("❌ Scan failed. Check backend logs.");
+    } finally {
+      setTimeout(() => setScanning(false), 2000); // Anti-spam cooldown
     }
-  } catch (err) {
-    console.error(err);
-    setError("❌ Scan failed. Check backend logs.");
-  } finally {
-    setTimeout(() => setScanning(false), 2000); // Anti-spam cooldown
-  }
-};
+  };
 
-  // Export handler
   const handleExport = (format) => {
     const filename = `iam_scan_results_${new Date().toISOString().slice(0, 10)}`;
     let content, mimeType;
@@ -120,26 +112,16 @@ const runScan = async () => {
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
 
-      <button
-        className="btn btn-primary mb-3 me-2"
-        onClick={runScan}
-        disabled={scanning}
-      >
+      <button className="btn btn-primary mb-3 me-2" onClick={runScan} disabled={scanning}>
         {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
       {results.length > 0 && (
         <>
-          <button
-            className="btn btn-outline-secondary mb-3 me-2"
-            onClick={() => handleExport("json")}
-          >
+          <button className="btn btn-outline-secondary mb-3 me-2" onClick={() => handleExport("json")}>
             ⬇️ Export JSON
           </button>
-          <button
-            className="btn btn-outline-secondary mb-3"
-            onClick={() => handleExport("csv")}
-          >
+          <button className="btn btn-outline-secondary mb-3" onClick={() => handleExport("csv")}>
             ⬇️ Export CSV
           </button>
         </>
@@ -165,11 +147,9 @@ const runScan = async () => {
                 <tr
                   key={row.id}
                   className={
-                    row.score >= 90
-                      ? "table-danger"
-                      : row.score >= 70
-                      ? "table-warning"
-                      : "table-success"
+                    row.score >= 90 ? "table-danger" :
+                    row.score >= 70 ? "table-warning" :
+                    "table-success"
                   }
                 >
                   <td>{row.roleName}</td>
