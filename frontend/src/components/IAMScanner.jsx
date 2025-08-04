@@ -54,20 +54,19 @@ const IAMScanner = () => {
       const res = await axios.get("/api/iam/scan");
       console.log("🚀 Scan response:", res.data);
 
-      if (res.data?.success && Array.isArray(res.data.results)) {
-        const normalized = normalizeResult(res.data.results);
-        console.log("📊 Normalized scan results:", normalized);
-        setResults(normalized);
+      if (res.data && res.data.success && Array.isArray(res.data.results) && res.data.results.length > 0) {
+  const normalized = normalizeResult(res.data.results);
+  setResults(normalized);
+  setMessage(`✅ New IAM scan completed and ${normalized.length} role(s) analyzed.`);
+} else if (res.data && res.data.success && Array.isArray(res.data.results)) {
+  setResults([]);
+  setMessage("✅ IAM scan completed. No misconfigurations detected — great job!");
+} else {
+  setError("⚠️ Scan completed but no usable results returned.");
 
-        if (normalized.length > 0) {
-          setMessage(`✅ New IAM scan completed and ${normalized.length} role(s) analyzed.`);
-        } else {
-          setMessage("✅ IAM scan completed. No misconfigurations detected — great job!");
-        }
-      } else {
-        console.warn("⚠️ Unexpected scan response structure:", res.data);
-        setError("⚠️ Scan completed but no usable results returned.");
-      }
+}
+console.log("🧪 Scan API payload:", res.data);  // Debug Console here
+
     } catch (err) {
       console.error("❌ Scan error:", err);
       setError("❌ Scan failed. Check backend logs.");
@@ -106,10 +105,11 @@ const IAMScanner = () => {
 
   return (
     <div className="iam-results mt-4">
-      <h5>Latest IAM Scans:</h5>
-      <p className="text-muted small">
-        This tool inspects IAM roles in your AWS account and flags risky trust policies using Gemini AI.
-      </p>
+      <h5>Gemini-Powered IAM Misconfiguration Detector</h5>
+<p className="text-muted small">
+  This tool scans AWS IAM configurations and uses Gemini to detect misconfigurations like wildcard permissions,
+  missing MFA, publicly accessible resources, and risky trust relationships. It returns human-readable summaries and remediation steps.
+</p>
 
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
