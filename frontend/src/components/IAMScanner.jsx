@@ -20,14 +20,13 @@ const IAMScanner = () => {
     }));
 
   const fetchLogs = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get("/api/iam/logs");
-      const normalized = normalizeResult(res.data.logs || []);
-      setResults(normalized);
-      console.log(`✅ Loaded ${normalized.length} IAM scans`);
-    } catch (err) {
-      setError("❌ Failed to load IAM scan logs.");
+  try {
+    const res = await axios.get("/api/iam/logs");
+    console.log("📦 Logs returned:", res.data); // <-- Add this line
+    setResults(res.data.results || []); // <-- Make sure it's 'results', not 'logs'
+  } catch (err) {
+    console.error("❌ Failed to load IAM scan logs:", err);
+    setError("Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
