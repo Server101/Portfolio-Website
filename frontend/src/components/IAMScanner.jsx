@@ -9,13 +9,14 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  // ✅ FIXED: Matches actual backend structure
   const normalizeResult = (data) =>
     data.map((item, idx) => ({
       id: item.id ?? idx,
-      roleName: item.roleName || item.role_name || "Unknown",
+      roleName: item.roleName ?? "Unknown",
       score: item.score ?? 0,
-      analysis: item.analysis || "No analysis available.",
-      createdAt: item.created_at || item.createdAt || new Date().toISOString(),
+      analysis: item.analysis ?? "No analysis available.",
+      createdAt: item.createdAt ?? new Date().toISOString(),
     }));
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const IAMScanner = () => {
     fetchLogs();
   }, []);
 
+  // ✅ FIXED: Ensure usable results are properly validated and displayed
   const runScan = async () => {
     if (scanning) return;
 
@@ -57,10 +59,10 @@ const IAMScanner = () => {
         console.log("📊 Normalized scan results:", normalized);
         setResults(normalized);
 
-        if (normalized.length === 0) {
-          setMessage("✅ Scan complete. No misconfigurations or risky IAM roles detected.");
+        if (normalized.length > 0) {
+          setMessage(`✅ New IAM scan completed and ${normalized.length} role(s) analyzed.`);
         } else {
-          setMessage(`✅ New IAM scan completed and results updated. ${normalized.length} roles analyzed.`);
+          setMessage("✅ IAM scan completed. No misconfigurations detected — great job!");
         }
       } else {
         console.warn("⚠️ Unexpected scan response structure:", res.data);
@@ -70,7 +72,7 @@ const IAMScanner = () => {
       console.error("❌ Scan error:", err);
       setError("❌ Scan failed. Check backend logs.");
     } finally {
-      setTimeout(() => setScanning(false), 2000); // Anti-spam cooldown
+      setTimeout(() => setScanning(false), 2000); // Cooldown to prevent spam
     }
   };
 
