@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-// ← Add this immediately after your imports
 const API_BASE = process.env.REACT_APP_API_URL || "";
 
 const IAMScanner = () => {
@@ -11,16 +10,17 @@ const IAMScanner = () => {
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
   // Fetch IAM scan results
   const fetchLogs = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${API_BASE}/api/iam/logs`);
-      console.log("✅ Raw response from backend:", res.data);
       setResults(res.data.results || []);
+      setCurrentPage(0);
     } catch (err) {
-      console.error("❌ Failed to fetch logs:", err);
+      console.error("Failed to fetch logs:", err);
       setError("Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
@@ -35,21 +35,19 @@ const IAMScanner = () => {
       setError("");
       setMessage("");
       const { data } = await axios.get(`${API_BASE}/api/iam/scan`);
-      console.log("🚀 /scan response:", data);
-
       if (data.success && Array.isArray(data.results)) {
         setResults(data.results);
+        setCurrentPage(0);
         setMessage(
           data.results.length > 0
             ? `✅ New scan complete: ${data.results.length} role(s) analyzed.`
             : "✅ IAM scan complete. No misconfigurations detected — great job!"
         );
       } else {
-        console.warn("⚠️ /scan returned no usable results:", data);
         setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
-      console.error("❌ Scan error:", err);
+      console.error("Scan error:", err);
       setError("❌ Scan failed. Check server logs.");
     } finally {
       setScanning(false);
@@ -60,6 +58,12 @@ const IAMScanner = () => {
     fetchLogs();
   }, []);
 
+  const total = results.length;
+  const current = results[currentPage] || null;
+
+  const prevPage = () => setCurrentPage((p) => Math.max(p - 1, 0));
+  const nextPage = () => setCurrentPage((p) => Math.min(p + 1, total - 1));
+
   return (
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
@@ -67,7 +71,7 @@ const IAMScanner = () => {
       {message && <div className="alert alert-success">{message}</div>}
 
       <button
-        className="btn btn-primary mb-3"
+        className="btn btn-primary mb-3 me-2"
         onClick={runScan}
         disabled={scanning}
       >
@@ -76,50 +80,63 @@ const IAMScanner = () => {
 
       {loading || scanning ? (
         <p>Loading IAM scan results...</p>
-      ) : results.length === 0 ? (
-        <p className="text-muted">
-          No scan results available yet. Try running a scan.
-        </p>
+      ) : total === 0 ? (
+        <p className="text-muted">No scan results available yet. Try running a scan.</p>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-bordered table-striped small">
-            <thead>
-              <tr>
-                <th>Role Name</th>
-                <th>Score</th>
-                <th>Created At</th>
-                <th>Gemini Summary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((row) => (
-                <tr
-                  key={row.id}
-                  className={
-                    row.score >= 90
-                      ? "table-danger"
-                      : row.score >= 70
-                      ? "table-warning"
-                      : "table-success"
-                  }
-                >
-                  <td>{row.roleName}</td>
-                  <td>{row.score}</td>
-                  <td>{new Date(row.createdAt).toLocaleString()}</td>
-                  <td
-                    style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}
-                  >
-                    <div
-                      style={{ maxHeight: "300px", overflowY: "auto" }}
-                    >
-                      {row.analysis}
-                    </div>
-                  </td>
+        <>
+          <div className="d-flex align-items-center mb-2">
+            <button
+              className="btn btn-sm btn-outline-secondary me-2"
+              onClick={prevPage}
+              disabled={currentPage === 0}
+            >
+              ◀ Previous
+            </button>
+            <span>Result {currentPage + 1} of {total}</span>
+            <button
+              className="btn btn-sm btn-outline-secondary ms-2"
+              onClick={nextPage}
+              disabled={currentPage === total - 1}
+            >
+              Next ▶
+            </button>
+          </div>
+
+          <div className="table-responsive">
+            <table className="table table-bordered table-striped small">
+              <thead>
+                <tr>
+                  <th>Role Name</th>
+                  <th>Score</th>
+                  <th>Created At</th>
+                  <th>Gemini Summary</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {current && (
+                  <tr
+                    className={
+                      current.score >= 90
+                        ? "table-danger"
+                        : current.score >= 70
+                        ? "table-warning"
+                        : "table-success"
+                    }
+                  >
+                    <td>{current.roleName}</td>
+                    <td>{current.score}</td>
+                    <td>{new Date(current.createdAt).toLocaleString()}</td>
+                    <td style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}>
+                      <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                        {current.analysis}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
