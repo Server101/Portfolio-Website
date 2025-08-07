@@ -78,7 +78,7 @@ const IAMScanner = () => {
         {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
-      {loading || scanning ? (
+          {loading || scanning ? (
         <p>Loading IAM scan results...</p>
       ) : total === 0 ? (
         <p className="text-muted">No scan results available yet. Try running a scan.</p>
@@ -87,6 +87,7 @@ const IAMScanner = () => {
           <div className="d-flex align-items-center mb-2">
             <button
               className="btn btn-sm btn-outline-secondary me-2"
+              style={{ backgroundColor: "#fff" }}
               onClick={prevPage}
               disabled={currentPage === 0}
             >
@@ -95,6 +96,7 @@ const IAMScanner = () => {
             <span>Result {currentPage + 1} of {total}</span>
             <button
               className="btn btn-sm btn-outline-secondary ms-2"
+              style={{ backgroundColor: "#fff" }}
               onClick={nextPage}
               disabled={currentPage === total - 1}
             >
