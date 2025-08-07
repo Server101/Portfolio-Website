@@ -31,30 +31,39 @@ const IAMScanner = () => {
   }, []);
 
   // Trigger a new scan and use its results directly
-  const runScan = async () => {
+const runScan = async () => {
     if (scanning) return;
+
     try {
       setScanning(true);
       setError("");
       setMessage("");
+
       const { data } = await axios.get("/api/iam/scan");
-      console.log("🚀 /scan response:", data);
+      console.log("🚀 /scan response payload:", data);
 
-      if (data.success && Array.isArray(data.results)) {
-        setResults(data.results);
+      // Make sure we grab whichever array the backend sent
+      const scanResults = Array.isArray(data.results)
+        ? data.results
+        : Array.isArray(data.logs)
+        ? data.logs
+        : [];
 
-        if (data.results.length > 0) {
-          setMessage(`✅ New scan complete: ${data.results.length} role(s) analyzed.`);
-        } else {
-          setMessage("✅ IAM scan complete. No misconfigurations detected — great job!");
-        }
+      if (scanResults.length > 0) {
+        setResults(scanResults);
+        setMessage(`✅ New scan complete: ${scanResults.length} role(s) analyzed.`);
+      } else if (data.success) {
+        // we got a success flag but an empty array
+        setResults([]);
+        setMessage("✅ IAM scan complete. No misconfigurations detected — great job!");
       } else {
-        console.warn("⚠️ /scan returned no usable results:", data);
+        // success was false or missing
+        console.warn("⚠️ /scan returned un-expected payload:", data);
         setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
       console.error("❌ Scan error:", err);
-      setError("❌ Scan failed. Check server logs.");
+      setError("❌ Scan failed. Check backend logs.");
     } finally {
       setScanning(false);
     }
