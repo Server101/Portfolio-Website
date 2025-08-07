@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// ← Add this immediately after your imports
+const API_BASE = process.env.REACT_APP_API_URL || "";
+
 const IAMScanner = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -9,65 +12,53 @@ const IAMScanner = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Fetch IAM scan logs (for initial load and manual refresh)
+  // Fetch IAM scan results
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      setError("");
-      const { data } = await axios.get("/api/iam/logs");
-      console.log("✅ Raw /logs response:", data);
-      setResults(Array.isArray(data.results) ? data.results : []);
+      const res = await axios.get(`${API_BASE}/api/iam/logs`);
+      console.log("✅ Raw response from backend:", res.data);
+      setResults(res.data.results || []);
     } catch (err) {
       console.error("❌ Failed to fetch logs:", err);
-      setError("❌ Failed to load IAM scan logs.");
+      setError("Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
   };
 
-  // On mount, load existing logs
-  useEffect(() => {
-    fetchLogs();
-  }, []);
-
-  // Trigger a new scan and use its results directly
-const runScan = async () => {
+  // Trigger a new scan
+  const runScan = async () => {
     if (scanning) return;
-
     try {
       setScanning(true);
       setError("");
       setMessage("");
+      const { data } = await axios.get(`${API_BASE}/api/iam/scan`);
+      console.log("🚀 /scan response:", data);
 
-      const { data } = await axios.get("/api/iam/scan");
-      console.log("🚀 /scan response payload:", data);
-
-      // Make sure we grab whichever array the backend sent
-      const scanResults = Array.isArray(data.results)
-        ? data.results
-        : Array.isArray(data.logs)
-        ? data.logs
-        : [];
-
-      if (scanResults.length > 0) {
-        setResults(scanResults);
-        setMessage(`✅ New scan complete: ${scanResults.length} role(s) analyzed.`);
-      } else if (data.success) {
-        // we got a success flag but an empty array
-        setResults([]);
-        setMessage("✅ IAM scan complete. No misconfigurations detected — great job!");
+      if (data.success && Array.isArray(data.results)) {
+        setResults(data.results);
+        setMessage(
+          data.results.length > 0
+            ? `✅ New scan complete: ${data.results.length} role(s) analyzed.`
+            : "✅ IAM scan complete. No misconfigurations detected — great job!"
+        );
       } else {
-        // success was false or missing
-        console.warn("⚠️ /scan returned un-expected payload:", data);
+        console.warn("⚠️ /scan returned no usable results:", data);
         setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
       console.error("❌ Scan error:", err);
-      setError("❌ Scan failed. Check backend logs.");
+      setError("❌ Scan failed. Check server logs.");
     } finally {
       setScanning(false);
     }
   };
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
 
   return (
     <div className="iam-results mt-4">
@@ -86,7 +77,9 @@ const runScan = async () => {
       {loading || scanning ? (
         <p>Loading IAM scan results...</p>
       ) : results.length === 0 ? (
-        <p className="text-muted">No scan results available yet. Try running a scan.</p>
+        <p className="text-muted">
+          No scan results available yet. Try running a scan.
+        </p>
       ) : (
         <div className="table-responsive">
           <table className="table table-bordered table-striped small">
@@ -113,8 +106,12 @@ const runScan = async () => {
                   <td>{row.roleName}</td>
                   <td>{row.score}</td>
                   <td>{new Date(row.createdAt).toLocaleString()}</td>
-                  <td style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}>
-                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                  <td
+                    style={{ maxWidth: "600px", whiteSpace: "pre-wrap" }}
+                  >
+                    <div
+                      style={{ maxHeight: "300px", overflowY: "auto" }}
+                    >
                       {row.analysis}
                     </div>
                   </td>
