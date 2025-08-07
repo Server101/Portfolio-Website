@@ -87,7 +87,7 @@ const IAMScanner = () => {
           <div className="d-flex align-items-center mb-2">
             <button
               className="btn btn-sm btn-outline-secondary me-2"
-              style={{ backgroundColor: "#fff" }}
+              style={{ backgroundColor: "#fff" ,color: "#000"}}
               onClick={prevPage}
               disabled={currentPage === 0}
             >
@@ -96,7 +96,7 @@ const IAMScanner = () => {
             <span>Result {currentPage + 1} of {total}</span>
             <button
               className="btn btn-sm btn-outline-secondary ms-2"
-              style={{ backgroundColor: "#fff" }}
+              style={{ backgroundColor: "#fff"  ,color: "#000"}}
               onClick={nextPage}
               disabled={currentPage === total - 1}
             >
