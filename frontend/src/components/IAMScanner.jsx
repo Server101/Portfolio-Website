@@ -1,3 +1,4 @@
+// src/components/IAMScanner.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -6,45 +7,54 @@ const IAMScanner = () => {
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
-  // Fetch IAM scan results
+  // Fetch IAM scan logs (for initial load and manual refresh)
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/iam/logs");
-      console.log("✅ Raw response from backend:", res.data);
-      console.log("✅ Loaded scan results:", res.data.results);
-      setResults(res.data.results || []);
+      setError("");
+      const { data } = await axios.get("/api/iam/logs");
+      console.log("✅ Raw /logs response:", data);
+      setResults(Array.isArray(data.results) ? data.results : []);
     } catch (err) {
       console.error("❌ Failed to fetch logs:", err);
-      setError("Failed to load IAM scan logs.");
+      setError("❌ Failed to load IAM scan logs.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Log results whenever they update
-  useEffect(() => {
-    console.log("🔍 Results updated:", results);
-  }, [results]);
-
+  // On mount, load existing logs
   useEffect(() => {
     fetchLogs();
   }, []);
 
+  // Trigger a new scan and use its results directly
   const runScan = async () => {
+    if (scanning) return;
     try {
       setScanning(true);
-      const res = await axios.get("/api/iam/scan");
-      if (res.data?.success) {
-        console.log("✅ Scan triggered successfully:", res.data);
-        await fetchLogs(); // Refresh table with new results
+      setError("");
+      setMessage("");
+      const { data } = await axios.get("/api/iam/scan");
+      console.log("🚀 /scan response:", data);
+
+      if (data.success && Array.isArray(data.results)) {
+        setResults(data.results);
+
+        if (data.results.length > 0) {
+          setMessage(`✅ New scan complete: ${data.results.length} role(s) analyzed.`);
+        } else {
+          setMessage("✅ IAM scan complete. No misconfigurations detected — great job!");
+        }
       } else {
-        setError("Scan failed or returned no results.");
+        console.warn("⚠️ /scan returned no usable results:", data);
+        setError("⚠️ Scan completed but no usable results returned.");
       }
     } catch (err) {
-      setError("Scan failed. Check server logs.");
       console.error("❌ Scan error:", err);
+      setError("❌ Scan failed. Check server logs.");
     } finally {
       setScanning(false);
     }
@@ -53,15 +63,15 @@ const IAMScanner = () => {
   return (
     <div className="iam-results mt-4">
       <h5>Latest IAM Scans:</h5>
-
       {error && <div className="alert alert-danger">{error}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
 
       <button
         className="btn btn-primary mb-3"
         onClick={runScan}
         disabled={scanning}
       >
-        {scanning ? "Scanning..." : "🔍 Run New Scan"}
+        {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
       {loading || scanning ? (
