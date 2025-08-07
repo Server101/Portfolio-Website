@@ -12,6 +12,7 @@ const IAMScanner = () => {
     try {
       setLoading(true);
       const res = await axios.get("/api/iam/logs");
+      console.log("✅ Raw response from backend:", res.data);
       console.log("✅ Loaded scan results:", res.data.results);
       setResults(res.data.results || []);
     } catch (err) {
@@ -22,6 +23,11 @@ const IAMScanner = () => {
     }
   };
 
+  // Log results whenever they update
+  useEffect(() => {
+    console.log("🔍 Results updated:", results);
+  }, [results]);
+
   useEffect(() => {
     fetchLogs();
   }, []);
@@ -31,12 +37,14 @@ const IAMScanner = () => {
       setScanning(true);
       const res = await axios.get("/api/iam/scan");
       if (res.data?.success) {
-        await fetchLogs(); // Refresh
+        console.log("✅ Scan triggered successfully:", res.data);
+        await fetchLogs(); // Refresh table with new results
       } else {
         setError("Scan failed or returned no results.");
       }
     } catch (err) {
       setError("Scan failed. Check server logs.");
+      console.error("❌ Scan error:", err);
     } finally {
       setScanning(false);
     }
