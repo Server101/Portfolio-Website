@@ -92,7 +92,7 @@ function Home() {
         className="parallax-window tm-section tm-section-home d-flex align-items-center"
         id="home"
         data-parallax="scroll"
-        data-image-src="/img/City_Image_RicardoTech.jpg"
+        data-image-src="/img/ricardoTech_0212.jpg"
         style={{ minHeight: '100vh' }}
       >
         <div className="container">
@@ -156,7 +156,7 @@ function Home() {
   </a>
 
   <a
-    href="mailto:hello@ricardotech.com"
+    href="mailto:rbrown@ricardotech.com"
     className="d-flex align-items-center"
   >
     <img
@@ -196,7 +196,7 @@ function Home() {
   className="parallax-window tm-section tm-section-services"
   id="services"
   data-parallax="scroll"
-  data-image-src="/img/Sucesss_img02_ RicardoTech.jpg"
+  data-image-src="/img/Cors_Image.jpg"
 >
   <div className="tm-page-content-width">
     <div className="row d-flex align-items-stretch flex-row-reverse">
@@ -262,7 +262,7 @@ function Home() {
   </div>
 
   <div className="media tm-media align-items-center">
-    <img src="/img/MIT_logo_1.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
+    <img src="/img/profed-2024.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
     <div className="media-body tm-media-body text-start">
       <h3 className="tm-small-font fw-bold mb-1"><strong>Massachusetts Institute of Technology(MIT)</strong></h3>
       <p className="tm-small-font fw-semibold mb-0">Professional Certificate in Cybersecurity</p>

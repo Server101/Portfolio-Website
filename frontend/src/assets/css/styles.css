@@ -47,3 +47,58 @@
 .social-links a:hover {
   color: #0077b5; /* Example hover color */
 }
+
+
+/* For the about me section*/
+
+.about-section h3 {
+  color: red !important;
+}
+
+.about-section,
+.about-section p,
+.about-section strong {
+  color: rgb(46, 46, 46) !important;
+}
+
+
+/* About-Me Section Typography Overrides */
+/* Make all <h3> in the services section bright red */
+.tm-section-services h3 {
+  color: rgb(112, 8, 8) !important;
+}
+
+/* Ensure any <strong> inside <h3> stays red */
+.tm-section-services h3 strong {
+  color: rgb(112, 8, 8) !important;
+}
+
+/* All paragraph text in the services section should be black */
+.tm-section-services p {
+  color: rgb(46, 46, 46) !important;
+}
+
+/* Any <strong> inside those paragraphs stays black */
+.tm-section-services p strong {
+  color: rgb(46, 46, 46) !important;
+}
+
+
+/* Contact Section Text & Placeholder Overrides */
+.tm-section-contact p {
+  color: rgb(46, 46, 46) !important;
+}
+
+.tm-section-contact .form-control {
+  color: black !important; /* input & textarea text */
+}
+
+.tm-section-contact .form-control::placeholder {
+  color: rgb(102, 102, 102) !important; /* placeholder text */
+}
+
+
+/* About-Me Media Paragraphs */
+.w-100.px-3.tm-translucent-white-bg p {
+  color: black !important;
+}
