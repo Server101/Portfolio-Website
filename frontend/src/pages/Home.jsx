@@ -103,7 +103,7 @@ function Home() {
   
 </div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
-                <h2 className="tm-green-text tm-section-title">Hello, I'm Ricardo!</h2>
+                <h2 className="tm-green-text tm-section-title">Hello, I'm j!</h2>
 
                 {/* Begining of the image fade effect */}
             <div className="fade-in-image-container">
@@ -229,7 +229,7 @@ function Home() {
       {/* LEFT COLUMN: Video + Education Logos */}
       <div className="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
 
-        {/* Video Section */}
+        {/* Video Section 
         <video
           width="100%"
           height="auto"
@@ -243,7 +243,7 @@ function Home() {
         >
           <source src="/videos/services-preview.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
+        </video>*/}
 
 <div className="w-100 px-3 tm-translucent-white-bg p-3 rounded">
   <div className="media tm-media mb-3 align-items-center">
@@ -464,23 +464,25 @@ function Home() {
 
 
 {/* Contact ME */}
-<section
-  className="parallax-window tm-section tm-section-contact"
-  id="contact"
-  data-parallax="scroll"
-  data-image-src="/img/Sucesss_img01RicardoTech.jpg"
->
-  <div className="tm-page-content-width">
-    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
-      <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
-      <p style={{ color: "black" }}>
-        Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.
-      </p>
-
-      {/* Drop-in React form (replaces your old form tag) */}
-     
-    </div>
-  </div>
+<section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/Sucesss_img01RicardoTech.jpg">
+   <div className="tm-page-content-width">
+          <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
+            <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
+            <p>Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.</p>
+            <form action="index.html" method="post" className="tm-contact-form">
+              <div className="form-group">
+                <input type="text" id="contact_name" name="contact_name" className="form-control" placeholder="Name" required />
+              </div>
+              <div className="form-group">
+                <input type="email" id="contact_email" name="contact_email" className="form-control" placeholder="Email" required />
+              </div>
+              <div className="form-group">
+                <textarea id="contact_message" name="contact_message" className="form-control" rows="5" placeholder="Message" required />
+              </div>
+              <button type="submit" className="tm-btn">Submit</button>
+            </form>
+          </div>
+        </div>
 
   <div className="tm-copyright-div text-center">
     <p className="tm-copyright-text">
