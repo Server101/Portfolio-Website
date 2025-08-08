@@ -103,7 +103,7 @@ function Home() {
   
 </div>
               <div className="tm-textbox tm-white-bg p-4 rounded shadow">
-                <h2 className="tm-green-text tm-section-title">Hello, I'm j!</h2>
+                <h2 className="tm-green-text tm-section-title">Hello, I'm Ricardo!</h2>
 
                 {/* Begining of the image fade effect */}
             <div className="fade-in-image-container">
@@ -169,12 +169,14 @@ function Home() {
     />
   </a>
 
-  <a
+  {/*<a
     href="/resume.pdf"
     target="_blank"
     rel="noopener noreferrer"
     className="d-flex align-items-center"
   >
+
+       Filter Out the Resume 
     <img
       src="/img/resume-io-logo-png.png"
       alt="Resume"
@@ -182,7 +184,7 @@ function Home() {
       height="32"
       style={{ objectFit: 'contain' }}
     />
-  </a>
+  </a>*/}
 </div>
               </div>
             </div>
@@ -251,16 +253,32 @@ function Home() {
     <div className="media-body tm-media-body text-start">
       <h3 className="tm-small-font fw-bold mb-1"><strong>St. Thomas University(STU)</strong></h3>
       <p className="tm-small-font fw-semibold mb-0">Master of Science in CyberSecurity and Data Analytics</p>
+      <p className="tm-small-font fw-semibold mb-0">2025-2026</p>
     </div>
   </div>
+
+
+ 
+
+  <div className="media tm-media align-items-center">
+    <img src="/img/profed-2024.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
+    <div className="media-body tm-media-body text-start">
+      <h3 className="tm-small-font fw-bold mb-1"><strong>Massachusetts Institute of Technology(MIT)</strong></h3>
+      <p className="tm-small-font fw-semibold mb-0">Professional Certificate in Cybersecurity</p>
+      <p className="tm-small-font fw-semibold mb-0">2025</p>
+    </div>
+  </div>*
 
   <div className="media tm-media mb-3 align-items-center">
     <img src="/img/Thomas_Edison_State_University_seal.png" alt="TESU Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
     <div className="media-body tm-media-body text-start">
       <h3 className="tm-small-font fw-bold mb-1"><strong>Thomas Edison State University(TESU)</strong></h3>
       <p className="tm-small-font fw-semibold mb-0">Bachelor of Science in Computer Science</p>
+      <p className="tm-small-font fw-semibold mb-0">2017-2021</p>
     </div>
   </div>
+
+  {/* Filter Out
 
   <div className="media tm-media align-items-center">
     <img src="/img/profed-2024.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
@@ -268,7 +286,7 @@ function Home() {
       <h3 className="tm-small-font fw-bold mb-1"><strong>Massachusetts Institute of Technology(MIT)</strong></h3>
       <p className="tm-small-font fw-semibold mb-0">Professional Certificate in Cybersecurity</p>
     </div>
-  </div>
+  </div>*/}
 </div>
 
 
