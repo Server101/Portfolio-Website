@@ -6,7 +6,7 @@ import '../assets/css/PortraitFade.css';
 import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
 import IAMScanner from "../components/IAMScanner";
-import ContactForm from "../components/ContactForm"
+
 
 
 
@@ -478,7 +478,7 @@ function Home() {
       </p>
 
       {/* Drop-in React form (replaces your old form tag) */}
-      <ContactForm />
+     
     </div>
   </div>
 
