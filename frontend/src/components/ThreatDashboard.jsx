@@ -15,23 +15,34 @@ function ThreatDashboard() {
     fetchLogs();
   }, []);
 
-  // Accept IP or URL
   const validateUrlOrIp = (input) => {
     const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
     const ipPattern = /^\d{1,3}(\.\d{1,3}){3}$/;
     return urlPattern.test(input) || ipPattern.test(input);
   };
 
+  const normalizeList = (data) => {
+    // backend might return array OR { success, results }
+    const list = Array.isArray(data) ? data : (data?.results || []);
+    // flags may be stored as JSON string in DB
+    return list.map((r) => ({
+      ...r,
+      flags: Array.isArray(r.flags)
+        ? r.flags
+        : (() => { try { return JSON.parse(r.flags || '[]'); } catch { return []; } })(),
+    }));
+  };
+
   const fetchLogs = async (level = '') => {
     setLogsLoading(true);
     setError('');
     try {
-      const res = await axios.get(`http://3.142.144.88:3001/api/threat/logs${level ? `?threatLevel=${level}` : ''}`);
-      setLogs(res.data);
-const filtered = level
-  ? res.data.filter((log) => log.threat_level === level)
-  : res.data;
-setFilteredLogs(filtered);
+      // ✅ SAME-ORIGIN through Nginx
+      const res = await axios.get(`/api/threat${level ? `?threatLevel=${level}` : ''}`);
+      const list = normalizeList(res.data);
+      setLogs(list);
+      const filtered = level ? list.filter((log) => log.threat_level === level) : list;
+      setFilteredLogs(filtered);
       setCurrentPage(1);
     } catch (err) {
       console.error(err);
@@ -47,11 +58,11 @@ setFilteredLogs(filtered);
       setError('Please enter a valid website URL or IP address.');
       return;
     }
-
     setLoading(true);
     try {
-      await axios.post('http://3.142.144.88:3001/api/threat/analyze', { websiteUrl: url });
-      await fetchLogs(); // refresh logs
+      // ✅ SAME-ORIGIN through Nginx
+      await axios.post('/api/threat/analyze', { websiteUrl: url });
+      await fetchLogs();
       setUrl('');
     } catch (err) {
       console.error(err);
@@ -68,7 +79,6 @@ setFilteredLogs(filtered);
     <div>
       <h4>Security Dashboard</h4>
 
-      {/* Input */}
       <div className="text-center mb-3">
         <input
           type="text"
@@ -83,16 +93,10 @@ setFilteredLogs(filtered);
         </button>
       </div>
 
-      {/* Filter */}
       <div className="mb-3" style={{ maxWidth: '200px' }}>
         <select
           className="form-select custom-dropdown"
-          style={{
-            backgroundColor: 'white',
-            color: 'black',
-            border: '1px solid black',
-            cursor: 'pointer',
-          }}
+          style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', cursor: 'pointer' }}
           onChange={(e) => fetchLogs(e.target.value)}
         >
           <option value="">All Threat Levels</option>
@@ -102,10 +106,8 @@ setFilteredLogs(filtered);
         </select>
       </div>
 
-      {/* Error */}
       {error && <p className="text-danger text-center">{error}</p>}
 
-      {/* Logs */}
       {logsLoading ? (
         <div className="text-center mt-3">
           <div className="spinner-border text-primary" role="status">
@@ -126,7 +128,6 @@ setFilteredLogs(filtered);
               </tr>
             </thead>
             <tbody>
-              
               {currentLogs.map((log, idx) => (
                 <tr key={idx}>
                   <td>{log.website_url}</td>
@@ -145,14 +146,13 @@ setFilteredLogs(filtered);
                   </td>
                   <td>{log.description}</td>
                   <td>{log.score}</td>
-                  <td>{Array.isArray(log.flags) ? log.flags.join(', ') : log.flags}</td>
+                  <td>{Array.isArray(log.flags) ? log.flags.join(', ') : ''}</td>
                   <td>{new Date(log.detected_at).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="d-flex justify-content-center mt-3">
             <button
               className="btn btn-outline-dark me-2"
