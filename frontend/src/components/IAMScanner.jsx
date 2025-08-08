@@ -2,7 +2,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_BASE = process.env.REACT_APP_API_URL || "";
+// 🚫 Do NOT hardcode your API base in production behind Nginx.
+// If you need it for local dev, set REACT_APP_API_URL exactly (e.g. http://localhost:3001)
+const API_BASE = (process.env.REACT_APP_API_URL || "").replace(/\/+$/, "");
+
+const apiGet = (path) => axios.get(`${API_BASE}${path}`);
+
+// Normalize various backend shapes into an array
+const normalizeResults = (data) => {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  if (Array.isArray(data?.logs)) return data.logs;
+  return [];
+};
 
 const IAMScanner = () => {
   const [results, setResults] = useState([]);
@@ -16,8 +28,11 @@ const IAMScanner = () => {
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/api/iam/logs`);
-      setResults(res.data.results || []);
+      setError("");
+      const res = await apiGet("/api/iam/logs");
+      console.log("IAM /logs ->", res.data);
+      const list = normalizeResults(res.data);
+      setResults(list);
       setCurrentPage(0);
     } catch (err) {
       console.error("Failed to fetch logs:", err);
@@ -34,18 +49,26 @@ const IAMScanner = () => {
       setScanning(true);
       setError("");
       setMessage("");
-      const { data } = await axios.get(`${API_BASE}/api/iam/scan`);
-      if (data.success && Array.isArray(data.results)) {
-        setResults(data.results);
-        setCurrentPage(0);
-        setMessage(
-          data.results.length > 0
-            ? `✅ New scan complete: ${data.results.length} role(s) analyzed.`
-            : "✅ IAM scan complete. No misconfigurations detected — great job!"
-        );
-      } else {
+
+      const { data } = await apiGet("/api/iam/scan");
+      console.log("IAM /scan ->", data);
+
+      const list = normalizeResults(data);
+
+      // Treat “success: false” as failure only if we also have no list
+      if (data?.success === false && list.length === 0) {
         setError("⚠️ Scan completed but no usable results returned.");
+        return;
       }
+
+      setResults(list);
+      setCurrentPage(0);
+
+      setMessage(
+        list.length > 0
+          ? `✅ New scan complete: ${list.length} role(s) analyzed.`
+          : "✅ IAM scan complete. No misconfigurations detected — great job!"
+      );
     } catch (err) {
       console.error("Scan error:", err);
       setError("❌ Scan failed. Check server logs.");
@@ -78,7 +101,7 @@ const IAMScanner = () => {
         {scanning ? "🔄 Scanning AWS IAM..." : "🔍 Run New Scan"}
       </button>
 
-          {loading || scanning ? (
+      {loading || scanning ? (
         <p>Loading IAM scan results...</p>
       ) : total === 0 ? (
         <p className="text-muted">No scan results available yet. Try running a scan.</p>
@@ -87,7 +110,7 @@ const IAMScanner = () => {
           <div className="d-flex align-items-center mb-2">
             <button
               className="btn btn-sm btn-outline-secondary me-2"
-              style={{ backgroundColor: "#fff" ,color: "#000"}}
+              style={{ backgroundColor: "#fff", color: "#000" }}
               onClick={prevPage}
               disabled={currentPage === 0}
             >
@@ -96,7 +119,7 @@ const IAMScanner = () => {
             <span>Result {currentPage + 1} of {total}</span>
             <button
               className="btn btn-sm btn-outline-secondary ms-2"
-              style={{ backgroundColor: "#fff"  ,color: "#000"}}
+              style={{ backgroundColor: "#fff", color: "#000" }}
               onClick={nextPage}
               disabled={currentPage === total - 1}
             >
