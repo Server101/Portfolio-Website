@@ -57,8 +57,9 @@
 
 /* For the about me section*/
 
+/*These are the word in bold*/
 .about-section h3 {
-  color: rgb(14, 10, 66) !important;
+  color: rgb(49, 49, 49) !important;
 }
 
 .about-section,
@@ -163,20 +164,6 @@
 
 
 /* Full‑Stack Portfolio polish */
-.status-chip {
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.35rem .6rem; border-radius:999px; background:#f8fafc;
-  border:1px solid rgba(0,0,0,.06); font-weight:600;
-}
-.kpi-tile {
-  border:1px solid rgba(0,0,0,.06);
-  border-radius:12px; background:#fff; padding:1rem;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
-}
-.kpi-label { font-size:.8rem; color:#6b7280; margin-bottom:.25rem; }
-.kpi-value { font-size:1.05rem; font-weight:600; }
-.progress { border-radius:10px; overflow:hidden; height:10px; }
-
 .status-chip {
   display:inline-flex; align-items:center; gap:.5rem;
   padding:.35rem .6rem; border-radius:999px; background:#f8fafc;

@@ -32,6 +32,13 @@ function Home() {
 const [health, setHealth] = React.useState(null);
 const [healthErr, setHealthErr] = React.useState("");
 
+// keep a 1s ticker so durations advance smoothly between 10s polls
+const [, forceTick] = React.useState(0);
+React.useEffect(() => {
+  const id = setInterval(() => forceTick(v => (v + 1) % 1_000_000), 1000);
+  return () => clearInterval(id);
+}, []);
+
 React.useEffect(() => {
   let alive = true;
   async function fetchHealth() {
@@ -39,7 +46,12 @@ React.useEffect(() => {
       const res = await fetch("/api/health", { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      if (alive) { setHealth(json); setHealthErr(""); }
+      if (alive) {
+        // stamp fetch time so we can drift the counters locally
+        json._fetchedAt = Date.now();
+        setHealth(json);
+        setHealthErr("");
+      }
     } catch (e) {
       if (alive) setHealthErr("Health check unavailable");
     }
@@ -59,6 +71,8 @@ const fmtDuration = (seconds) => {
   const m = Math.floor((s % 3600) / 60);
   return `${d}d ${h}h ${m}m`;
 };
+const liveSeconds = (baseSeconds, fetchedAt) =>
+  (Number(baseSeconds || 0) + Math.max(0, Math.floor((Date.now() - (fetchedAt || Date.now())) / 1000)));
 // End of code block
 
 
@@ -387,11 +401,8 @@ const fmtDuration = (seconds) => {
     <div className="d-flex flex-wrap align-items-center justify-content-between mb-2">
       <h4 className="tm-blue-text m-0">Full-Stack Portfolio</h4>
       <span className="status-chip">
-        {/* status from backend if present; neutral if PM2 missing */}
         {(() => {
-          const pm2AllOnline = health?.pm2?.available
-            ? health.pm2.apps?.every(a => a.status === "online")
-            : true;
+          const pm2AllOnline = health?.pm2?.available ? health.pm2.apps?.every(a => a.status === "online") : true;
           const computed = healthErr ? "down" : pm2AllOnline ? "healthy" : "degraded";
           const status = health?.status || computed;
           return <DigitalLights status={status} label={false} />;
@@ -405,7 +416,7 @@ const fmtDuration = (seconds) => {
     <div className="card shadow-sm border-0">
       <div className="card-body">
         <div className="row g-3">
-          {/* KPI tiles */}
+          {/* KPI: Instance */}
           <div className="col-12 col-md-4">
             <div className="kpi-tile">
               <div className="kpi-label">Instance</div>
@@ -415,22 +426,46 @@ const fmtDuration = (seconds) => {
                   {health?.ec2?.instanceId ? `(${health.ec2.instanceId})` : ""}
                 </span>
               </div>
-            </div>
-          </div>
-
-          <div className="col-12 col-md-4">
-            <div className="kpi-tile">
-              <div className="kpi-label">Process Runtime</div>
-              <div className="kpi-value">
-                Node {health?.runtime?.node || "—"} • {fmtDuration(health?.runtime?.upSeconds)}
+              <div className="mt-2">
+                <DigitalLights
+                  status={(health?.status) || (healthErr ? "down" : "healthy")}
+                  label={true}
+                />
               </div>
             </div>
           </div>
 
+          {/* KPI: Process Runtime */}
+          <div className="col-12 col-md-4">
+            <div className="kpi-tile">
+              <div className="kpi-label">Process Runtime</div>
+              <div className="kpi-value">
+                Node {health?.runtime?.node || "—"} • {fmtDuration(
+                  liveSeconds(health?.runtime?.upSeconds, health?._fetchedAt)
+                )}
+              </div>
+              <div className="mt-2">
+                <DigitalLights
+                  status={healthErr ? "down" : "healthy"}
+                  label={true}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* KPI: Instance Uptime */}
           <div className="col-12 col-md-4">
             <div className="kpi-tile">
               <div className="kpi-label">Instance Uptime</div>
-              <div className="kpi-value">{fmtDuration(health?.system?.upSeconds)}</div>
+              <div className="kpi-value">
+                {fmtDuration(liveSeconds(health?.system?.upSeconds, health?._fetchedAt))}
+              </div>
+              <div className="mt-2">
+                <DigitalLights
+                  status={healthErr ? "down" : "healthy"}
+                  label={true}
+                />
+              </div>
             </div>
           </div>
 
@@ -452,7 +487,7 @@ const fmtDuration = (seconds) => {
             </div>
           </div>
 
-          {/* PM2 table (only if available) */}
+          {/* PM2 table (if available) */}
           {health?.pm2?.available && (
             <div className="col-12">
               <div className="table-responsive">
@@ -489,9 +524,27 @@ const fmtDuration = (seconds) => {
       </div>
     </div>
 
-    {/* Description & Tech Stack unchanged... */}
+    {/* Restored Description & Tech Stack */}
+    <div className="mt-4">
+      <h5>Description:</h5>
+      <p>
+        This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio.
+        It confirms server uptime, instance type, and availability for external monitoring.
+      </p>
+    </div>
+    <div className="mt-3">
+      <h6>Tech Stack:</h6>
+      <span className="badge bg-info me-2">React</span>
+      <span className="badge bg-info me-2">Node.js</span>
+      <span className="badge bg-info me-2">Express</span>
+      <span className="badge bg-info me-2">AWS EC2</span>
+      <span className="badge bg-info me-2">Nginx</span>
+      <span className="badge bg-info me-2">PM2</span>
+    </div>
   </div>
 )}
+
+
 
         {/* Threat Monitoring */}
         {activeTab === "threat" && (
@@ -608,9 +661,9 @@ const fmtDuration = (seconds) => {
           { id: "iam", slug: "Server101/bitcoin" },
           { id: "threat", slug: "Server101/Analytical-Web-App" },
           { id: "portfolio", slug: "Server101/go-ethereum" },
-           { id: "am", slug: "Server101/Ricardo-Studio" },
-          { id: "treat", slug: "Server101/textbookstore-ui" },
-          { id: "prtfolio", slug: "Server101/portfolio-website" },
+           { id: "iam2", slug: "Server101/Ricardo-Studio" },
+          { id: "threat2", slug: "Server101/textbookstore-ui" },
+          { id: "portfolio2", slug: "Server101/portfolio-website" },
         ]}
       />
     </div>
