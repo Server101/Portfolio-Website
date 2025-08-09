@@ -108,36 +108,22 @@
 
 /* css for the software section*/
 
-/* Center & widen the software block (but not too wide) */
+/* Make Software section as wide as Live Projects */
+#software .tm-page-content-width {
+  max-width: 1140px;   /* same cap as Live Projects */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Remove the width cap (or just delete this block) */
 .software-wrap {
-  max-width: 1200px;   /* tweak between 1100–1280 if you prefer */
+  max-width: none;  /* was 1200px */
 }
 
-/* Increase horizontal spacing between cards (Bootstrap gutter override) */
-.repo-row {
-  --bs-gutter-x: 2rem; /* wider horizontal gap */
+/* If you're not using .repo-row anymore, you can remove it.
+   The grid gaps are defined inside SoftwareGrid now. */
+.repo-row { /* safe to delete */
+  --bs-gutter-x: 2rem;
   --bs-gutter-y: 1.25rem;
-}
-
-.repo-card {
-  background: #fff;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.repo-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-.repo-link {
-  text-decoration: none;
-}
-.repo-link:hover {
-  text-decoration: underline;
-}
-
-/* force one-line text with ellipsis */
-.one-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
