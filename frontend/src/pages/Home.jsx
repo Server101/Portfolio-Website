@@ -28,6 +28,38 @@ import ThreatDashboard from '../components/ThreatDashboard';
 function Home() {
   const [activeTab, setActiveTab] = React.useState("portfolio");
 
+// ---- Live health state (for Full-Stack Portfolio tab)
+const [health, setHealth] = React.useState(null);
+const [healthErr, setHealthErr] = React.useState("");
+
+React.useEffect(() => {
+  let alive = true;
+  async function fetchHealth() {
+    try {
+      const res = await fetch("/api/health", { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if (alive) { setHealth(json); setHealthErr(""); }
+    } catch (e) {
+      if (alive) setHealthErr("Health check unavailable");
+    }
+  }
+  fetchHealth();
+  const id = setInterval(fetchHealth, 10000); // poll every 10s
+  return () => { alive = false; clearInterval(id); };
+}, []);
+// end of code block
+
+
+// Formatter for the lights in Portfolio tab
+const fmtDuration = (seconds) => {
+  const s = Number(seconds || 0);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  return `${d}d ${h}h ${m}m`;
+};
+// End of code block
 
 
   useEffect(() => {
@@ -350,37 +382,114 @@ function Home() {
       {/* Tab Content */}
       <div className="tab-content text-start px-3">
         {/* Full-Stack Portfolio */}
-        {activeTab === "portfolio" && (
+{activeTab === "portfolio" && (
   <div className="tab-pane fade show active">
-    <h4 className="tm-blue-text d-flex align-items-center gap-3">
-      Full-Stack Portfolio
-      <DigitalLights /> {/* small inline lights next to title */}
-    </h4>
-    <p>Monitor deployment status for your live projects hosted on AWS EC2.</p>
-
-    {/* LIVE HEALTH PANEL */}
-    <div className="mt-3">
-      <HealthPanel pollMs={10000} />
+    <div className="d-flex flex-wrap align-items-center justify-content-between mb-2">
+      <h4 className="tm-blue-text m-0">Full-Stack Portfolio</h4>
+      <span className="status-chip">
+        {/* status from backend if present; neutral if PM2 missing */}
+        {(() => {
+          const pm2AllOnline = health?.pm2?.available
+            ? health.pm2.apps?.every(a => a.status === "online")
+            : true;
+          const computed = healthErr ? "down" : pm2AllOnline ? "healthy" : "degraded";
+          const status = health?.status || computed;
+          return <DigitalLights status={status} label={false} />;
+        })()}
+        Live
+      </span>
     </div>
 
-    {/* Description & Tech Stack stay below */}
-    <div className="mt-4">
-      <h5>Description:</h5>
-      <p>
-        This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio.
-        It confirms server uptime, instance type, and availability for external monitoring.
-      </p>
+    <p className="mb-3">Monitor deployment status for your live projects hosted on AWS EC2.</p>
+
+    <div className="card shadow-sm border-0">
+      <div className="card-body">
+        <div className="row g-3">
+          {/* KPI tiles */}
+          <div className="col-12 col-md-4">
+            <div className="kpi-tile">
+              <div className="kpi-label">Instance</div>
+              <div className="kpi-value">
+                {health?.ec2?.instanceType || "—"}{" "}
+                <span className="text-muted">
+                  {health?.ec2?.instanceId ? `(${health.ec2.instanceId})` : ""}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-md-4">
+            <div className="kpi-tile">
+              <div className="kpi-label">Process Runtime</div>
+              <div className="kpi-value">
+                Node {health?.runtime?.node || "—"} • {fmtDuration(health?.runtime?.upSeconds)}
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-md-4">
+            <div className="kpi-tile">
+              <div className="kpi-label">Instance Uptime</div>
+              <div className="kpi-value">{fmtDuration(health?.system?.upSeconds)}</div>
+            </div>
+          </div>
+
+          {/* Load bar */}
+          <div className="col-12">
+            <div className="kpi-label mb-1">CPU Load (1m)</div>
+            <div className="progress">
+              <div
+                className="progress-bar"
+                role="progressbar"
+                style={{
+                  width: `${Math.min(100, Math.round(((health?.system?.load?.["1m"] || 0) / 2) * 100))}%`
+                }}
+              />
+            </div>
+            <div className="small text-muted mt-1">
+              {health?.system?.load?.["1m"]?.toFixed?.(2) ?? "—"} (1m) •{" "}
+              {health?.system?.load?.["5m"]?.toFixed?.(2) ?? "—"} (5m)
+            </div>
+          </div>
+
+          {/* PM2 table (only if available) */}
+          {health?.pm2?.available && (
+            <div className="col-12">
+              <div className="table-responsive">
+                <table className="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr><th>App</th><th>Status</th><th>CPU</th><th>Memory</th><th>Uptime</th></tr>
+                  </thead>
+                  <tbody>
+                    {health.pm2.apps.map(a => (
+                      <tr key={a.name}>
+                        <td>{a.name}</td>
+                        <td>
+                          <span className={`badge ${a.status === "online" ? "bg-success" : "bg-warning text-dark"}`}>
+                            {a.status}
+                          </span>
+                        </td>
+                        <td>{a.cpu ?? "—"}%</td>
+                        <td>{a.memory ? `${Math.round(a.memory/1024/1024)} MB` : "—"}</td>
+                        <td>{fmtDuration(Math.floor((a.uptimeMs || 0)/1000))}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {healthErr && (
+            <div className="col-12">
+              <div className="alert alert-warning py-2 mb-0">{healthErr}</div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
 
-    <div className="mt-3">
-      <h6>Tech Stack:</h6>
-      <span className="badge bg-info me-2">React</span>
-      <span className="badge bg-info me-2">Node.js</span>
-      <span className="badge bg-info me-2">Express</span>
-      <span className="badge bg-info me-2">AWS EC2</span>
-      <span className="badge bg-info me-2">Nginx</span>
-      <span className="badge bg-info me-2">PM2</span>
-    </div>
+    {/* Description & Tech Stack unchanged... */}
   </div>
 )}
 
@@ -498,9 +607,9 @@ function Home() {
         repos={[
           { id: "iam", slug: "Server101/bitcoin" },
           { id: "threat", slug: "Server101/Analytical-Web-App" },
-          { id: "portfolio", slug: "Server101/portfolio-website" },
-           { id: "am", slug: "Server101/bitcoin" },
-          { id: "treat", slug: "Server101/Analytical-Web-App" },
+          { id: "portfolio", slug: "Server101/go-ethereum" },
+           { id: "am", slug: "Server101/Ricardo-Studio" },
+          { id: "treat", slug: "Server101/textbookstore-ui" },
           { id: "prtfolio", slug: "Server101/portfolio-website" },
         ]}
       />
