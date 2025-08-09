@@ -491,15 +491,20 @@ function Home() {
   data-parallax="scroll"
   data-image-src="/img/bg-03.jpg"
 >
-  <div className="tm-page-content-width d-flex justify-content-center">
-    <div className="tm-translucent-white-bg tm-textbox tm-content-box p-4 rounded" style={{ width: "100%" }}>
+  <div className="tm-page-content-width tm-flex-col tm-gallery-content d-flex justify-content-center">
+    <div
+      className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height text-center p-4 rounded shadow"
+      style={{ maxWidth: '1140px', width: '100%' }}
+    >
       <h2 className="tm-section-title tm-blue-text mb-3 text-center">Software</h2>
       <SoftwareGrid
         repos={[
           { id: "iam", slug: "Server101/bitcoin" },
           { id: "threat", slug: "Server101/Analytical-Web-App" },
           { id: "portfolio", slug: "Server101/portfolio-website" },
-          // add more…
+           { id: "am", slug: "Server101/bitcoin" },
+          { id: "treat", slug: "Server101/Analytical-Web-App" },
+          { id: "prtfolio", slug: "Server101/portfolio-website" },
         ]}
       />
     </div>

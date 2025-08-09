@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 const API_BASE = "https://api.github.com";
 
-// Language → color map (includes SCSS)
 const LANG_COLORS = {
   JavaScript: "#f1e05a",
   TypeScript: "#3178c6",
@@ -24,7 +23,6 @@ const LANG_COLORS = {
   Swift: "#F05138",
 };
 
-// Tiny emoji “icons”
 const LANG_ICONS = {
   JavaScript: "⚡",
   TypeScript: "🧩",
@@ -46,44 +44,27 @@ const LANG_ICONS = {
 };
 
 function dotStyle(color) {
-  return {
-    display: "inline-block",
-    width: 10,
-    height: 10,
-    borderRadius: "50%",
-    background: color,
-    marginRight: 6,
-    verticalAlign: "middle",
-  };
+  return { display: "inline-block", width: 10, height: 10, borderRadius: "50%", background: color, marginRight: 6, verticalAlign: "middle" };
 }
 
 function oneLine(str = "") {
   const firstPeriod = str.indexOf(".");
   let s = firstPeriod > 0 ? str.slice(0, firstPeriod + 1) : str;
-  if (s.length > 120) s = s.slice(0, 117) + "…";
+  if (s.length > 180) s = s.slice(0, 177) + "…";
   return s.replace(/\s+/g, " ").trim();
 }
 
-export default function SoftwareGrid({
-  repos = [
-    // Example:
-    // { id: "iam", slug: "Server101/iam-misconfig-detector" },
-    // { id: "threat", slug: "Server101/threat-dashboard" },
-  ],
-}) {
+export default function SoftwareGrid({ repos = [] }) {
   const [items, setItems] = useState([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
-
-    async function load() {
+    (async () => {
       setLoading(true);
       setErr("");
-
       try {
-        // Fetch all repos, but don't fail the whole list if one breaks
         const results = await Promise.allSettled(
           repos.map(({ slug }) =>
             fetch(`${API_BASE}/repos/${slug}`).then((r) => {
@@ -92,15 +73,9 @@ export default function SoftwareGrid({
             })
           )
         );
-
         if (cancelled) return;
-
-        const ok = results
-          .filter((r) => r.status === "fulfilled" && r.value)
-          .map((r) => r.value);
-
-        // Map to UI shape
-        const mapped = ok.map((r) => ({
+        const ok = results.filter(r => r.status === "fulfilled" && r.value).map(r => r.value);
+        const mapped = ok.map(r => ({
           id: r.id,
           name: r.name,
           fullName: r.full_name,
@@ -111,25 +86,16 @@ export default function SoftwareGrid({
           forks: r.forks_count,
           updatedAt: r.updated_at,
         }));
-
         setItems(mapped);
-
-        // Only show an error if **all** failed
-        if (mapped.length === 0) {
-          setErr("No repositories to display right now.");
-        }
+        if (mapped.length === 0) setErr("No repositories to display right now.");
       } catch (e) {
-        console.error("GitHub fetch failed:", e);
+        console.error(e);
         if (!cancelled) setErr("No repositories to display right now.");
       } finally {
         if (!cancelled) setLoading(false);
       }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
+    })();
+    return () => { cancelled = true; };
   }, [repos]);
 
   if (loading) {
@@ -140,43 +106,58 @@ export default function SoftwareGrid({
       </div>
     );
   }
-
-  if (err && items.length === 0) {
-    return <div className="alert alert-warning">{err}</div>;
-  }
+  if (err && items.length === 0) return <div className="alert alert-warning">{err}</div>;
 
   return (
-    <div
-      className="software-wrap mx-auto px-2"
-      style={{ maxWidth: 1200 }} // centered + a bit wider
-    >
-      <div className="row gx-5 gy-4 justify-content-center">
+    // No inner box here — stretches to parent width
+    <div className="w-100">
+      <style>{`
+        .software-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.25rem;
+          align-items: stretch;
+        }
+        @media (max-width: 575.98px) {
+          .software-grid { grid-template-columns: 1fr; }
+        }
+        .repo-item { height: 100%; }
+        .repo-card {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          padding: 1rem;
+          border-radius: .5rem;
+          box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+          background: #fff;
+          text-align: left;
+        }
+        .repo-desc {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .repo-card .card-footer { margin-top: auto; }
+        .repo-link { text-decoration: none; }
+        .repo-link:hover { text-decoration: underline; }
+      `}</style>
+
+      <div className="software-grid">
         {items.map((repo) => {
           const color = LANG_COLORS[repo.language] || "#888";
           const icon = LANG_ICONS[repo.language] || "📦";
-
           return (
-            <div key={repo.id} className="col-12 col-md-6">
-              <div className="repo-card h-100 shadow-sm rounded p-3">
+            <div key={repo.id} className="repo-item">
+              <div className="repo-card">
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <a
-                    href={repo.htmlUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="fw-semibold repo-link"
-                    title={repo.fullName}
-                  >
+                  <a href={repo.htmlUrl} target="_blank" rel="noopener noreferrer" className="fw-semibold repo-link" title={repo.fullName}>
                     {repo.fullName}
                   </a>
-                  <span className="badge bg-secondary-subtle text-dark border">
-                    Software
-                  </span>
+                  <span className="badge bg-secondary-subtle text-dark border">Software</span>
                 </div>
 
-                {/* one-line description */}
-                {repo.description && (
-                  <div className="text-muted one-line mb-2">{repo.description}</div>
-                )}
+                {repo.description && <div className="text-muted repo-desc mb-2">{repo.description}</div>}
 
                 <div className="d-flex align-items-center flex-wrap gap-3 small">
                   <span className="d-inline-flex align-items-center" style={{ color }}>
@@ -186,18 +167,11 @@ export default function SoftwareGrid({
                   </span>
                   <span title="Stars">⭐ {repo.stars}</span>
                   <span title="Forks">🍴 {repo.forks}</span>
-                  <span className="text-muted">
-                    Updated {new Date(repo.updatedAt).toLocaleDateString()}
-                  </span>
+                  <span className="text-muted">Updated {new Date(repo.updatedAt).toLocaleDateString()}</span>
                 </div>
 
-                <div className="mt-3">
-                  <a
-                    className="btn btn-sm btn-outline-dark"
-                    href={repo.htmlUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                <div className="card-footer mt-3">
+                  <a className="btn btn-sm btn-outline-dark w-auto" href={repo.htmlUrl} target="_blank" rel="noopener noreferrer">
                     View Repo
                   </a>
                 </div>
@@ -206,12 +180,9 @@ export default function SoftwareGrid({
           );
         })}
 
-        {/* If some failed, gently notify but still show successes */}
         {err && items.length > 0 && (
-          <div className="col-12">
-            <div className="alert alert-secondary small mb-0">
-              Note: Some repositories couldn’t be loaded.
-            </div>
+          <div className="repo-item" style={{ gridColumn: "1 / -1" }}>
+            <div className="alert alert-secondary small mb-0">Note: Some repositories couldn’t be loaded.</div>
           </div>
         )}
       </div>
