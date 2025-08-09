@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 
 const API_BASE = "https://api.github.com";
-const GH_TOKEN = process.env.REACT_APP_GITHUB_TOKEN || null;
 
 // Language → color map (added SCSS + more)
 const LANG_COLORS = {
@@ -59,16 +58,13 @@ function dotStyle(color) {
 }
 
 function oneLine(str = "") {
-  // Take first sentence; fallback to max 120 chars
   const firstPeriod = str.indexOf(".");
   let s = firstPeriod > 0 ? str.slice(0, firstPeriod + 1) : str;
   if (s.length > 120) s = s.slice(0, 117) + "…";
   return s.replace(/\s+/g, " ").trim();
 }
 
-export default function SoftwareGrid({
-  repos = [],
-}) {
+export default function SoftwareGrid({ repos = [] }) {
   const [items, setItems] = useState([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
@@ -80,9 +76,8 @@ export default function SoftwareGrid({
       setErr("");
 
       try {
-        const headers = GH_TOKEN ? { Authorization: `token ${GH_TOKEN}` } : {};
         const reqs = repos.map(({ slug }) =>
-          fetch(`${API_BASE}/repos/${slug}`, { headers }).then((r) => {
+          fetch(`${API_BASE}/repos/${slug}`).then((r) => {
             if (!r.ok) throw new Error(`GitHub ${r.status} for ${slug}`);
             return r.json();
           })
@@ -104,13 +99,15 @@ export default function SoftwareGrid({
         }
       } catch (e) {
         console.error("GitHub fetch failed:", e);
-        if (!cancelled) setErr("Couldn’t load repositories. Check token/CSP.");
+        if (!cancelled) setErr("Couldn’t load repositories. Check network/CSP.");
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [repos]);
 
   if (loading) {
@@ -150,7 +147,6 @@ export default function SoftwareGrid({
                   </span>
                 </div>
 
-                {/* one-line description */}
                 {repo.description && (
                   <div className="text-muted one-line mb-2">
                     {repo.description}
