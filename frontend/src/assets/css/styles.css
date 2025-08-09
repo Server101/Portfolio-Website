@@ -91,7 +91,7 @@
 
 /* Any <strong> inside those paragraphs stays black */
 .tm-section-services p strong {
-  color: rgb(8, 56, 112) !important;
+  color: rgb(49, 49, 49) !important;
 }
 
 

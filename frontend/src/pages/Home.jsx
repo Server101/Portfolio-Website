@@ -10,11 +10,11 @@ import IAMScanner from "../components/IAMScanner";
 import ContactForm from '../components/ContactForm';
 import SoftwareGrid from '../components/SoftwareGrid';
 
-import HealthPanel from "../components/HealthPanel";
+//import HealthPanel from "../components/HealthPanel";
 import DigitalLights from "../components/DigitalLights";
 
 
-import Navbar from '../components/Navbar';
+//import Navbar from '../components/Navbar';
 
 
 import WordSlider from '../components/WordSlider'; // Typing animation
@@ -32,17 +32,14 @@ function Home() {
 
   // Home.jsx (top of component)
 // 1) Stable repos for Software tab (prevents re-fetch flicker)
-const softwareRepos = React.useMemo(
-  () => [
-     { id: "iam", slug: "Server101/portfolio-website" },
-          { id: "threat", slug: "Server101/Analytical-Web-App" },
-          { id: "portfolio", slug: "Server101/go-ethereum" },
-           { id: "iam2", slug: "Server101/bitcoin" },
-          { id: "threat2", slug: "Server101/textbookstore-ui" },
-          { id: "portfolio2", slug: "Server101/Geek-Text" },
-  ],
-  []
-);
+const softwareRepos = React.useMemo(() => [
+  { id: "iam", slug: "Server101/portfolio-website" },
+  { id: "threat", slug: "Server101/Analytical-Web-App" },
+  { id: "portfolio", slug: "Server101/go-ethereum" },
+  { id: "iam2", slug: "Server101/bitcoin" },
+  { id: "threat2", slug: "Server101/textbookstore-ui" },
+  { id: "portfolio2", slug: "Server101/Geek-Text" },
+], []);
 
 // 2) Live health state
 const [health, setHealth] = React.useState(null);
