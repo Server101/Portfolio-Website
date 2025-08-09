@@ -102,3 +102,42 @@
 .w-100.px-3.tm-translucent-white-bg p {
   color: black !important;
 }
+
+
+
+
+/* css for the software section*/
+
+/* Center & widen the software block (but not too wide) */
+.software-wrap {
+  max-width: 1200px;   /* tweak between 1100–1280 if you prefer */
+}
+
+/* Increase horizontal spacing between cards (Bootstrap gutter override) */
+.repo-row {
+  --bs-gutter-x: 2rem; /* wider horizontal gap */
+  --bs-gutter-y: 1.25rem;
+}
+
+.repo-card {
+  background: #fff;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.repo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.repo-link {
+  text-decoration: none;
+}
+.repo-link:hover {
+  text-decoration: underline;
+}
+
+/* force one-line text with ellipsis */
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
