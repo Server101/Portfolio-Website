@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const API_BASE = "https://api.github.com";
 
-// Language → color map (added SCSS + more)
+// Language → color map (includes SCSS)
 const LANG_COLORS = {
   JavaScript: "#f1e05a",
   TypeScript: "#3178c6",
@@ -64,46 +64,68 @@ function oneLine(str = "") {
   return s.replace(/\s+/g, " ").trim();
 }
 
-export default function SoftwareGrid({ repos = [] }) {
+export default function SoftwareGrid({
+  repos = [
+    // Example:
+    // { id: "iam", slug: "Server101/iam-misconfig-detector" },
+    // { id: "threat", slug: "Server101/threat-dashboard" },
+  ],
+}) {
   const [items, setItems] = useState([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+
     async function load() {
       setLoading(true);
       setErr("");
 
       try {
-        const reqs = repos.map(({ slug }) =>
-          fetch(`${API_BASE}/repos/${slug}`).then((r) => {
-            if (!r.ok) throw new Error(`GitHub ${r.status} for ${slug}`);
-            return r.json();
-          })
+        // Fetch all repos, but don't fail the whole list if one breaks
+        const results = await Promise.allSettled(
+          repos.map(({ slug }) =>
+            fetch(`${API_BASE}/repos/${slug}`).then((r) => {
+              if (!r.ok) throw new Error(`GitHub ${r.status} for ${slug}`);
+              return r.json();
+            })
+          )
         );
-        const data = await Promise.all(reqs);
-        if (!cancelled) {
-          const mapped = data.map((r) => ({
-            id: r.id,
-            name: r.name,
-            fullName: r.full_name,
-            htmlUrl: r.html_url,
-            description: oneLine(r.description || ""),
-            language: r.language,
-            stars: r.stargazers_count,
-            forks: r.forks_count,
-            updatedAt: r.updated_at,
-          }));
-          setItems(mapped);
+
+        if (cancelled) return;
+
+        const ok = results
+          .filter((r) => r.status === "fulfilled" && r.value)
+          .map((r) => r.value);
+
+        // Map to UI shape
+        const mapped = ok.map((r) => ({
+          id: r.id,
+          name: r.name,
+          fullName: r.full_name,
+          htmlUrl: r.html_url,
+          description: oneLine(r.description || ""),
+          language: r.language,
+          stars: r.stargazers_count,
+          forks: r.forks_count,
+          updatedAt: r.updated_at,
+        }));
+
+        setItems(mapped);
+
+        // Only show an error if **all** failed
+        if (mapped.length === 0) {
+          setErr("No repositories to display right now.");
         }
       } catch (e) {
         console.error("GitHub fetch failed:", e);
-        if (!cancelled) setErr("Couldn’t load repositories. Check network/CSP.");
+        if (!cancelled) setErr("No repositories to display right now.");
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
+
     load();
     return () => {
       cancelled = true;
@@ -119,16 +141,20 @@ export default function SoftwareGrid({ repos = [] }) {
     );
   }
 
-  if (err) {
+  if (err && items.length === 0) {
     return <div className="alert alert-warning">{err}</div>;
   }
 
   return (
-    <div className="software-wrap mx-auto">
-      <div className="row g-4 repo-row justify-content-center">
+    <div
+      className="software-wrap mx-auto px-2"
+      style={{ maxWidth: 1200 }} // centered + a bit wider
+    >
+      <div className="row gx-5 gy-4 justify-content-center">
         {items.map((repo) => {
           const color = LANG_COLORS[repo.language] || "#888";
           const icon = LANG_ICONS[repo.language] || "📦";
+
           return (
             <div key={repo.id} className="col-12 col-md-6">
               <div className="repo-card h-100 shadow-sm rounded p-3">
@@ -147,10 +173,9 @@ export default function SoftwareGrid({ repos = [] }) {
                   </span>
                 </div>
 
+                {/* one-line description */}
                 {repo.description && (
-                  <div className="text-muted one-line mb-2">
-                    {repo.description}
-                  </div>
+                  <div className="text-muted one-line mb-2">{repo.description}</div>
                 )}
 
                 <div className="d-flex align-items-center flex-wrap gap-3 small">
@@ -180,6 +205,15 @@ export default function SoftwareGrid({ repos = [] }) {
             </div>
           );
         })}
+
+        {/* If some failed, gently notify but still show successes */}
+        {err && items.length > 0 && (
+          <div className="col-12">
+            <div className="alert alert-secondary small mb-0">
+              Note: Some repositories couldn’t be loaded.
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
