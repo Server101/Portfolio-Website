@@ -1,146 +1,189 @@
+// src/components/SoftwareGrid.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
-// Accepts either "owner/repo" or full URL "https://github.com/owner/repo"
-function parseSlug(input) {
-  if (!input) return [null, null];
-  if (input.includes("github.com")) {
-    try {
-      const url = new URL(input);
-      const [owner, repo] = url.pathname.replace(/^\/+/, "").split("/");
-      return [owner, repo];
-    } catch {
-      return [null, null];
-    }
-  }
-  const parts = input.split("/");
-  if (parts.length === 2) return [parts[0], parts[1]];
-  return [null, null];
+const API_BASE = "https://api.github.com";
+const GH_TOKEN = process.env.REACT_APP_GITHUB_TOKEN || null;
+
+// Language → color map (added SCSS + more)
+const LANG_COLORS = {
+  JavaScript: "#f1e05a",
+  TypeScript: "#3178c6",
+  Python: "#3572A5",
+  CSS: "#563d7c",
+  SCSS: "#c6538c",
+  HTML: "#e34c26",
+  Shell: "#89e051",
+  Java: "#b07219",
+  Go: "#00ADD8",
+  PHP: "#4F5D95",
+  Ruby: "#701516",
+  C: "#555555",
+  "C++": "#f34b7d",
+  "C#": "#178600",
+  Rust: "#dea584",
+  Kotlin: "#A97BFF",
+  Swift: "#F05138",
+};
+
+// Tiny emoji “icons”
+const LANG_ICONS = {
+  JavaScript: "⚡",
+  TypeScript: "🧩",
+  Python: "🐍",
+  CSS: "🎨",
+  SCSS: "💗",
+  HTML: "🔶",
+  Shell: "🖥️",
+  Java: "☕",
+  Go: "🌀",
+  PHP: "🐘",
+  Ruby: "💎",
+  C: "🔷",
+  "C++": "🔺",
+  "C#": "♯",
+  Rust: "🦀",
+  Kotlin: "🧪",
+  Swift: "🕊️",
+};
+
+function dotStyle(color) {
+  return {
+    display: "inline-block",
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    background: color,
+    marginRight: 6,
+    verticalAlign: "middle",
+  };
+}
+
+function oneLine(str = "") {
+  // Take first sentence; fallback to max 120 chars
+  const firstPeriod = str.indexOf(".");
+  let s = firstPeriod > 0 ? str.slice(0, firstPeriod + 1) : str;
+  if (s.length > 120) s = s.slice(0, 117) + "…";
+  return s.replace(/\s+/g, " ").trim();
 }
 
 export default function SoftwareGrid({
-  repos = [] // ← we now expect you to pass repos from Home.jsx
+  repos = [],
 }) {
-  const token = process.env.REACT_APP_GITHUB_TOKEN || "";
-  const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState([]);
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true;
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      setErr("");
 
-    (async () => {
       try {
-        setLoading(true);
-        setErr("");
-
-        if (!repos.length) {
-          setErr("No repositories configured. Pass a repos prop to <SoftwareGrid />.");
-          setLoading(false);
-          return;
+        const headers = GH_TOKEN ? { Authorization: `token ${GH_TOKEN}` } : {};
+        const reqs = repos.map(({ slug }) =>
+          fetch(`${API_BASE}/repos/${slug}`, { headers }).then((r) => {
+            if (!r.ok) throw new Error(`GitHub ${r.status} for ${slug}`);
+            return r.json();
+          })
+        );
+        const data = await Promise.all(reqs);
+        if (!cancelled) {
+          const mapped = data.map((r) => ({
+            id: r.id,
+            name: r.name,
+            fullName: r.full_name,
+            htmlUrl: r.html_url,
+            description: oneLine(r.description || ""),
+            language: r.language,
+            stars: r.stargazers_count,
+            forks: r.forks_count,
+            updatedAt: r.updated_at,
+          }));
+          setItems(mapped);
         }
-
-        const headers = token
-          ? { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
-          : { Accept: "application/vnd.github+json" };
-
-        const requests = repos.map(async (r) => {
-          const [owner, repo] = parseSlug(r.slug);
-          if (!owner || !repo) {
-            throw new Error(`Invalid repo slug: "${r.slug}". Use "Owner/Repo".`);
-          }
-          const { data } = await axios.get(
-            `https://api.github.com/repos/${owner}/${repo}`,
-            { headers }
-          );
-
-          return {
-            id: r.id || `${owner}/${repo}`,
-            name: data.full_name,
-            repoName: data.name,
-            html_url: data.html_url,
-            desc: data.description || "—",
-            language: data.language || "Unknown",
-            stars: data.stargazers_count ?? 0,
-            forks: data.forks_count ?? 0,
-            avatar: data.owner?.avatar_url || "",
-            badge: r.badge || "Project",
-          };
-        });
-
-        const out = await Promise.all(requests);
-        if (mounted) setCards(out);
       } catch (e) {
-        console.error("GitHub fetch failed:", e?.response?.data || e.message || e);
-        const status = e?.response?.status;
-        if (status === 403) {
-          setErr("GitHub rate limit hit. Add REACT_APP_GITHUB_TOKEN and rebuild.");
-        } else if (status === 404) {
-          setErr("One or more repositories were not found. Check owner/repo names.");
-        } else {
-          setErr("Couldn’t load GitHub repositories (network or config issue).");
-        }
+        console.error("GitHub fetch failed:", e);
+        if (!cancelled) setErr("Couldn’t load repositories. Check token/CSP.");
       } finally {
-        if (mounted) setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    })();
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [repos]);
 
-    return () => { mounted = false; };
-  }, [repos, token]);
+  if (loading) {
+    return (
+      <div className="text-center my-3">
+        <div className="spinner-border" role="status" />
+        <div className="mt-2 small text-muted">Fetching repositories…</div>
+      </div>
+    );
+  }
+
+  if (err) {
+    return <div className="alert alert-warning">{err}</div>;
+  }
 
   return (
-    <div className="tm-page-content-width">
-      <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height p-4 rounded shadow">
-        <h2 className="tm-section-title tm-blue-text mb-3">Software</h2>
-        <p className="mb-4">Open-source projects and tools.</p>
+    <div className="software-wrap mx-auto">
+      <div className="row g-4 repo-row justify-content-center">
+        {items.map((repo) => {
+          const color = LANG_COLORS[repo.language] || "#888";
+          const icon = LANG_ICONS[repo.language] || "📦";
+          return (
+            <div key={repo.id} className="col-12 col-md-6">
+              <div className="repo-card h-100 shadow-sm rounded p-3">
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <a
+                    href={repo.htmlUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="fw-semibold repo-link"
+                    title={repo.fullName}
+                  >
+                    {repo.fullName}
+                  </a>
+                  <span className="badge bg-secondary-subtle text-dark border">
+                    Software
+                  </span>
+                </div>
 
-        {err && <div className="alert alert-warning">{err}</div>}
-        {loading && <p>Loading repositories…</p>}
-
-        {!loading && !err && (
-          <div className="row">
-            {cards.map((c) => (
-              <div className="col-md-6 mb-3" key={c.id}>
-                <a
-                  href={c.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-decoration-none"
-                >
-                  <div className="card h-100">
-                    <div className="card-body">
-                      <div className="d-flex align-items-center mb-2">
-                        {c.avatar ? (
-                          <img
-                            src={c.avatar}
-                            alt="owner"
-                            width="28"
-                            height="28"
-                            className="rounded me-2"
-                          />
-                        ) : null}
-                        <div className="flex-grow-1">
-                          <div className="d-flex align-items-center gap-2">
-                            <strong className="me-2">{c.name}</strong>
-                            <span className="badge bg-secondary">{c.badge}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <p className="mb-3" style={{ color: "black" }}>{c.desc}</p>
-
-                      <div className="d-flex align-items-center gap-3 small text-muted">
-                        <span>● {c.language}</span>
-                        <span>★ {c.stars}</span>
-                        <span>⑂ {c.forks}</span>
-                      </div>
-                    </div>
+                {/* one-line description */}
+                {repo.description && (
+                  <div className="text-muted one-line mb-2">
+                    {repo.description}
                   </div>
-                </a>
+                )}
+
+                <div className="d-flex align-items-center flex-wrap gap-3 small">
+                  <span className="d-inline-flex align-items-center" style={{ color }}>
+                    <span style={dotStyle(color)} />
+                    <span className="me-1">{icon}</span>
+                    <span>{repo.language || "Unknown"}</span>
+                  </span>
+                  <span title="Stars">⭐ {repo.stars}</span>
+                  <span title="Forks">🍴 {repo.forks}</span>
+                  <span className="text-muted">
+                    Updated {new Date(repo.updatedAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                <div className="mt-3">
+                  <a
+                    className="btn btn-sm btn-outline-dark"
+                    href={repo.htmlUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Repo
+                  </a>
+                </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
