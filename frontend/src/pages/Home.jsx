@@ -10,7 +10,8 @@ import IAMScanner from "../components/IAMScanner";
 import ContactForm from '../components/ContactForm';
 import SoftwareGrid from '../components/SoftwareGrid';
 
-
+import HealthPanel from "../components/HealthPanel";
+import DigitalLights from "../components/DigitalLights";
 
 
 import Navbar from '../components/Navbar';
@@ -121,7 +122,9 @@ function Home() {
                 <WordSlider />
                 <p>
                   
-                I’m passionate about coding and use it to tackle real-world challenges in cybersecurity and risk management. With a strong foundation in computing logic, I build secure, full-stack systems and manage access controls(AIM) across platforms. I thrive in agile environments and have hands-on experience integrating AI into security workflows to enhance threat detection and decision-making.
+               I’m passionate about software engineering, cybersecurity, and artificial intelligence, applying them to solve real-world challenges and manage risk. 
+               With a strong foundation in data structures and computing logic, I build secure, full-stack systems and manage access controls (IAM) across platforms. 
+               I thrive in agile environments and have hands-on experience integrating AI into security workflows to enhance threat detection and support informed decision-making.
 
 {' '}
             
@@ -207,29 +210,29 @@ function Home() {
   <div className="tm-page-content-width">
     <div className="row d-flex align-items-stretch flex-row-reverse">
 
-      {/* RIGHT COLUMN: About Me Text */}
-      <div className="col-md-6 tm-translucent-white-bg tm-content-box tm-textbox-full-height">
-        <div className="tm-content-box-inner">
-          <h2 className="tm-section-title tm-blue-text">About Me</h2>
+    {/* RIGHT COLUMN: About Me Text */}
+<div className="col-md-6 tm-content-box tm-textbox-full-height about-me-lighter">
+  <div className="tm-content-box-inner">
+    <h2 className="tm-section-title tm-blue-text">About Me</h2>
 
-          <p className="about-intro">
-            <strong>My journey into tech began with a deep interest for problem-solving and computing logic</strong>,
-            and over the years, that passion has evolved into a mission: using code and security strategy to solve real-world challenges.
-          </p>
+    <p className="about-intro">
+      <strong>My journey into tech began with a deep interest for problem-solving and computing logic</strong>,
+      and over the years, that passion has evolved into a mission: using software and security strategy to solve real-world challenges.
+    </p>
 
-          <p className="about-body">
-            At <strong>Dream Coders Academy</strong>, I’ve grown from a full-stack developer into a cybersecurity specialist—
-            building secure applications with <strong>Java</strong> and <strong>React</strong>, deploying on <strong>AWS</strong>,
-            and managing <strong>IAM</strong> and <strong>RBAC</strong> systems. I work in <strong>agile environments</strong>,
-            collaborate across teams, and apply <strong>AI tools</strong> to improve threat detection and access control.
-          </p>
+    <p className="about-body">
+      At <strong>Dream Coders Academy</strong>, I’ve mastered my skills as a full-stack developer and advanced into a cybersecurity designing &
+      building secure applications with <strong>Java</strong>, <strong>React</strong>, deploying on <strong>AWS</strong>,
+      and managing <strong>IAM</strong> and <strong>RBAC</strong> systems. I work in <strong>agile environments</strong>,
+      collaborate across teams, and apply <strong>AI tools</strong> to improve threat detection and access control.
+    </p>
 
-          <p className="about-goal">
-            I’m currently preparing for the <strong>CISSP certification</strong> as I work toward becoming a
-            security leader who bridges <strong>engineering, risk, and governance</strong>.
-          </p>
-        </div>
-      </div>
+    <p className="about-goal">
+      I’m currently preparing for the <strong>CISSP certification</strong> as I work toward becoming a
+      security leader who bridges <strong>engineering, risk, governance, Ai and machine learning</strong>.
+    </p>
+  </div>
+</div>
 
       {/* LEFT COLUMN: Video + Education Logos */}
       <div className="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
@@ -261,16 +264,6 @@ function Home() {
   </div>
 
 
- 
-
-  <div className="media tm-media align-items-center">
-    <img src="/img/profed-2024.png" alt="MIT Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
-    <div className="media-body tm-media-body text-start">
-      <h3 className="tm-small-font fw-bold mb-1"><strong>Massachusetts Institute of Technology(MIT)</strong></h3>
-      <p className="tm-small-font fw-semibold mb-0">Professional Certificate in Cybersecurity</p>
-      <p className="tm-small-font fw-semibold mb-0">2025</p>
-    </div>
-  </div>*
 
   <div className="media tm-media mb-3 align-items-center">
     <img src="/img/Thomas_Edison_State_University_seal.png" alt="TESU Logo" style={{ width: '96px', height: '96px' }} className="me-3 rounded" />
@@ -358,34 +351,38 @@ function Home() {
       <div className="tab-content text-start px-3">
         {/* Full-Stack Portfolio */}
         {activeTab === "portfolio" && (
-          <div className="tab-pane fade show active">
-            <h4 className="tm-blue-text">Full-Stack Portfolio</h4>
-            <p>Monitor deployment status for your live projects hosted on AWS EC2.</p>
+  <div className="tab-pane fade show active">
+    <h4 className="tm-blue-text d-flex align-items-center gap-3">
+      Full-Stack Portfolio
+      <DigitalLights /> {/* small inline lights next to title */}
+    </h4>
+    <p>Monitor deployment status for your live projects hosted on AWS EC2.</p>
 
-            <div className="mt-4">
-              <h5>Description:</h5>
-              <p>
-                This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio. It confirms server uptime, instance type, and availability for external monitoring.
-              </p>
-            </div>
+    {/* LIVE HEALTH PANEL */}
+    <div className="mt-3">
+      <HealthPanel pollMs={10000} />
+    </div>
 
-            <div className="mt-3">
-              <h6>Tech Stack:</h6>
-              <span className="badge bg-info me-2">React</span>
-              <span className="badge bg-info me-2">Node.js</span>
-              <span className="badge bg-info me-2">Express</span>
-              <span className="badge bg-info me-2">AWS EC2</span>
-              <span className="badge bg-info me-2">Nginx</span>
-              <span className="badge bg-info me-2">PM2</span>
-            </div>
+    {/* Description & Tech Stack stay below */}
+    <div className="mt-4">
+      <h5>Description:</h5>
+      <p>
+        This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio.
+        It confirms server uptime, instance type, and availability for external monitoring.
+      </p>
+    </div>
 
-            <div className="mt-4">
-              <p>Instance: <strong>t2.micro</strong></p>
-              <p>Status: <span className="text-success">Healthy ✅</span></p>
-              <p>Uptime: 3 days 12 hours</p>
-            </div>
-          </div>
-        )}
+    <div className="mt-3">
+      <h6>Tech Stack:</h6>
+      <span className="badge bg-info me-2">React</span>
+      <span className="badge bg-info me-2">Node.js</span>
+      <span className="badge bg-info me-2">Express</span>
+      <span className="badge bg-info me-2">AWS EC2</span>
+      <span className="badge bg-info me-2">Nginx</span>
+      <span className="badge bg-info me-2">PM2</span>
+    </div>
+  </div>
+)}
 
         {/* Threat Monitoring */}
         {activeTab === "threat" && (
@@ -523,7 +520,8 @@ function Home() {
         data-parallax="scroll"
         data-image-src="/img/Sucesss_img01RicardoTech.jpg"
       >
-        <div className="tm-page-content-width">
+        <div className="tm-page-content-width"
+        style={{ paddingTop: "2rem" }}>
           <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
             <ContactForm />
           </div>

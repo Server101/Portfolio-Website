@@ -49,16 +49,22 @@
 }
 
 
+
+
+
+
+
+
 /* For the about me section*/
 
 .about-section h3 {
-  color: red !important;
+  color: rgb(14, 10, 66) !important;
 }
 
 .about-section,
 .about-section p,
 .about-section strong {
-  color: rgb(46, 46, 46) !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 
@@ -68,6 +74,10 @@
   color: rgb(112, 8, 8) !important;
 }
 
+
+/* Target only the About Me heading */
+
+
 /* Ensure any <strong> inside <h3> stays red */
 .tm-section-services h3 strong {
   color: rgb(112, 8, 8) !important;
@@ -75,13 +85,19 @@
 
 /* All paragraph text in the services section should be black */
 .tm-section-services p {
-  color: rgb(46, 46, 46) !important;
+  color: rgb(8, 4, 10) !important;
 }
 
 /* Any <strong> inside those paragraphs stays black */
 .tm-section-services p strong {
-  color: rgb(46, 46, 46) !important;
+  color: rgb(8, 56, 112) !important;
 }
+
+
+
+
+
+
 
 
 /* Contact Section Text & Placeholder Overrides */
@@ -94,7 +110,7 @@
 }
 
 .tm-section-contact .form-control::placeholder {
-  color: rgb(102, 102, 102) !important; /* placeholder text */
+  color: rgb(22, 22, 22) !important; /* placeholder text */
 }
 
 
@@ -126,4 +142,18 @@
 .repo-row { /* safe to delete */
   --bs-gutter-x: 2rem;
   --bs-gutter-y: 1.25rem;
+}
+
+
+
+
+
+
+
+
+/* Slightly more transparent About Me background */
+.about-me-lighter {
+  background-color: rgba(255, 255, 255, 0.65); /* was ~0.85, now 0.65 */
+  border-radius: 8px; /* optional: smooth corners */
+  padding: 1.5rem;
 }
