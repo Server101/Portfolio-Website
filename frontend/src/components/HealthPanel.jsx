@@ -30,11 +30,19 @@ export default function HealthPanel({ pollMs = 10000 }) {
     return () => { alive = false; clearInterval(id); };
   }, [pollMs]);
 
-  const status = err
-    ? "down"
-    : (data?.pm2?.available && data.pm2.apps?.every(a => a.status === "online"))
-      ? "healthy"
-      : (data ? "degraded" : "down");
+
+ // If the backend says "healthy|degraded|down", prefer that.
+ // Missing PM2 should NOT mark you degraded.
+ const pm2AllOnline = data?.pm2?.available
+   ? data.pm2.apps?.every(a => a.status === "online")
+   : true; // neutral if PM2 unavailable
+
+ const computed =
+   err ? "down"
+   : pm2AllOnline ? "healthy"
+   : "degraded";
+
+ const status = data?.status || computed;
 
   return (
     <div className="card shadow-sm border-0">
@@ -51,10 +59,16 @@ export default function HealthPanel({ pollMs = 10000 }) {
           </div>
 
           <div className="col-12 col-md-4">
-            <div className="small text-muted">Runtime</div>
-            <div className="fw-semibold">
-              Node {data?.runtime?.node || "—"} • Up {fmtDuration(data?.runtime?.upSeconds)}
-            </div>
+
+ <div className="small text-muted">Runtime</div>
+ <div className="fw-semibold">
+   Node {data?.runtime?.node || "—"} • Proc Up {fmtDuration(data?.runtime?.upSeconds)}
+ </div>
+
+ <div className="small text-muted mt-2">Instance Uptime</div>
+ <div className="fw-semibold">
+   Up {fmtDuration(data?.system?.upSeconds)} {/* this is the system/instance uptime */}
+ </div>
           </div>
 
           <div className="col-12 col-md-4 d-flex align-items-center">
