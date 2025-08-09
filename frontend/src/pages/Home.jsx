@@ -496,7 +496,7 @@ function Home() {
       <h2 className="tm-section-title tm-blue-text mb-3 text-center">Software</h2>
       <SoftwareGrid
         repos={[
-          { id: "iam", slug: "Server101/bitcoinr" },
+          { id: "iam", slug: "Server101/bitcoin" },
           { id: "threat", slug: "Server101/Analytical-Web-App" },
           { id: "portfolio", slug: "Server101/portfolio-website" },
           // add more…
