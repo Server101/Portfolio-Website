@@ -8,7 +8,7 @@ import '../assets/css/styles.css';
 import IAMScanner from "../components/IAMScanner";
 
 import ContactForm from '../components/ContactForm';
-
+import SoftwareGrid from '../components/SoftwareGrid';
 
 
 
@@ -482,6 +482,24 @@ function Home() {
           </div>
         </div>
       </section>*/}
+
+
+{/* Software Section (above Contact) */}
+<section
+  className="parallax-window tm-section"
+  id="software"
+  data-parallax="scroll"
+  data-image-src="/img/bg-03.jpg"
+>
+  <SoftwareGrid
+    repos={[
+      { id: "iam",       slug: "Server101/bitcoin", badge: "Framework" },
+      { id: "threat",    slug: "Server101/Analytical-Web-App",         badge: "Framework" },
+      { id: "portfolio", slug: "Server101/portfolio-website",      badge: "App" },
+      // add more here…
+    ]}
+  />
+</section>
 
 
 {/* Contact Section (uses working backend /api/contact) */}
