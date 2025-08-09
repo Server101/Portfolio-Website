@@ -28,17 +28,34 @@ import ThreatDashboard from '../components/ThreatDashboard';
 function Home() {
   const [activeTab, setActiveTab] = React.useState("portfolio");
 
-// ---- Live health state (for Full-Stack Portfolio tab)
+
+
+  // Home.jsx (top of component)
+// 1) Stable repos for Software tab (prevents re-fetch flicker)
+const softwareRepos = React.useMemo(
+  () => [
+    { id: "iam", slug: "Server101/bitcoin" },
+    { id: "threat", slug: "Server101/Analytical-Web-App" },
+    { id: "portfolio", slug: "Server101/portfolio-website" },
+    { id: "am", slug: "Server101/bitcoin" },
+    { id: "treat", slug: "Server101/Analytical-Web-App" },
+    { id: "prtfolio", slug: "Server101/portfolio-website" },
+  ],
+  []
+);
+
+// 2) Live health state
 const [health, setHealth] = React.useState(null);
 const [healthErr, setHealthErr] = React.useState("");
 
-// keep a 1s ticker so durations advance smoothly between 10s polls
-const [, forceTick] = React.useState(0);
+// 3) 1s ticker so durations advance smoothly between 10s polls
+const [now, setNow] = React.useState(Date.now());
 React.useEffect(() => {
-  const id = setInterval(() => forceTick(v => (v + 1) % 1_000_000), 1000);
+  const id = setInterval(() => setNow(Date.now()), 1000);
   return () => clearInterval(id);
 }, []);
 
+// 4) Poll /api/health every 10s and stamp fetch time
 React.useEffect(() => {
   let alive = true;
   async function fetchHealth() {
@@ -47,8 +64,7 @@ React.useEffect(() => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (alive) {
-        // stamp fetch time so we can drift the counters locally
-        json._fetchedAt = Date.now();
+        json._fetchedAt = Date.now();   // <— keep INSIDE this effect
         setHealth(json);
         setHealthErr("");
       }
@@ -57,22 +73,24 @@ React.useEffect(() => {
     }
   }
   fetchHealth();
-  const id = setInterval(fetchHealth, 10000); // poll every 10s
+  const id = setInterval(fetchHealth, 10000);
   return () => { alive = false; clearInterval(id); };
 }, []);
-// end of code block
 
+// 5) Helpers
+const liveSeconds = (baseSeconds, fetchedAt, nowMs) =>
+  Number(baseSeconds || 0) +
+  Math.max(0, Math.floor(((nowMs || Date.now()) - (fetchedAt || Date.now())) / 1000));
 
-// Formatter for the lights in Portfolio tab
-const fmtDuration = (seconds) => {
-  const s = Number(seconds || 0);
+const fmtDuration = (seconds, withSeconds = false) => {
+  const s = Math.max(0, Number(seconds || 0));
   const d = Math.floor(s / 86400);
   const h = Math.floor((s % 86400) / 3600);
   const m = Math.floor((s % 3600) / 60);
-  return `${d}d ${h}h ${m}m`;
+  const sec = Math.floor(s % 60);
+  return withSeconds ? `${d}d ${h}h ${m}m ${sec}s` : `${d}d ${h}h ${m}m`;
 };
-const liveSeconds = (baseSeconds, fetchedAt) =>
-  (Number(baseSeconds || 0) + Math.max(0, Math.floor((Date.now() - (fetchedAt || Date.now())) / 1000)));
+
 // End of code block
 
 
@@ -393,6 +411,10 @@ const liveSeconds = (baseSeconds, fetchedAt) =>
 
       </ul>
 
+
+
+
+
       {/* Tab Content */}
       <div className="tab-content text-start px-3">
         {/* Full-Stack Portfolio */}
@@ -410,6 +432,15 @@ const liveSeconds = (baseSeconds, fetchedAt) =>
         Live
       </span>
     </div>
+{/* Process Runtime */}
+<div className="kpi-value">
+  Node {health?.runtime?.node || "—"} • {fmtDuration(liveSeconds(health?.runtime?.upSeconds, health?._fetchedAt, now), true)}
+</div>
+
+{/* Instance Uptime */}
+<div className="kpi-value">
+  {fmtDuration(liveSeconds(health?.system?.upSeconds, health?._fetchedAt, now), true)}
+</div>
 
     <p className="mb-3">Monitor deployment status for your live projects hosted on AWS EC2.</p>
 
@@ -644,6 +675,8 @@ const liveSeconds = (baseSeconds, fetchedAt) =>
 
 
 {/* Software Section (above Contact) */}
+
+
 <section
   className="parallax-window tm-section"
   id="software"
@@ -658,12 +691,12 @@ const liveSeconds = (baseSeconds, fetchedAt) =>
       <h2 className="tm-section-title tm-blue-text mb-3 text-center">Software</h2>
       <SoftwareGrid
         repos={[
-          { id: "iam", slug: "Server101/bitcoin" },
+          { id: "iam", slug: "Server101/portfolio-website" },
           { id: "threat", slug: "Server101/Analytical-Web-App" },
           { id: "portfolio", slug: "Server101/go-ethereum" },
-           { id: "iam2", slug: "Server101/Ricardo-Studio" },
+           { id: "iam2", slug: "Server101/bitcoin" },
           { id: "threat2", slug: "Server101/textbookstore-ui" },
-          { id: "portfolio2", slug: "Server101/portfolio-website" },
+          { id: "portfolio2", slug: "Server101/Geek-Text" },
         ]}
       />
     </div>

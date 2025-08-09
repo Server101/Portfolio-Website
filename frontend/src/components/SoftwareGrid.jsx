@@ -43,6 +43,11 @@ const LANG_ICONS = {
   Swift: "🕊️",
 };
 
+
+
+
+
+
 function dotStyle(color) {
   return { display: "inline-block", width: 10, height: 10, borderRadius: "50%", background: color, marginRight: 6, verticalAlign: "middle" };
 }
@@ -97,6 +102,58 @@ export default function SoftwareGrid({ repos = [] }) {
     })();
     return () => { cancelled = true; };
   }, [repos]);
+
+// SoftwareGrid.jsx
+// Begining of code block to stop repos from
+const slugsKey = React.useMemo(
+  () => repos.map(r => r.slug).sort().join("|"),
+  [repos]
+);
+
+useEffect(() => {
+  let cancelled = false;
+  const controller = new AbortController();
+
+  (async () => {
+    setLoading(true);
+    setErr("");
+    try {
+      const results = await Promise.allSettled(
+        repos.map(({ slug }) =>
+          fetch(`https://api.github.com/repos/${slug}`, { signal: controller.signal })
+            .then(r => {
+              if (!r.ok) throw new Error(`GitHub ${r.status} for ${slug}`);
+              return r.json();
+            })
+        )
+      );
+      if (cancelled) return;
+      const ok = results.filter(r => r.status === "fulfilled").map(r => r.value);
+      const mapped = ok.map(r => ({
+        id: r.id,
+        name: r.name,
+        fullName: r.full_name,
+        htmlUrl: r.html_url,
+        description: oneLine(r.description || ""),
+        language: r.language,
+        stars: r.stargazers_count,
+        forks: r.forks_count,
+        updatedAt: r.updated_at,
+      }));
+      setItems(mapped);
+      if (mapped.length === 0) setErr("No repositories to display right now.");
+    } catch (e) {
+      if (!cancelled) setErr("No repositories to display right now.");
+    } finally {
+      if (!cancelled) setLoading(false);
+    }
+  })();
+
+  return () => { cancelled = true; controller.abort(); };
+}, [slugsKey, repos]);
+// End Of Code Block
+
+
 
   if (loading) {
     return (
