@@ -1,3 +1,9 @@
+// src/components/ContactForm.jsx
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const API_BASE = process.env.REACT_APP_API_URL || '';
+
 function ContactForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,14 +18,14 @@ function ContactForm() {
     setSubmitting(true);
 
     try {
-      const { data } = await axios.post('/api/contact', {
+      const { data } = await axios.post(`${API_BASE}/api/contact`, {
         contact_name: name,
         contact_email: email,
         contact_message: messageText,
       });
 
       if (data?.ok) {
-        setSubmitted(true); // show success view
+        setSubmitted(true);
         setName('');
         setEmail('');
         setMessageText('');
@@ -35,7 +41,6 @@ function ContactForm() {
   };
 
   if (submitted) {
-    // This shows after submit; on refresh the form will be back (state resets)
     return (
       <>
         <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
@@ -59,7 +64,7 @@ function ContactForm() {
             type="text"
             id="contact_name"
             name="contact_name"
-            className="form-control"
+            className="form-control contact-input"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -72,7 +77,7 @@ function ContactForm() {
             type="email"
             id="contact_email"
             name="contact_email"
-            className="form-control"
+            className="form-control contact-input"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -84,7 +89,7 @@ function ContactForm() {
           <textarea
             id="contact_message"
             name="contact_message"
-            className="form-control"
+            className="form-control contact-input"
             rows="5"
             placeholder="Message"
             value={messageText}
@@ -100,3 +105,5 @@ function ContactForm() {
     </>
   );
 }
+
+export default ContactForm;

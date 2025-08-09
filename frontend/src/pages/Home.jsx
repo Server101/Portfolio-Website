@@ -484,26 +484,25 @@ function Home() {
       </section>*/}
 
 
-{/* Contact ME */}
-/* Contact ME */
-<section
-  className="parallax-window tm-section tm-section-contact"
-  id="contact"
-  data-parallax="scroll"
-  data-image-src="/img/Sucesss_img01RicardoTech.jpg"
->
-  <div className="tm-page-content-width">
-    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
-      <ContactForm />
-    </div>
-  </div>
+{/* Contact Section (uses working backend /api/contact) */}
+      <section
+        className="parallax-window tm-section tm-section-contact"
+        id="contact"
+        data-parallax="scroll"
+        data-image-src="/img/Sucesss_img01RicardoTech.jpg"
+      >
+        <div className="tm-page-content-width">
+          <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
+            <ContactForm />
+          </div>
+        </div>
 
-  <div className="tm-copyright-div text-center">
-    <p className="tm-copyright-text">
-      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com
-    </p>
-  </div>
-</section>
+        <div className="tm-copyright-div text-center">
+          <p className="tm-copyright-text">
+            Copyright &copy; <span className="tm-current-year">2025</span> RicardoTech.com
+          </p>
+        </div>
+      </section>
    
 
 
