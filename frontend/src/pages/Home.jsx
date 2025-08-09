@@ -7,6 +7,9 @@ import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
 import IAMScanner from "../components/IAMScanner";
 
+import ContactForm from '../components/ContactForm';
+
+
 
 
 
@@ -482,29 +485,22 @@ function Home() {
 
 
 {/* Contact ME */}
-<section className="parallax-window tm-section tm-section-contact" id="contact" data-parallax="scroll" data-image-src="/img/Sucesss_img01RicardoTech.jpg">
-   <div className="tm-page-content-width">
-          <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
-            <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
-            <p>Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.</p>
-            <form action="index.html" method="post" className="tm-contact-form">
-              <div className="form-group">
-                <input type="text" id="contact_name" name="contact_name" className="form-control" placeholder="Name" required />
-              </div>
-              <div className="form-group">
-                <input type="email" id="contact_email" name="contact_email" className="form-control" placeholder="Email" required />
-              </div>
-              <div className="form-group">
-                <textarea id="contact_message" name="contact_message" className="form-control" rows="5" placeholder="Message" required />
-              </div>
-              <button type="submit" className="tm-btn">Submit</button>
-            </form>
-          </div>
-        </div>
+/* Contact ME */
+<section
+  className="parallax-window tm-section tm-section-contact"
+  id="contact"
+  data-parallax="scroll"
+  data-image-src="/img/Sucesss_img01RicardoTech.jpg"
+>
+  <div className="tm-page-content-width">
+    <div className="tm-translucent-white-bg tm-textbox tm-content-box tm-textbox-full-height">
+      <ContactForm />
+    </div>
+  </div>
 
   <div className="tm-copyright-div text-center">
     <p className="tm-copyright-text">
-      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com 
+      Copyright &copy; <span className="tm-current-year">2024</span> RicardoTech.com
     </p>
   </div>
 </section>
