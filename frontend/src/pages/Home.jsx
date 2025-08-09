@@ -34,12 +34,12 @@ function Home() {
 // 1) Stable repos for Software tab (prevents re-fetch flicker)
 const softwareRepos = React.useMemo(
   () => [
-    { id: "iam", slug: "Server101/bitcoin" },
-    { id: "threat", slug: "Server101/Analytical-Web-App" },
-    { id: "portfolio", slug: "Server101/portfolio-website" },
-    { id: "am", slug: "Server101/bitcoin" },
-    { id: "treat", slug: "Server101/Analytical-Web-App" },
-    { id: "prtfolio", slug: "Server101/portfolio-website" },
+     { id: "iam", slug: "Server101/portfolio-website" },
+          { id: "threat", slug: "Server101/Analytical-Web-App" },
+          { id: "portfolio", slug: "Server101/go-ethereum" },
+           { id: "iam2", slug: "Server101/bitcoin" },
+          { id: "threat2", slug: "Server101/textbookstore-ui" },
+          { id: "portfolio2", slug: "Server101/Geek-Text" },
   ],
   []
 );
@@ -432,15 +432,6 @@ const fmtDuration = (seconds, withSeconds = false) => {
         Live
       </span>
     </div>
-{/* Process Runtime */}
-<div className="kpi-value">
-  Node {health?.runtime?.node || "—"} • {fmtDuration(liveSeconds(health?.runtime?.upSeconds, health?._fetchedAt, now), true)}
-</div>
-
-{/* Instance Uptime */}
-<div className="kpi-value">
-  {fmtDuration(liveSeconds(health?.system?.upSeconds, health?._fetchedAt, now), true)}
-</div>
 
     <p className="mb-3">Monitor deployment status for your live projects hosted on AWS EC2.</p>
 
@@ -470,11 +461,11 @@ const fmtDuration = (seconds, withSeconds = false) => {
           <div className="col-12 col-md-4">
             <div className="kpi-tile">
               <div className="kpi-label">Process Runtime</div>
-              <div className="kpi-value">
-                Node {health?.runtime?.node || "—"} • {fmtDuration(
-                  liveSeconds(health?.runtime?.upSeconds, health?._fetchedAt)
-                )}
-              </div>
+              {/* Process Runtime */}
+<div className="kpi-value">
+  Node {health?.runtime?.node || "—"} • {fmtDuration(liveSeconds(health?.runtime?.upSeconds, health?._fetchedAt, now), true)}
+</div>
+              
               <div className="mt-2">
                 <DigitalLights
                   status={healthErr ? "down" : "healthy"}
@@ -488,9 +479,11 @@ const fmtDuration = (seconds, withSeconds = false) => {
           <div className="col-12 col-md-4">
             <div className="kpi-tile">
               <div className="kpi-label">Instance Uptime</div>
-              <div className="kpi-value">
-                {fmtDuration(liveSeconds(health?.system?.upSeconds, health?._fetchedAt))}
-              </div>
+              {/* Instance Uptime */}
+<div className="kpi-value">
+  {fmtDuration(liveSeconds(health?.system?.upSeconds, health?._fetchedAt, now), true)}
+</div>
+              
               <div className="mt-2">
                 <DigitalLights
                   status={healthErr ? "down" : "healthy"}
@@ -689,16 +682,9 @@ const fmtDuration = (seconds, withSeconds = false) => {
       style={{ maxWidth: '1140px', width: '100%' }}
     >
       <h2 className="tm-section-title tm-blue-text mb-3 text-center">Software</h2>
-      <SoftwareGrid
-        repos={[
-          { id: "iam", slug: "Server101/portfolio-website" },
-          { id: "threat", slug: "Server101/Analytical-Web-App" },
-          { id: "portfolio", slug: "Server101/go-ethereum" },
-           { id: "iam2", slug: "Server101/bitcoin" },
-          { id: "threat2", slug: "Server101/textbookstore-ui" },
-          { id: "portfolio2", slug: "Server101/Geek-Text" },
-        ]}
-      />
+
+      <SoftwareGrid repos={softwareRepos} />
+      
     </div>
   </div>
 </section>
