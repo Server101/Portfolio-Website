@@ -158,7 +158,7 @@ const fmtDuration = (seconds, withSeconds = false) => {
         className="parallax-window tm-section tm-section-home d-flex align-items-center"
         id="home"
         data-parallax="scroll"
-        data-image-src="/img/ricardoTech_0212.jpg"
+        data-image-src="/img/R_IMG-20250810-WA0003.jpg"
         style={{ minHeight: '100vh' }}
       >
         <div className="container">
