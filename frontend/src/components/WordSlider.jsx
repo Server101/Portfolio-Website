@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../assets/css/WordSlider.css';
 
 const WordSlider = () => {
-  const words = ['Full-Stack Engineer', 'Security Engineer', 'Cloud Architect', 'Data Analyst'];
+  const words = ['Software Engineer', 'Security Engineer', 'Cloud Architect', 'AI Engineer'];
   const [currentWord, setCurrentWord] = useState(0);
 
   useEffect(() => {
