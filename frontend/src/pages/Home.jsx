@@ -158,7 +158,7 @@ const fmtDuration = (seconds, withSeconds = false) => {
         className="parallax-window tm-section tm-section-home d-flex align-items-center"
         id="home"
         data-parallax="scroll"
-        data-image-src="/img/R_IMG-20250810-WA0003.jpg"
+        data-image-src="/img/ricardoTech_0212.jpg"
         style={{ minHeight: '100vh' }}
       >
         <div className="container">
@@ -173,7 +173,7 @@ const fmtDuration = (seconds, withSeconds = false) => {
                 {/* Begining of the image fade effect */}
             <div className="fade-in-image-container">
             <img
-      src="/img/IMG-20250810-WA0003.jpg"
+      src="/img/R_IMG-20250810-WA0003.jpg"
       alt="Portrait"
       className="fade-in-image"
       id="fadeImage"
