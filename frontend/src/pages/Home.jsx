@@ -173,7 +173,7 @@ const fmtDuration = (seconds, withSeconds = false) => {
                 {/* Begining of the image fade effect */}
             <div className="fade-in-image-container">
             <img
-      src="/img/me.jpg"
+      src="/img/IMG-20250810-WA0003.jpg"
       alt="Portrait"
       className="fade-in-image"
       id="fadeImage"
