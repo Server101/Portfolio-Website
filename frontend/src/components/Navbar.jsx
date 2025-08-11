@@ -29,6 +29,11 @@ export default function Navbar() {
               Projects
             </a>
           </li>
+  <li className="nav-item mx-2">
+            <a className="nav-link" href="#software">
+              Software
+            </a>
+          </li>
 
   
 
