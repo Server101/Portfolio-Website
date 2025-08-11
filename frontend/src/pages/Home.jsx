@@ -444,7 +444,7 @@ React.useEffect(() => {
       </span>
     </div>
 
-    <p className="mb-3">Monitor deployment status this site hosted on AWS EC2.</p>
+    <p className="mb-3">AWS EC2 Deployment Status.</p>
 
     <div className="card shadow-sm border-0">
       <div className="card-body">
@@ -563,8 +563,7 @@ React.useEffect(() => {
     <div className="mt-4">
       <h5>Description:</h5>
       <p>
-        This project showcases real-time status my current AWS EC2 instance portfolio.
-        It confirms server uptime, instance type, and availability for external monitoring.
+       This project displays the real-time health of my AWS EC2–hosted portfolio—confirming server uptime, instance type, and external availability for monitoring.
       </p>
     </div>
     <div className="mt-3">
