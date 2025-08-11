@@ -33,7 +33,7 @@ function Home() {
   // Home.jsx (top of component)
 // 1) Stable repos for Software tab (prevents re-fetch flicker)
 const softwareRepos = React.useMemo(() => [
-  { id: "iam", slug: "Server101/portfolio-website" },
+  { id: "iam", slug: "Server101/objaverse-xl" },
   { id: "threat", slug: "Server101/Analytical-Web-App" },
   { id: "portfolio", slug: "Server101/go-ethereum" },
   { id: "iam2", slug: "Server101/bitcoin" },
