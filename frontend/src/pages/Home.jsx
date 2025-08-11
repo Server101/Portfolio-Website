@@ -444,7 +444,7 @@ React.useEffect(() => {
       </span>
     </div>
 
-    <p className="mb-3">Monitor deployment status for your live projects hosted on AWS EC2.</p>
+    <p className="mb-3">Monitor deployment status this site hosted on AWS EC2.</p>
 
     <div className="card shadow-sm border-0">
       <div className="card-body">
@@ -563,7 +563,7 @@ React.useEffect(() => {
     <div className="mt-4">
       <h5>Description:</h5>
       <p>
-        This project showcases real-time status from an AWS EC2 instance hosting the developer’s portfolio.
+        This project showcases real-time status my current AWS EC2 instance portfolio.
         It confirms server uptime, instance type, and availability for external monitoring.
       </p>
     </div>
@@ -609,7 +609,7 @@ React.useEffect(() => {
 
       {activeTab === "iamScanner" && (
   <div className="tab-pane fade show active">
-    <h4 className="tm-blue-text">Gemini-Powered IAM Misconfiguration Detector</h4>
+    <h4 className="tm-blue-text">AI Gemini-Powered IAM Misconfiguration Detector</h4>
   
 
     {/* Project Description */}
@@ -632,7 +632,7 @@ React.useEffect(() => {
       <span className="badge bg-info me-2">Express</span>
       <span className="badge bg-info me-2">AWS SDK</span>
       <span className="badge bg-info me-2">Google Gemini API</span>
-      <span className="badge bg-info me-2">Optional: PostgreSQL, Docker, Nginx</span>
+      <span className="badge bg-info me-2">PostgreSQL, Docker, Nginx</span>
     </div>
   </div>
 )}
