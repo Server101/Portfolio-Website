@@ -180,3 +180,41 @@
 
 
 /* End of block */
+
+
+
+
+
+
+
+/* Background reveal layer: sits on top of the parallax bg, then fades away */
+.bg-veil {
+  position: absolute;
+  inset: 0;
+  background: #000;              /* change to #111 or rgba(0,0,0,.6) if you want a softer reveal */
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 800ms ease; /* background fades in first */
+  will-change: opacity;
+  z-index: 0;                     /* content sits above via z-index:1 in container */
+}
+.bg-veil.bg-veil--hide {
+  opacity: 0;
+}
+
+/* Hero card: no scale (no layout jump). It just fades and slides up slightly */
+.hero-card {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 600ms ease 350ms, transform 600ms ease 350ms; /* starts after bg */
+  will-change: opacity, transform;
+}
+.hero-card.hero-card--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* (Optional) Ensure the portrait fade starts only after card is visible */
+.bg-in .fade-in-image {
+  animation-delay: 500ms; /* if your image fade uses CSS animation */
+}

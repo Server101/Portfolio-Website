@@ -91,6 +91,17 @@ const fmtDuration = (seconds, withSeconds = false) => {
 // End of code block
 
 
+// For home bg fade in
+const [bgReady, setBgReady] = React.useState(false);
+
+React.useEffect(() => {
+  const img = new Image();
+  img.src = "/img/ricardoTech_0212.jpg";
+  img.onload = () => setBgReady(true);
+}, []);
+
+// End of block
+
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -154,31 +165,34 @@ const fmtDuration = (seconds, withSeconds = false) => {
 
       {/* Home Section */}
       
-      <section
-        className="parallax-window tm-section tm-section-home d-flex align-items-center"
-        id="home"
-        data-parallax="scroll"
-        data-image-src="/img/ricardoTech_0212.jpg"
-        style={{ minHeight: '100vh' }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center">
-              <div className="tm-site-title-wrap mb-4 d-flex justify-content-center align-items-center" style={{ minHeight: '150px' }}>
-  
-</div>
-              <div className="tm-textbox tm-white-bg p-4 rounded shadow">
-                <h2 className="tm-green-text tm-section-title">Hello, I'm Ricardo!</h2>
+    <section
+  className={`parallax-window tm-section tm-section-home d-flex align-items-center ${bgReady ? "bg-in" : ""}`}
+  id="home"
+  data-parallax="scroll"
+  data-image-src="/img/ricardoTech_0212.jpg"
+  style={{ minHeight: "100vh", position: "relative" }}
+>
+  {/* Fade veil to reveal the background smoothly */}
+  <div className={`bg-veil ${bgReady ? "bg-veil--hide" : ""}`} />
 
-                {/* Begining of the image fade effect */}
-            <div className="fade-in-image-container">
+  <div className="container" style={{ position: "relative", zIndex: 1 }}>
+    <div className="row justify-content-center">
+      <div className="col-lg-8 text-center">
+        <div className="tm-site-title-wrap mb-4 d-flex justify-content-center align-items-center" style={{ minHeight: "150px" }} />
+        
+        {/* White card: fades/settles in after bg is visible (no scale) */}
+        <div className={`tm-textbox tm-white-bg p-4 rounded shadow hero-card ${bgReady ? "hero-card--in" : ""}`}>
+          <h2 className="tm-green-text tm-section-title">Hello, I'm Ricardo!</h2>
+
+          {/* Your existing portrait fade — keep as is */}
+          <div className="fade-in-image-container">
             <img
-      src="/img/IMG-20250810-WA0005.jpg"
-      alt="Portrait"
-      className="fade-in-image"
-      id="fadeImage"
-    />
-  </div>
+              src="/img/IMG-20250810-WA0005.jpg"
+              alt="Portrait"
+              className="fade-in-image"
+              id="fadeImage"
+            />
+          </div>
 
                 <WordSlider />
                 <p>
