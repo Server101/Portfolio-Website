@@ -218,3 +218,142 @@
 .bg-in .fade-in-image {
   animation-delay: 500ms; /* if your image fade uses CSS animation */
 }
+
+
+
+/* Beginging of Mobile Optimization */
+
+/* ===== Home (Hero) mobile tuning ===== */
+
+/* Keep the white card readable and centered across breakpoints */
+.hero-card {
+  /* full width on small screens, capped on large screens */
+  max-width: clamp(320px, 92vw, 860px);
+  margin: 0 auto;            /* center the card */
+}
+
+/* Give the hero section breathing room so it never touches navbar/next section */
+.tm-section-home {
+  /* space under fixed-top navbar and comfortable bottom padding on desktop */
+  padding-top: clamp(56px, 7vh, 96px);
+}
+
+/* Portrait image: force a perfect circle */
+.fade-in-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.fade-in-image {
+  --portrait-size: clamp(140px, 28vw, 220px); /* one knob for all sizes */
+  width: var(--portrait-size);
+  height: var(--portrait-size);               /* match width -> square */
+  border-radius: 50%;                          /* circle */
+  object-fit: cover;                           /* crop without distortion */
+  display: block;                              /* avoid inline gaps */
+}
+
+/* Improve text readability on small screens */
+.tm-section-home .tm-section-title {
+  font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem);
+}
+.tm-section-home p {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+/* Social icons: keep touch targets comfy */
+.tm-section-home .social-links img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* --- Tablet & down --- */
+@media (max-width: 991.98px) {
+  .hero-card {
+    /* slightly tighter padding on small screens; keep your existing p-4 but allow a cap */
+    padding: clamp(16px, 4vw, 24px) !important;
+    margin-inline: 16px;     /* avoid edge-to-edge */
+  }
+
+  .tm-section-home {
+    padding-bottom: 80px;    /* extra bottom space so it doesn't merge with next section */
+  }
+
+  .tm-section-home .social-links img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* --- Phones --- */
+@media (max-width: 575.98px) {
+  .hero-card {
+    margin-inline: 12px;     /* a hair tighter on very small viewports */
+  }
+
+  .tm-section-home {
+    padding-bottom: 96px;    /* a bit more cushion on small phones */
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tab-content > div { animation: none; }
+}
+
+
+
+/* ===== About Me (Services) mobile tuning ===== */
+
+/* Top padding clears the fixed navbar; bottom padding mirrors Home */
+.tm-section-services {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px; /* desktop default */
+}
+
+/* Tablet & down */
+@media (max-width: 991.98px) {
+  .tm-section-services {
+    padding-bottom: 80px; /* prevent merge with next section */
+  }
+
+  /* Make the text card comfy on small screens */
+  .about-me-lighter .tm-content-box-inner {
+    padding: clamp(16px, 4vw, 24px);
+  }
+}
+
+/* Phones */
+@media (max-width: 575.98px) {
+  .tm-section-services {
+    padding-bottom: 96px; /* extra cushion on small phones */
+  }
+}
+
+/* Optional: improve readability and card look (keeps your existing theme) */
+.about-me-lighter .tm-content-box-inner {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+/* Media blocks (school logos) scale nicely on mobile */
+.tm-section-services .tm-media img {
+  width: clamp(64px, 18vw, 96px) !important;
+  height: clamp(64px, 18vw, 96px) !important;
+  object-fit: cover;
+}
+
+/* Responsive type for the About text */
+.tm-section-services .tm-section-title {
+  font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem);
+}
+.tm-section-services .about-intro,
+.tm-section-services .about-body,
+.tm-section-services .about-goal {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
+  line-height: 1.65;
+}

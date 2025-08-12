@@ -27,3 +27,98 @@
   color: white;
   font-weight: bold;
 }
+
+
+
+
+
+/* Navbar.css — mobile drawer + hamburger */
+
+/* Lock scroll when drawer is open */
+.body--locked { overflow: hidden; }
+
+/* Hamburger button (visible on < lg) */
+.nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+.nav-toggle .toggle-bar {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* Dim overlay behind the drawer */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease;
+  z-index: 1001;
+}
+.nav-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Slide-out drawer */
+.mobile-drawer {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: min(78vw, 320px);
+  background: #111; /* matches bg-dark feel */
+  color: #fff;
+  transform: translateX(-102%);
+  transition: transform .28s ease;
+  z-index: 1002;
+  box-shadow: 2px 0 18px rgba(0,0,0,.35);
+  will-change: transform;
+}
+
+/* Slight “hover nudge” on desktop pointers only */
+@media (hover:hover) and (pointer:fine) {
+  .mobile-drawer.open:hover { transform: translateX(4px); }
+}
+
+.mobile-drawer.open { transform: translateX(0); }
+
+.mobile-drawer .nav-link {
+  padding: 12px 0;
+  color: #f1f1f1;
+}
+.mobile-drawer .nav-link:hover,
+.mobile-drawer .nav-link:focus {
+  color: #96C700; /* your accent */
+  text-decoration: none;
+}
+
+@media (max-width: 991.98px) {
+  /* Hide inline desktop menu on mobile; show toggle */
+  .navbar .navbar-nav.desktop-nav { display: none !important; }
+  .navbar .nav-toggle { display: inline-flex !important; }
+}
+@media (min-width: 992px) {
+  /* Show inline desktop menu; hide toggle/drawer/overlay */
+  .navbar .navbar-nav.desktop-nav { display: flex !important; }
+  .navbar .nav-toggle { display: none !important; }
+  .nav-overlay { display: none !important; }
+  .mobile-drawer { display: none !important; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nav-overlay,
+  .mobile-drawer { transition: none; }
+}
+
+/*Enf of code*/
