@@ -7,16 +7,16 @@ import '../assets/css/CustomAnimations.css';
 import '../assets/css/styles.css';
 import IAMScanner from "../components/IAMScanner";
 
+
+import NavigationBar from "../components/NavigationBar";
+
+
+
+
 import ContactForm from '../components/ContactForm';
 import SoftwareGrid from '../components/SoftwareGrid';
-
 //import HealthPanel from "../components/HealthPanel";
 import DigitalLights from "../components/DigitalLights";
-
-
-//import Navbar from '../components/Navbar';
-
-
 import WordSlider from '../components/WordSlider'; // Typing animation
 import ThreatDashboard from '../components/ThreatDashboard';
 
@@ -102,6 +102,16 @@ React.useEffect(() => {
 
 // End of block
 
+// Reacte detection for mobile Browsing:
+React.useEffect(() => {
+  const mq = window.matchMedia('(max-width: 991.98px)');
+  const onChange = (e) => document.body.classList.toggle('is-mobile', e.matches);
+  onChange(mq);
+  mq.addEventListener('change', onChange);
+  return () => mq.removeEventListener('change', onChange);
+}, []);
+// End of code block
+
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -158,7 +168,7 @@ React.useEffect(() => {
 
   return (
     <div className="container-fluid" id="main">
-    
+    <NavigationBar />
    
 
 
