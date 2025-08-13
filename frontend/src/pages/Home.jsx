@@ -112,6 +112,16 @@ React.useEffect(() => {
 }, []);
 // End of code block
 
+
+
+// Keep the active tab visible/centered in the scrollable tablist
+React.useEffect(() => {
+  const activeEl = document.querySelector('#projectTabs .nav-link.active');
+  activeEl?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}, [activeTab]);
+// End of code block 
+
+
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -713,7 +723,7 @@ React.useEffect(() => {
 
 
 
-
+{/* Contact Section */}
 {/* Contact Section (uses working backend /api/contact) */}
       <section
         className="parallax-window tm-section tm-section-contact"
@@ -739,7 +749,7 @@ React.useEffect(() => {
 
 
 
-      {/* Contact Section */}
+      
    
     </div>
   );
