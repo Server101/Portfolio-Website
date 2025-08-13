@@ -379,7 +379,7 @@ React.useEffect(() => {
 
 
 
-
+{/* Projects */}
 <section
   className="parallax-window tm-section tm-section-gallery tm-flex"
   id="projects"

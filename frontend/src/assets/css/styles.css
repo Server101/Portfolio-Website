@@ -456,3 +456,117 @@
 @media (max-width: 991.98px) {
   .tm-section-services .tm-textbox-full-height { min-height: auto; }
 }
+
+
+
+
+/* For the live Projects, continue Mobile optimazation */
+
+/* ===== Projects (Gallery) — mobile tuning, scrollable tabs, comfy KPIs ===== */
+
+/* Section spacing (match Home/About) */
+.tm-section-gallery {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) { .tm-section-gallery { padding-bottom: 80px; } }
+@media (max-width: 575.98px) { .tm-section-gallery { padding-bottom: 96px; } }
+
+/* Card translucency + inner padding & safe margins on narrow screens */
+.tm-section-gallery .tm-translucent-white-bg {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+
+  padding: clamp(16px, 3.2vw, 24px);
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+}
+
+/* Tabs: horizontal scroll on mobile, wrap on tablet/desktop */
+#projectTabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: none;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;       /* Firefox */
+}
+#projectTabs::-webkit-scrollbar { display: none; } /* WebKit */
+
+#projectTabs .nav-item { flex: 0 0 auto; }
+#projectTabs .nav-link {
+  padding: clamp(8px, 1.6vw, 12px) clamp(14px, 3vw, 18px);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.08);
+  line-height: 1.2;
+}
+#projectTabs .nav-link.active {
+  background-color: #96C700;
+  color: #fff;
+  border-color: transparent;
+}
+
+@media (min-width: 768px) {
+  #projectTabs {
+    justify-content: center;
+    flex-wrap: wrap;
+    white-space: normal;
+    overflow: visible;
+  }
+}
+
+/* Tab content spacing so it doesn’t crash into the section edge */
+.tm-section-gallery .tab-content {
+  padding-bottom: 8px;
+}
+
+/* KPIs: readable on phones, values don’t overflow */
+.tm-section-gallery .kpi-tile {
+  padding: clamp(10px, 2vw, 14px);
+  border-radius: 12px;
+}
+.tm-section-gallery .kpi-label {
+  font-size: clamp(0.85rem, 0.8rem + 0.25vw, 0.95rem);
+  color: #6c757d;
+}
+.tm-section-gallery .kpi-value {
+  font-weight: 600;
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.1rem);
+  word-break: break-word;
+}
+
+/* Status pill beside the h4 */
+.tm-section-gallery .status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+  margin-left: .5rem;
+}
+
+/* Progress bar: thicker touch-friendly */
+.tm-section-gallery .progress {
+  height: clamp(8px, 1.2vh, 10px);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* Tables: keep readable + contained on small screens */
+.tm-section-gallery table { 
+  font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
+}
+.tm-section-gallery .table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+}
