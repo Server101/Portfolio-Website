@@ -357,3 +357,102 @@
   font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
   line-height: 1.65;
 }
+
+
+
+
+/* ===== About Me (Services) — translucent cards, bigger side padding, mobile tuning ===== */
+
+/* 0) Safety: remove heavy shadows from older rules */
+.about-me-lighter,
+.about-me-lighter .tm-content-box,
+.about-me-lighter .tm-content-box-inner {
+  box-shadow: none;
+}
+
+/* 1) Only clear backgrounds when NOT using the translucent card class */
+.about-me-lighter:not(.tm-translucent-white-bg),
+.about-me-lighter .tm-content-box:not(.tm-translucent-white-bg),
+.about-me-lighter .tm-content-box-inner:not(.tm-translucent-white-bg) {
+  background: transparent;
+}
+
+/* Optional hint of glass on truly clear areas (keeps the section airy) */
+.about-me-lighter .tm-content-box-inner:not(.tm-translucent-white-bg) {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+}
+
+/* 2) Translucent white card used for BOTH the About text and the Logos block */
+.tm-section-services .tm-translucent-white-bg {
+  /* Slightly lighter translucency per your request */
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+
+  /* Bigger left/right "borders" so content doesn’t hug the edge */
+  padding-inline: clamp(20px, 4.5vw, 32px);
+  padding-block: clamp(16px, 3.5vw, 28px);
+
+  /* Keep cards off the viewport edge on narrow screens */
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+
+  /* Prevent inner elements from hanging over rounded corners */
+  overflow: hidden;
+}
+
+/* Stronger specificity for the About text card to win over older rules */
+.about-me-lighter .tm-content-box-inner.tm-translucent-white-bg {
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* 3) Section spacing matches Home (navbar clearance + bottom cushion) */
+.tm-section-services {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) {
+  .tm-section-services { padding-bottom: 80px; } /* tablet */
+}
+@media (max-width: 575.98px) {
+  .tm-section-services { padding-bottom: 96px; } /* phones */
+  .tm-section-services .tm-translucent-white-bg {
+    padding-inline: clamp(22px, 6vw, 28px);
+  }
+}
+
+/* 4) Typography + media scaling */
+.tm-section-services .tm-section-title {
+  font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem);
+}
+.tm-section-services .about-intro,
+.tm-section-services .about-body,
+.tm-section-services .about-goal {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
+  line-height: 1.65;
+}
+
+/* Logos row: prevent clipping and add breathing room */
+.tm-section-services .tm-media {
+  align-items: center;
+  gap: clamp(8px, 2.5vw, 16px);
+}
+.tm-section-services .tm-media img {
+  display: block;               /* avoid baseline creep */
+  width: clamp(64px, 18vw, 96px);
+  height: clamp(64px, 18vw, 96px);
+  object-fit: contain;          /* no cropping of logos */
+  flex: 0 0 auto;               /* prevent squeezing/cut-offs */
+}
+
+/* Avoid forcing awkward full-heights on mobile */
+@media (max-width: 991.98px) {
+  .tm-section-services .tm-textbox-full-height { min-height: auto; }
+}
