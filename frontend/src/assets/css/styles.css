@@ -550,3 +550,266 @@
 .tm-section-gallery .kpi-tile {
   text-align: left;
 }
+
+
+/* MOBILE OPTIMIZATION FOR SOFTWARE SECTION */
+/* ===== Software section — spacing, translucent card, responsive grid ===== */
+
+/* Section spacing (match Home/Projects/About) */
+#software {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) { #software { padding-bottom: 80px; } }
+@media (max-width: 575.98px) { #software { padding-bottom: 96px; } }
+
+/* The outer card */
+#software .tm-translucent-white-bg {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+
+  padding: clamp(16px, 3.2vw, 24px);
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+}
+
+/* Grid: 1 col on phones, 2 on tablets/desktop, 3 on very wide screens */
+.software-grid {
+  display: grid;
+  grid-template-columns: 1fr;               /* default (phones) */
+  gap: 1.25rem;
+  align-items: stretch;
+  min-width: 0;                             /* prevent content overflow */
+}
+@media (min-width: 768px) {
+  .software-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+  .software-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Repo card polish */
+.repo-item { min-width: 0; }                /* allow children to shrink/wrap */
+.repo-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  border-radius: .5rem;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+  background: #fff;
+  text-align: left;
+}
+
+/* Make long names/descriptions behave on small screens */
+.repo-link {
+  word-break: break-word;                   /* prefer normal breaks */
+  overflow-wrap: anywhere;                  /* fallback for very long strings */
+  text-decoration: none;
+}
+.repo-desc {
+  color: #6c757d;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Small metadata row stays tidy */
+.repo-card .small,
+.repo-card .badge { white-space: nowrap; }
+
+/* Footer button: full-width on phones for easier tapping */
+@media (max-width: 575.98px) {
+  .repo-card .btn { width: 100%; }
+}
+
+/* Keep the whole section visually centered */
+#software .tm-translucent-white-bg { margin-left: auto; margin-right: auto; }
+
+
+
+
+
+
+
+
+/*MOBILE OPTIMIZATION FOR THE CONTACT SECTION*/
+
+/* ===== Contact — mobile-friendly layout, comfy inputs, translucent card ===== */
+
+/* Section spacing (match Home/Projects/About) */
+.tm-section-contact {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) { .tm-section-contact { padding-bottom: 80px; } }
+@media (max-width: 575.98px) { .tm-section-contact { padding-bottom: 96px; } }
+
+/* Center the translucent card and keep it off the viewport edges */
+#contact .tm-translucent-white-bg {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+
+  padding: clamp(16px, 3.2vw, 24px);
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+
+  max-width: clamp(320px, 92vw, 860px);
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden; /* keep rounded corners clean */
+}
+
+/* Headline spacing */
+#contact .tm-section-title {
+  text-align: center;
+  margin-bottom: clamp(10px, 2vh, 16px);
+  font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem);
+}
+
+/* Keep the contact blurb readable */
+#contact p {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+/* Form layout: center within the card */
+.tm-contact-form {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Field blocks */
+.tm-contact-form .form-group { margin-bottom: 0.9rem; }
+
+/* Inputs & textarea: big targets, clear focus, no iOS zoom */
+.contact-input {
+  width: 100%;
+  min-height: 48px;                 /* >=44px tap target */
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.95);
+  color: #000;
+  font-size: 16px;                  /* prevents iOS zoom on focus */
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
+}
+
+.contact-input::placeholder { color: #6c757d; opacity: 1; }
+
+/* Focus states (keyboard/touch) */
+.contact-input:focus,
+.contact-input:focus-visible {
+  outline: 0;
+  border-color: #96C700;
+  box-shadow: 0 0 0 3px rgba(150,199,0,0.25);
+}
+
+/* Textarea height & behavior */
+textarea.contact-input {
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* Submit button: full width on phones, tactile interaction */
+.tm-btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background-color: #96C700;
+  color: #fff;
+  border: none;
+  transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
+}
+.tm-btn:active { transform: translateY(1px); }
+.tm-btn[disabled] { opacity: .7; cursor: not-allowed; }
+
+@media (max-width: 575.98px) {
+  .tm-btn { width: 100%; }
+}
+
+/* Alerts: softer corners to match card */
+#contact .alert { border-radius: 10px; }
+
+/* Copyright spacing */
+.tm-section-contact .tm-copyright-div {
+  margin-top: clamp(16px, 4vh, 28px);
+}
+
+/* Optional: If the parallax feels heavy on phones, soften it (CSS-only fallback) */
+@media (max-width: 767.98px) {
+  .tm-section-contact.parallax-window { background-attachment: scroll; }
+}
+
+/* === Contact: center submit button + lighter translucency === */
+
+/* Lighter translucent card */
+#contact .tm-translucent-white-bg {
+  background: rgba(255, 255, 255, 0.72);   /* was 0.78 */
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Center the submit button on all screens */
+.tm-contact-form .tm-btn {
+  display: inline-flex;                    /* centers text nicely */
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 0;                     /* <-- centers horizontally */
+}
+
+/* Keep full-width on phones for easier tapping */
+@media (max-width: 575.98px) {
+  .tm-contact-form .tm-btn { width: 100%; }
+}
+
+/* Button hover/focus polish (optional but nice) */
+.tm-btn:hover:not([disabled]) {
+  filter: brightness(1.02);
+  box-shadow: 0 6px 18px rgba(150,199,0,0.25);
+}
+.tm-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(150,199,0,0.35);
+}
+
+
+/* === Contact: lighter translucent card + centered submit button (all screens) === */
+
+/* Make the contact card lighter — higher specificity + !important to beat earlier rules */
+#contact .tm-page-content-width .tm-translucent-white-bg {
+  background: rgba(255, 255, 255, 0.68) !important; /* was ~0.78 */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Center the Submit button on desktop/tablet, keep full-width on phones */
+.tm-contact-form .tm-btn {
+  display: block;                 /* allows auto margins to center */
+  width: fit-content;             /* shrink to content on larger screens */
+  min-width: 160px;               /* nice minimum button width */
+  margin: 12px auto 0;            /* centers horizontally */
+  text-align: center;
+}
+
+@supports not (width: fit-content) {
+  /* fallback for very old browsers */
+  .tm-contact-form .tm-btn { width: auto; }
+}
+
+@media (max-width: 575.98px) {
+  .tm-contact-form .tm-btn {
+    width: 100%;                  /* full-width tap target on phones */
+    min-width: 0;
+  }
+}

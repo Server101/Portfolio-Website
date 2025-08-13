@@ -114,12 +114,7 @@ export default function SoftwareGrid({ repos = [] }) {
         <div className="alert alert-warning mb-3">{err}</div>
       )}
 
-      <div className="software-grid" style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-        gap: "1.25rem",
-        alignItems: "stretch"
-      }}>
+     <div className="software-grid">
         {items.map(repo => (
           <RepoCard key={repo.id} repo={repo} />
         ))}
