@@ -357,3 +357,216 @@
   font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
   line-height: 1.65;
 }
+
+
+
+
+/* ===== About Me (Services) — translucent cards, bigger side padding, mobile tuning ===== */
+
+/* 0) Safety: remove heavy shadows from older rules */
+.about-me-lighter,
+.about-me-lighter .tm-content-box,
+.about-me-lighter .tm-content-box-inner {
+  box-shadow: none;
+}
+
+/* 1) Only clear backgrounds when NOT using the translucent card class */
+.about-me-lighter:not(.tm-translucent-white-bg),
+.about-me-lighter .tm-content-box:not(.tm-translucent-white-bg),
+.about-me-lighter .tm-content-box-inner:not(.tm-translucent-white-bg) {
+  background: transparent;
+}
+
+/* Optional hint of glass on truly clear areas (keeps the section airy) */
+.about-me-lighter .tm-content-box-inner:not(.tm-translucent-white-bg) {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+}
+
+/* 2) Translucent white card used for BOTH the About text and the Logos block */
+.tm-section-services .tm-translucent-white-bg {
+  /* Slightly lighter translucency per your request */
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+
+  /* Bigger left/right "borders" so content doesn’t hug the edge */
+  padding-inline: clamp(20px, 4.5vw, 32px);
+  padding-block: clamp(16px, 3.5vw, 28px);
+
+  /* Keep cards off the viewport edge on narrow screens */
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+
+  /* Prevent inner elements from hanging over rounded corners */
+  overflow: hidden;
+}
+
+/* Stronger specificity for the About text card to win over older rules */
+.about-me-lighter .tm-content-box-inner.tm-translucent-white-bg {
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* 3) Section spacing matches Home (navbar clearance + bottom cushion) */
+.tm-section-services {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) {
+  .tm-section-services { padding-bottom: 80px; } /* tablet */
+}
+@media (max-width: 575.98px) {
+  .tm-section-services { padding-bottom: 96px; } /* phones */
+  .tm-section-services .tm-translucent-white-bg {
+    padding-inline: clamp(22px, 6vw, 28px);
+  }
+}
+
+/* 4) Typography + media scaling */
+.tm-section-services .tm-section-title {
+  font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem);
+}
+.tm-section-services .about-intro,
+.tm-section-services .about-body,
+.tm-section-services .about-goal {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.075rem);
+  line-height: 1.65;
+}
+
+/* Logos row: prevent clipping and add breathing room */
+.tm-section-services .tm-media {
+  align-items: center;
+  gap: clamp(8px, 2.5vw, 16px);
+}
+.tm-section-services .tm-media img {
+  display: block;               /* avoid baseline creep */
+  width: clamp(64px, 18vw, 96px);
+  height: clamp(64px, 18vw, 96px);
+  object-fit: contain;          /* no cropping of logos */
+  flex: 0 0 auto;               /* prevent squeezing/cut-offs */
+}
+
+/* Avoid forcing awkward full-heights on mobile */
+@media (max-width: 991.98px) {
+  .tm-section-services .tm-textbox-full-height { min-height: auto; }
+}
+
+
+
+
+/* For the live Projects, continue Mobile optimazation */
+
+/* ===== Projects (Gallery) — mobile tuning, scrollable tabs, comfy KPIs ===== */
+
+/* Section spacing (match Home/About) */
+.tm-section-gallery {
+  padding-top: clamp(56px, 7vh, 96px);
+  padding-bottom: 64px;
+}
+@media (max-width: 991.98px) { .tm-section-gallery { padding-bottom: 80px; } }
+@media (max-width: 575.98px) { .tm-section-gallery { padding-bottom: 96px; } }
+
+/* Card translucency + inner padding & safe margins on narrow screens */
+.tm-section-gallery .tm-translucent-white-bg {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+
+  padding: clamp(16px, 3.2vw, 24px);
+  margin-inline: clamp(8px, 3vw, 16px);
+  box-sizing: border-box;
+}
+
+/* Tabs: horizontal scroll on mobile, wrap on tablet/desktop */
+#projectTabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: none;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;       /* Firefox */
+}
+#projectTabs::-webkit-scrollbar { display: none; } /* WebKit */
+
+#projectTabs .nav-item { flex: 0 0 auto; }
+#projectTabs .nav-link {
+  padding: clamp(8px, 1.6vw, 12px) clamp(14px, 3vw, 18px);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.08);
+  line-height: 1.2;
+}
+#projectTabs .nav-link.active {
+  background-color: #96C700;
+  color: #fff;
+  border-color: transparent;
+}
+
+@media (min-width: 768px) {
+  #projectTabs {
+    justify-content: center;
+    flex-wrap: wrap;
+    white-space: normal;
+    overflow: visible;
+  }
+}
+
+/* Tab content spacing so it doesn’t crash into the section edge */
+.tm-section-gallery .tab-content {
+  padding-bottom: 8px;
+}
+
+/* KPIs: readable on phones, values don’t overflow */
+.tm-section-gallery .kpi-tile {
+  padding: clamp(10px, 2vw, 14px);
+  border-radius: 12px;
+}
+.tm-section-gallery .kpi-label {
+  font-size: clamp(0.85rem, 0.8rem + 0.25vw, 0.95rem);
+  color: #6c757d;
+}
+.tm-section-gallery .kpi-value {
+  font-weight: 600;
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.1rem);
+  word-break: break-word;
+}
+
+/* Status pill beside the h4 */
+.tm-section-gallery .status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+  margin-left: .5rem;
+}
+
+/* Progress bar: thicker touch-friendly */
+.tm-section-gallery .progress {
+  height: clamp(8px, 1.2vh, 10px);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* Tables: keep readable + contained on small screens */
+.tm-section-gallery table { 
+  font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
+}
+.tm-section-gallery .table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+}

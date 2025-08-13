@@ -295,9 +295,9 @@ React.useEffect(() => {
   <div className="tm-page-content-width">
     <div className="row d-flex align-items-stretch flex-row-reverse">
 
-    {/* RIGHT COLUMN: About Me Text */}
+  {/* RIGHT COLUMN: About Me Text */}
 <div className="col-md-6 tm-content-box tm-textbox-full-height about-me-lighter">
-  <div className="tm-content-box-inner">
+  <div className="tm-content-box-inner tm-translucent-white-bg rounded">
     <h2 className="tm-section-title tm-blue-text">About Me</h2>
 
     <p className="about-intro">
@@ -379,7 +379,7 @@ React.useEffect(() => {
 
 
 
-
+{/* Projects */}
 <section
   className="parallax-window tm-section tm-section-gallery tm-flex"
   id="projects"
