@@ -36,7 +36,7 @@ const softwareRepos = React.useMemo(() => [
   { id: "iam", slug: "Server101/objaverse-xl" },
   { id: "threat", slug: "Server101/Analytical-Web-App" },
   { id: "portfolio", slug: "Server101/go-ethereum" },
-  { id: "iam2", slug: "Server101/bitcoin" },
+  { id: "iam2", slug: "Server101/Portfolio-Website" },
   { id: "threat2", slug: "Server101/textbookstore-ui" },
   { id: "portfolio2", slug: "Server101/Geek-Text" },
 ], []);
