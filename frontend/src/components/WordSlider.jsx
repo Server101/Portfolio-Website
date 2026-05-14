@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import '../assets/css/WordSlider.css';
+import React, { useEffect, useState } from "react";
+import { profile } from "../data/portfolioContent";
 
-const WordSlider = () => {
-  const words = ['Software Engineer', 'Security Engineer', 'Cloud Architect', 'AI Engineer'];
+export default function WordSlider({ words = profile.rotatingRoles }) {
   const [currentWord, setCurrentWord] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentWord((prevIndex) => (prevIndex + 1) % words.length);
-    }, 2000); // Change word every 2 seconds
+      setCurrentWord((index) => (index + 1) % words.length);
+    }, 2200);
 
     return () => clearInterval(interval);
   }, [words.length]);
 
   return (
-    <div className="word-slider">
-      <div
-        className="word-slider-inner"
-        style={{
-          transform: `translateY(-${currentWord * 40}px)` // height must match .word-slide
-        }}
-      >
-        {words.map((word, index) => (
-          <div className="word-slide" key={index}>
-            {word}
-          </div>
+    <div className="word-slider" aria-live="polite">
+      <div className="word-slider-inner" style={{ transform: `translateY(-${currentWord * 42}px)` }}>
+        {words.map((word) => (
+          <div className="word-slide" key={word}>{word}</div>
         ))}
       </div>
     </div>
   );
-};
-
-export default WordSlider;
+}

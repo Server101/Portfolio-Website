@@ -1,40 +1,37 @@
-// src/components/ContactForm.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import apiClient from "../services/apiClient";
 
-const API_BASE = process.env.REACT_APP_API_URL || '';
-
-function ContactForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [messageText, setMessageText] = useState('');
+export default function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [err, setErr] = useState('');
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErr('');
+  const updateField = (event) => {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
     setSubmitting(true);
 
     try {
-      const { data } = await axios.post(`${API_BASE}/api/contact`, {
-        contact_name: name,
-        contact_email: email,
-        contact_message: messageText,
+      const { data } = await apiClient.post("/api/contact", {
+        contact_name: form.name,
+        contact_email: form.email,
+        contact_message: form.message,
       });
 
-      if (data?.ok) {
+      if (data?.ok || data?.success) {
         setSubmitted(true);
-        setName('');
-        setEmail('');
-        setMessageText('');
+        setForm({ name: "", email: "", message: "" });
       } else {
-        setErr(data?.error || 'Failed to send message.');
+        setError(data?.error || "I could not send the message. Please try again.");
       }
-    } catch (error) {
-      console.error(error);
-      setErr('Failed to send message.');
+    } catch (err) {
+      setError(err?.response?.data?.error || "I could not send the message. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -42,68 +39,58 @@ function ContactForm() {
 
   if (submitted) {
     return (
-      <>
-        <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
-        <div className="alert alert-success mt-3">
-          ✅ Your message was received! I’ll get back to you soon.
-        </div>
-      </>
+      <div className="form-success" role="status">
+        <span>Message received.</span>
+        <p>Thank you for reaching out. I’ll get back to you soon.</p>
+        <button type="button" className="text-button" onClick={() => setSubmitted(false)}>
+          Send another message
+        </button>
+      </div>
     );
   }
 
   return (
-    <>
-      <h2 className="tm-section-title tm-red-text">Let's Connect</h2>
-      <p>Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.</p>
+    <form className="contact-form" onSubmit={handleSubmit}>
+      {error && <div className="form-error" role="alert">{error}</div>}
 
-      {err && <div className="alert alert-danger">{err}</div>}
+      <label>
+        Name
+        <input
+          type="text"
+          name="name"
+          autoComplete="name"
+          value={form.name}
+          onChange={updateField}
+          required
+        />
+      </label>
 
-      <form className="tm-contact-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            id="contact_name"
-            name="contact_name"
-            className="form-control contact-input"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ color: 'black' }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            id="contact_email"
-            name="contact_email"
-            className="form-control contact-input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ color: 'black' }}
-          />
-        </div>
-        <div className="form-group">
-          <textarea
-            id="contact_message"
-            name="contact_message"
-            className="form-control contact-input"
-            rows="5"
-            placeholder="Message"
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            required
-            style={{ color: 'black' }}
-          />
-        </div>
-        <button type="submit" className="tm-btn" disabled={submitting}>
-          {submitting ? 'Submitting…' : 'Submit'}
-        </button>
-      </form>
-    </>
+      <label>
+        Email
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          value={form.email}
+          onChange={updateField}
+          required
+        />
+      </label>
+
+      <label>
+        Message
+        <textarea
+          name="message"
+          rows="5"
+          value={form.message}
+          onChange={updateField}
+          required
+        />
+      </label>
+
+      <button className="primary-button" type="submit" disabled={submitting}>
+        {submitting ? "Sending..." : "Send Message"}
+      </button>
+    </form>
   );
 }
-
-export default ContactForm;
