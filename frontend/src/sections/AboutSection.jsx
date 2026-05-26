@@ -14,7 +14,7 @@ export default function AboutSection() {
         </div>
 
         <div className="about-visual" data-reveal>
-          <img src="/img/luminary/threat-analytics-visualization.jpg" alt="Abstract connected cloud network" />
+          <img src="/img/threat-analytics-visualization.jpg" alt="Abstract connected cloud network" />
           <div className="education-stack">
             {education.map((item) => (
               <article className="education-card" key={item.school}>

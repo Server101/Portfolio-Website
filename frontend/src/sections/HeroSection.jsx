@@ -44,7 +44,7 @@ export default function HeroSection() {
       <HeroSignalField />
       <div className="section-shell hero-shell">
         <div className="hero-copy" data-reveal>
-          <span className="eyebrow">Cloud security portfolio</span>
+          <span className="eyebrow">Software Engineer portfolio</span>
           <h1>{profile.heroTitle}</h1>
           <WordSlider />
           <p>{profile.heroLead}</p>
@@ -83,7 +83,7 @@ export default function HeroSection() {
           </div>
           <div className="portrait-caption">
             <strong>{profile.name}</strong>
-            <span>Software • Security • Cloud • AI</span>
+            <span>Software • Full-Stack • Data • AI</span>
           </div>
           <div className="social-links" aria-label="Social links">
             {socialLinks.map((link) => (

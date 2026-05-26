@@ -12,7 +12,7 @@ export default function Navigation({ activeSection }) {
         <span className="brand-orb">R</span>
         <span>
           <strong>RicardoTech</strong>
-          <small>Cloud • Security • AI</small>
+          <small>Full-Stack • Data • AI</small>
         </span>
       </a>
 

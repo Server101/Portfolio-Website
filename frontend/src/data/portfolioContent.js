@@ -5,7 +5,7 @@ export const profile = {
   heroTitle: "Hello, I'm Ricardo!",
   heroLead:
     "I’m passionate about software engineering, cybersecurity, and artificial intelligence, applying them to solve real-world challenges and manage risk. With a strong foundation in data structures and computing logic, I build secure, full-stack systems and manage access controls (IAM) across platforms. I thrive in agile environments and have hands-on experience integrating AI into security workflows to enhance threat detection and support informed decision-making.",
-  rotatingRoles: ["Software Engineer", "Security Engineer", "Cloud Architect", "AI Engineer"],
+  rotatingRoles: ["Software Engineer", "Full Stack Engineer", "Data Analyst", "Ai Engineer"],
   portrait: "/img/r2023tech02020.png",
   portraitAlternate: "/img/r2023tech0202032changed.png",
   heroBackground: "/img/luminary/cloud-security-dashboard.jpg",
@@ -47,7 +47,7 @@ export const about = {
 export const education = [
   {
     school: "St. Thomas University (STU)",
-    credential: "Master of Science in CyberSecurity and Data Analytics",
+    credential: "Master of Science in Data Science",
     years: "2025-2026",
     logo: "/img/st-thomas-university-fl_540.png",
   },
