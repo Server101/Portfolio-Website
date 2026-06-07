@@ -1,12 +1,19 @@
 import React, { useState } from "react";
+import DisasterIntelligenceDashboard from "../components/DisasterIntelligenceDashboard";
 import HealthPanel from "../components/HealthPanel";
-import IAMScanner from "../components/IAMScanner";
 import ThreatDashboard from "../components/ThreatDashboard";
 import { projectTabs } from "../data/portfolioContent";
+
+const projectComponents = {
+  portfolio: HealthPanel,
+  threat: ThreatDashboard,
+  disasterDashboard: DisasterIntelligenceDashboard,
+};
 
 export default function LiveProjectsSection() {
   const [activeTab, setActiveTab] = useState(projectTabs[0].id);
   const activeProject = projectTabs.find((project) => project.id === activeTab) || projectTabs[0];
+  const ActiveProjectComponent = projectComponents[activeProject.id] || HealthPanel;
 
   return (
     <section className="portfolio-section" id="projects">
@@ -49,9 +56,7 @@ export default function LiveProjectsSection() {
               </div>
             </div>
 
-            {activeProject.id === "portfolio" && <HealthPanel />}
-            {activeProject.id === "threat" && <ThreatDashboard />}
-            {activeProject.id === "iamScanner" && <IAMScanner />}
+            <ActiveProjectComponent />
           </div>
         </div>
       </div>

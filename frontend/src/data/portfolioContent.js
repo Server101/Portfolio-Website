@@ -66,7 +66,7 @@ export const projectTabs = [
     title: "Full-Stack Portfolio",
     eyebrow: "Production Infrastructure",
     description:
-      "This project displays the real-time health of my AWS EC2–hosted portfolio—confirming server uptime, instance type, and external availability for monitoring.",
+      "This project displays a public-safe health view of my AWS EC2-hosted portfolio API, confirming availability, runtime status, and monitored service uptime without exposing private host details.",
     stack: ["React", "Node.js", "Express", "AWS CloudFront", "Application Load Balancer", "AWS EC2", "PM2"],
   },
   {
@@ -78,13 +78,13 @@ export const projectTabs = [
     stack: ["React", "Node.js", "Express", "PostgreSQL", "VirusTotal API", "AbuseIPDB API"],
   },
   {
-    id: "iamScanner",
-    label: "IAM Misconfiguration Detector",
-    title: "AI Gemini-Powered IAM Misconfiguration Detector",
-    eyebrow: "Cloud Security",
+    id: "disasterDashboard",
+    label: "Disaster Intelligence",
+    title: "Disaster Intelligence Dashboard",
+    eyebrow: "Disaster Intelligence",
     description:
-      "This tool scans AWS IAM configurations and uses Gemini to detect misconfigurations like wildcard permissions, missing MFA, publicly accessible resources, and risky trust relationships. It returns human-readable summaries and remediation steps.",
-    stack: ["React", "Node.js", "Express", "AWS SDK", "Google Gemini API", "PostgreSQL", "Docker", "PM2"],
+      "Coming soon: a public-safety analytics dashboard for weather alerts, emergency response indicators, outage signals, and geospatial risk views.",
+    stack: ["React", "Node.js", "Public APIs", "GIS Data", "Analytics", "Dashboard Design"],
   },
 ];
 
