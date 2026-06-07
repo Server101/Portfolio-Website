@@ -1,26 +1,26 @@
 import React, { useEffect, useRef } from "react";
 
 const desktopSettings = {
-  count: 60,
-  linkDistance: 190,
-  speed: 0.42,
-  radius: 2.1,
-  mouseRadius: 170,
+  count: 58,
+  linkDistance: 172,
+  speed: 0.36,
+  radius: 2.05,
+  mouseRadius: 175,
 };
 
 const mobileSettings = {
-  count: 30,
-  linkDistance: 130,
-  speed: 0.28,
-  radius: 1.65,
-  mouseRadius: 110,
+  count: 28,
+  linkDistance: 118,
+  speed: 0.24,
+  radius: 1.55,
+  mouseRadius: 112,
 };
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-function createPoint(width, height, settings) {
+function createSignalPoint(width, height, settings) {
   const angle = Math.random() * Math.PI * 2;
   const velocity = settings.speed * (0.35 + Math.random() * 0.75);
 
@@ -44,13 +44,13 @@ export default function HeroSignalField() {
     if (!context) return undefined;
 
     let animationFrame = 0;
-    let width = 0;
-    let height = 0;
+    let width = 1;
+    let height = 1;
     let deviceScale = 1;
     let points = [];
     let settings = desktopSettings;
-    const mouse = { x: -10000, y: -10000, active: false };
     const reduceMotion = prefersReducedMotion();
+    const pointer = { x: -10000, y: -10000, active: false };
 
     const resetCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
@@ -63,21 +63,29 @@ export default function HeroSignalField() {
       canvas.height = Math.floor(height * deviceScale);
       context.setTransform(deviceScale, 0, 0, deviceScale, 0, 0);
 
-      const count = reduceMotion ? Math.round(settings.count * 0.45) : settings.count;
-      points = Array.from({ length: count }, () => createPoint(width, height, settings));
+      const pointCount = reduceMotion ? Math.round(settings.count * 0.5) : settings.count;
+      points = Array.from({ length: pointCount }, () => createSignalPoint(width, height, settings));
     };
 
-    const updateMouse = (event) => {
+    const updatePointer = (event) => {
       const bounds = canvas.getBoundingClientRect();
-      mouse.x = event.clientX - bounds.left;
-      mouse.y = event.clientY - bounds.top;
-      mouse.active = mouse.x >= 0 && mouse.x <= width && mouse.y >= 0 && mouse.y <= height;
+      const x = event.clientX - bounds.left;
+      const y = event.clientY - bounds.top;
+
+      if (x < 0 || y < 0 || x > bounds.width || y > bounds.height) {
+        pointer.active = false;
+        return;
+      }
+
+      pointer.x = x;
+      pointer.y = y;
+      pointer.active = true;
     };
 
-    const clearMouse = () => {
-      mouse.active = false;
-      mouse.x = -10000;
-      mouse.y = -10000;
+    const clearPointer = () => {
+      pointer.active = false;
+      pointer.x = -10000;
+      pointer.y = -10000;
     };
 
     const movePoint = (point) => {
@@ -86,22 +94,35 @@ export default function HeroSignalField() {
         point.y += point.vy;
       }
 
-      if (point.x < -20) point.x = width + 20;
-      if (point.x > width + 20) point.x = -20;
-      if (point.y < -20) point.y = height + 20;
-      if (point.y > height + 20) point.y = -20;
+      if (point.x < -24) point.x = width + 24;
+      if (point.x > width + 24) point.x = -24;
+      if (point.y < -24) point.y = height + 24;
+      if (point.y > height + 24) point.y = -24;
 
-      if (!mouse.active || reduceMotion) return;
+      if (!pointer.active || reduceMotion) return;
 
-      const dx = point.x - mouse.x;
-      const dy = point.y - mouse.y;
+      const dx = point.x - pointer.x;
+      const dy = point.y - pointer.y;
       const distance = Math.hypot(dx, dy);
 
       if (distance > 0 && distance < settings.mouseRadius) {
-        const force = (1 - distance / settings.mouseRadius) * 0.9;
+        const force = (1 - distance / settings.mouseRadius) * 0.6;
         point.x += (dx / distance) * force;
         point.y += (dy / distance) * force;
       }
+    };
+
+    const drawMouseGlow = () => {
+      if (!pointer.active || reduceMotion) return;
+
+      const radius = settings.mouseRadius * 1.36;
+      const gradient = context.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, radius);
+      gradient.addColorStop(0, "rgba(245, 241, 232, 0.18)");
+      gradient.addColorStop(0.4, "rgba(176, 184, 196, 0.1)");
+      gradient.addColorStop(1, "rgba(245, 241, 232, 0)");
+
+      context.fillStyle = gradient;
+      context.fillRect(pointer.x - radius, pointer.y - radius, radius * 2, radius * 2);
     };
 
     const draw = () => {
@@ -116,12 +137,12 @@ export default function HeroSignalField() {
           const distance = Math.hypot(point.x - other.x, point.y - other.y);
 
           if (distance < settings.linkDistance) {
-            const alpha = (1 - distance / settings.linkDistance) * 0.2;
+            const alpha = (1 - distance / settings.linkDistance) * 0.24;
             context.beginPath();
             context.moveTo(point.x, point.y);
             context.lineTo(other.x, other.y);
             context.strokeStyle = `rgba(245, 241, 232, ${alpha})`;
-            context.lineWidth = 0.8;
+            context.lineWidth = 0.85;
             context.stroke();
           }
         }
@@ -130,36 +151,30 @@ export default function HeroSignalField() {
       for (const point of points) {
         context.beginPath();
         context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-        context.fillStyle = "rgba(245, 241, 232, 0.58)";
+        context.fillStyle = "rgba(245, 241, 232, 0.62)";
         context.fill();
       }
 
-      if (mouse.active && !reduceMotion) {
-        const gradient = context.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, settings.mouseRadius * 1.35);
-        gradient.addColorStop(0, "rgba(245, 241, 232, 0.16)");
-        gradient.addColorStop(0.4, "rgba(176, 184, 196, 0.08)");
-        gradient.addColorStop(1, "rgba(245, 241, 232, 0)");
-        context.fillStyle = gradient;
-        context.fillRect(mouse.x - settings.mouseRadius * 1.35, mouse.y - settings.mouseRadius * 1.35, settings.mouseRadius * 2.7, settings.mouseRadius * 2.7);
-      }
-
+      drawMouseGlow();
       animationFrame = window.requestAnimationFrame(draw);
     };
 
     resetCanvas();
     draw();
 
-    window.addEventListener("resize", resetCanvas);
-    window.addEventListener("pointermove", updateMouse, { passive: true });
-    window.addEventListener("pointerleave", clearMouse);
-    window.addEventListener("blur", clearMouse);
+    const resizeObserver = new ResizeObserver(resetCanvas);
+    resizeObserver.observe(canvas);
+
+    window.addEventListener("pointermove", updatePointer, { passive: true });
+    window.addEventListener("pointerleave", clearPointer);
+    window.addEventListener("blur", clearPointer);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", resetCanvas);
-      window.removeEventListener("pointermove", updateMouse);
-      window.removeEventListener("pointerleave", clearMouse);
-      window.removeEventListener("blur", clearMouse);
+      resizeObserver.disconnect();
+      window.removeEventListener("pointermove", updatePointer);
+      window.removeEventListener("pointerleave", clearPointer);
+      window.removeEventListener("blur", clearPointer);
     };
   }, []);
 

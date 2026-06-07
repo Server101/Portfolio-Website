@@ -1,3 +1,4 @@
+/// LiveProjectsSection.jsx
 import React, { useState } from "react";
 import DisasterIntelligenceDashboard from "../components/DisasterIntelligenceDashboard";
 import HealthPanel from "../components/HealthPanel";
@@ -20,9 +21,9 @@ export default function LiveProjectsSection() {
       <div className="section-shell project-shell">
         <div className="section-heading" data-reveal>
           <span className="eyebrow">Live Projects</span>
-          <h2>Production-backed demos from this portfolio.</h2>
+          <h2>Production-Backed Engineering Demos.</h2>
           <p>
-            These panels connect to the deployed backend at api.ricardotech.com through the AWS Application Load Balancer.
+            Built with React, APIs, AI integrations, analytics workflows, and cloud infrastructure for real-world product development.
           </p>
         </div>
 
@@ -47,16 +48,18 @@ export default function LiveProjectsSection() {
           </aside>
 
           <div className="project-panel">
-            <div className="project-panel-header">
+            <div className="project-panel-header" key={`${activeProject.id}-header`}>
               <span className="eyebrow">{activeProject.eyebrow}</span>
               <h3>{activeProject.title}</h3>
               <p>{activeProject.description}</p>
-              <div className="stack-list">
+              <div className="stack-list" aria-label="Project technology tags">
                 {activeProject.stack.map((item) => <span key={item}>{item}</span>)}
               </div>
             </div>
 
-            <ActiveProjectComponent />
+            <div className="project-panel-body" key={`${activeProject.id}-body`}>
+              <ActiveProjectComponent />
+            </div>
           </div>
         </div>
       </div>

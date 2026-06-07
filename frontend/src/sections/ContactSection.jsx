@@ -8,7 +8,7 @@ export default function ContactSection() {
       <div className="section-shell two-column contact-grid">
         <div className="section-copy" data-reveal>
           <span className="eyebrow">Let’s Connect</span>
-          <h2>Open to fullstack developmentand data analytics opportunities.</h2>
+          <h2>Open to fullstack development and data analytics opportunities.</h2>
           <p>
             Feel free to reach out to discuss opportunities, innovative projects, or ways we can collaborate.
           </p>

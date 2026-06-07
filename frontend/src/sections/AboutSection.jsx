@@ -1,3 +1,4 @@
+/// AboutSection.jsx
 import React from "react";
 import { about, education } from "../data/portfolioContent";
 
@@ -7,7 +8,7 @@ export default function AboutSection() {
       <div className="section-shell two-column about-grid">
         <div className="section-copy" data-reveal>
           <span className="eyebrow">About Me</span>
-          <h2>Building secure systems with practical cloud experience.</h2>
+          <h2>Building intelligent, data-driven software with purpose.</h2>
           <p><strong>{about.intro}</strong></p>
           <p>{about.body}</p>
           <p>{about.goal}</p>

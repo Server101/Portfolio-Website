@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
 export default function BackgroundEffects() {
-  const gridRef = useRef(null);
+  const backgroundRef = useRef(null);
 
   useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return undefined;
+    const background = backgroundRef.current;
+    if (!background) return undefined;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let currentX = window.innerWidth / 2;
@@ -14,9 +14,9 @@ export default function BackgroundEffects() {
     let targetY = currentY;
     let animationFrame = 0;
 
-    const setGridPosition = () => {
-      grid.style.setProperty("--mx", `${currentX}px`);
-      grid.style.setProperty("--my", `${currentY}px`);
+    const setPointerPosition = () => {
+      background.style.setProperty("--mx", `${currentX}px`);
+      background.style.setProperty("--my", `${currentY}px`);
     };
 
     const handlePointerMove = (event) => {
@@ -24,18 +24,18 @@ export default function BackgroundEffects() {
       targetY = event.clientY;
     };
 
-    const animateGrid = () => {
+    const animatePointer = () => {
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
-      setGridPosition();
-      animationFrame = window.requestAnimationFrame(animateGrid);
+      setPointerPosition();
+      animationFrame = window.requestAnimationFrame(animatePointer);
     };
 
-    setGridPosition();
+    setPointerPosition();
 
     if (!reduceMotion) {
       window.addEventListener("pointermove", handlePointerMove, { passive: true });
-      animationFrame = window.requestAnimationFrame(animateGrid);
+      animationFrame = window.requestAnimationFrame(animatePointer);
     }
 
     return () => {
@@ -45,9 +45,10 @@ export default function BackgroundEffects() {
   }, []);
 
   return (
-    <div className="background-effects" aria-hidden="true">
+    <div className="background-effects" ref={backgroundRef} aria-hidden="true">
       <div className="luminary-atmosphere" />
-      <div className="luminary-grid" ref={gridRef} />
+      <div className="luminary-grid" />
+      <div className="global-spotlight" />
       <div className="luminary-vignette" />
       <svg className="luminary-grain" width="100%" height="100%">
         <filter id="luminary-noise">

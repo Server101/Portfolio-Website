@@ -89,20 +89,31 @@
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.95;
+  opacity: 1;
   background-image:
-    linear-gradient(to right, rgba(235, 239, 246, 0.36) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(235, 239, 246, 0.36) 1px, transparent 1px);
+    linear-gradient(to right, rgba(245, 241, 232, 0.44) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 241, 232, 0.44) 1px, transparent 1px);
   background-size: 120px 120px;
   background-position: center top;
-  -webkit-mask-image: radial-gradient(circle 420px at var(--mx) var(--my), rgba(0, 0, 0, 1) 0%, transparent 72%);
-  mask-image: radial-gradient(circle 420px at var(--mx) var(--my), rgba(0, 0, 0, 1) 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle 460px at var(--mx) var(--my), rgba(0, 0, 0, 1) 0%, transparent 74%);
+  mask-image: radial-gradient(circle 460px at var(--mx) var(--my), rgba(0, 0, 0, 1) 0%, transparent 74%);
+}
+
+.global-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.82;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle 360px at var(--mx) var(--my), rgba(245, 241, 232, 0.16), rgba(176, 184, 196, 0.08) 42%, rgba(245, 241, 232, 0) 72%);
 }
 
 .luminary-vignette {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   background:
     radial-gradient(circle at center, transparent 0%, rgba(8, 10, 14, 0.14) 58%, rgba(8, 10, 14, 0.68) 100%),
     linear-gradient(90deg, rgba(8, 10, 14, 0.5), transparent 22%, transparent 78%, rgba(8, 10, 14, 0.5));
@@ -111,7 +122,7 @@
 .luminary-grain {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   width: 100%;
   height: 100%;
   opacity: 0.032;
@@ -132,6 +143,10 @@
   .luminary-atmosphere::before,
   .luminary-atmosphere::after {
     animation: none;
+  }
+
+  .global-spotlight {
+    opacity: 0.46;
   }
 }
 
@@ -1199,6 +1214,148 @@ pre {
   text-align: center;
 }
 
+
+.project-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.project-panel-header {
+  min-height: 214px;
+  animation: projectFade 0.28s var(--silk-ease) both;
+}
+
+.project-panel-body {
+  flex: 1;
+  min-height: 355px;
+  display: flex;
+  flex-direction: column;
+  animation: projectFade 0.32s var(--silk-ease) both;
+}
+
+.project-panel-body > .health-panel,
+.project-panel-body > .feature-console {
+  flex: 1;
+}
+
+@keyframes projectFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.health-summary-card,
+.coming-soon-card {
+  border: 1px solid var(--panel-border);
+  background: rgba(176, 184, 196, 0.06);
+  border-radius: var(--radius-lg);
+}
+
+.health-summary-card {
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.health-summary-card strong {
+  display: block;
+  color: var(--ivory);
+  font-size: 1.05rem;
+  margin: 7px 0 4px;
+}
+
+.coming-soon-console {
+  min-height: 355px;
+}
+
+.coming-soon-card {
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.coming-soon-card h4 {
+  color: var(--ivory);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 14px 0 14px;
+}
+
+.coming-soon-card p {
+  color: var(--cream);
+  line-height: 1.75;
+  max-width: 840px;
+}
+
+.coming-soon-card p strong {
+  display: block;
+  color: var(--ivory);
+  margin-bottom: 4px;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 22px 0 0;
+  list-style: none;
+}
+
+.feature-list li {
+  position: relative;
+  color: var(--cream);
+  line-height: 1.5;
+  padding-left: 22px;
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--silver);
+}
+
+.contact-grid {
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.78fr);
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+}
+
+.contact-grid > * {
+  min-width: 0;
+}
+
+.contact-section .section-copy h2 {
+  max-width: 620px;
+  font-size: clamp(2.45rem, 5vw, 4.95rem);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.contact-section .section-copy p {
+  max-width: 520px;
+}
+
+.contact-card {
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
+}
+
+.contact-form input,
+.contact-form textarea {
+  min-width: 0;
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(26px);
@@ -1240,7 +1397,8 @@ pre {
 
   .hero-shell,
   .two-column,
-  .project-layout {
+  .project-layout,
+  .contact-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1250,6 +1408,16 @@ pre {
 
   .project-aside {
     grid-template-rows: auto;
+  }
+
+  .contact-card {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .contact-section .section-copy h2,
+  .contact-section .section-copy p {
+    max-width: 100%;
   }
 
   .project-aside img {
@@ -1306,7 +1474,24 @@ pre {
 
   .project-panel {
     padding: 18px;
-    min-height: auto;
+    min-height: 680px;
+  }
+
+  .project-panel-header {
+    min-height: 0;
+  }
+
+  .project-panel-body,
+  .coming-soon-console {
+    min-height: 360px;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    padding: 18px;
   }
 
   .section-copy h2,
@@ -1335,101 +1520,62 @@ pre {
   }
 }
 
-.form-warning {
-  color: #fde68a;
-  background: rgba(234, 179, 8, 0.12);
-  border: 1px solid rgba(234, 179, 8, 0.34);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  line-height: 1.55;
+/* Contact heading spacing refinements */
+.contact-grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.72fr);
+  gap: clamp(34px, 4.25vw, 60px);
 }
 
-.safe-health-note {
-  margin-top: 14px;
+.contact-section .section-copy {
+  max-width: 760px;
 }
 
-.coming-soon-panel {
-  position: relative;
-  overflow: hidden;
-  min-height: 320px;
+.contact-section .section-copy h2 {
+  max-width: 760px;
+  font-size: clamp(2.35rem, 4.45vw, 4.35rem);
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+  text-wrap: balance;
 }
 
-.coming-soon-panel::before {
-  content: "";
-  position: absolute;
-  inset: -40% auto auto -18%;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(96, 165, 250, 0.16), transparent 68%);
-  pointer-events: none;
+.contact-section .section-copy p {
+  max-width: 560px;
 }
 
-.coming-soon-badge {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  border: 1px solid rgba(234, 179, 8, 0.42);
-  border-radius: 999px;
-  color: #fde68a;
-  background: rgba(234, 179, 8, 0.12);
-  padding: 8px 12px;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
+.contact-card {
+  max-width: 500px;
 }
 
-.coming-soon-content {
-  position: relative;
-  max-width: 720px;
-}
-
-.coming-soon-content h4 {
-  color: var(--ivory);
-  font-size: clamp(1.5rem, 3vw, 2.3rem);
-  margin: 10px 0 12px;
-  letter-spacing: -0.03em;
-}
-
-.coming-soon-content p,
-.coming-soon-card p {
-  color: var(--muted);
-  line-height: 1.65;
-}
-
-.coming-soon-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 22px;
-}
-
-.coming-soon-card {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-md);
-  background: rgba(15, 17, 21, 0.55);
-  padding: 14px;
-}
-
-.coming-soon-card span {
-  color: var(--silver);
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-.coming-soon-card p {
-  margin: 0;
-}
-
-@media (max-width: 700px) {
-  .coming-soon-grid {
+@media (max-width: 1080px) {
+  .contact-grid {
     grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .contact-section .section-copy {
+    max-width: 100%;
+  }
+
+  .contact-section .section-copy h2 {
+    max-width: 760px;
+    font-size: clamp(2.3rem, 8vw, 4.6rem);
+    line-height: 1.06;
+  }
+
+  .contact-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .contact-section .section-copy h2 {
+    max-width: 100%;
+    font-size: clamp(2.05rem, 11vw, 3.35rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: auto;
   }
 }

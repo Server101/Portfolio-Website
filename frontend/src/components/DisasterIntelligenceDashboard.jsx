@@ -1,33 +1,37 @@
 import React from "react";
 
-const plannedSignals = [
-  "Live weather and storm alert feeds",
-  "County-level emergency status tracking",
-  "Shelter, outage, and resource availability views",
-  "Interactive risk map and response dashboard",
+const dashboardFeatures = [
+  "Disaster declaration trend analysis",
+  "State, region, and incident-type comparisons",
+  "Seasonal pattern and hotspot views",
+  "Interactive map, KPIs, and forecast dashboard",
 ];
 
 export default function DisasterIntelligenceDashboard() {
   return (
-    <div className="feature-console coming-soon-panel">
-      <div className="coming-soon-badge">Coming Soon</div>
-
-      <div className="coming-soon-content">
-        <span className="eyebrow">Disaster Intelligence Dashboard</span>
-        <h4>Emergency analytics project in development.</h4>
-        <p>
-          This tab is reserved for a future dashboard that will combine public disaster alerts,
-          geospatial indicators, and response metrics into a clean decision-support interface.
-        </p>
+    <div className="feature-console coming-soon-console">
+      <div className="feature-toolbar">
+        <div>
+          <strong>Coming Soon</strong>
+          <span>Disaster Intelligence Dashboard</span>
+        </div>
+        <span className="status-pill warn">In Development</span>
       </div>
 
-      <div className="coming-soon-grid">
-        {plannedSignals.map((signal) => (
-          <div key={signal} className="coming-soon-card">
-            <span aria-hidden="true">•</span>
-            <p>{signal}</p>
-          </div>
-        ))}
+      <div className="coming-soon-card">
+        <span className="eyebrow">Coming Soon</span>
+        <h4>Disaster Intelligence Dashboard</h4>
+        <p>
+          <strong>Disaster trend analytics in development.</strong>{" "}
+          This dashboard will turn disaster declaration records into interactive maps, KPIs, trend charts,
+          heatmaps, and forecasting views for planning and situational awareness.
+        </p>
+
+        <ul className="feature-list">
+          {dashboardFeatures.map((feature) => (
+            <li key={feature}>{feature}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

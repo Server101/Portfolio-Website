@@ -4,8 +4,8 @@ export const profile = {
   email: "rbrown@ricardotech.com",
   heroTitle: "Hello, I'm Ricardo!",
   heroLead:
-    "I’m passionate about software engineering, cybersecurity, and artificial intelligence, applying them to solve real-world challenges and manage risk. With a strong foundation in data structures and computing logic, I build secure, full-stack systems and manage access controls (IAM) across platforms. I thrive in agile environments and have hands-on experience integrating AI into security workflows to enhance threat detection and support informed decision-making.",
-  rotatingRoles: ["Software Engineer", "Full Stack Engineer", "Data Analyst", "Ai Engineer"],
+    "I’m passionate about building software products that support users, teams, and business goals. My work combines software engineering, AI, product thinking, data-driven decision-making, and modern technologies to turn ideas into reliable solutions that create meaningful momentum.",
+  rotatingRoles: ["Software Engineer", "Full Stack Engineer", "Data Analyst", "AI Engineer"],
   portrait: "/img/r2023tech02020.png",
   portraitAlternate: "/img/r2023tech0202032changed.png",
   heroBackground: "/img/luminary/cloud-security-dashboard.jpg",
@@ -30,18 +30,18 @@ export const socialLinks = [
 ];
 
 export const highlights = [
-  { value: "CloudFront", label: "Frontend Delivery" },
-  { value: "ALB", label: "API TLS Routing" },
-  { value: "EC2 + PM2", label: "Backend Runtime" },
+  { value: "React + JavaScript", label: "Product Engineering" },
+  { value: "AI Integration", label: "Intelligent Features" },
+  { value: "AWS Deployment", label: "Cloud Infrastructure" },
 ];
 
 export const about = {
   intro:
-    "My journey into tech began with a deep interest for problem-solving and computing logic, and over the years, that passion has evolved into a mission: using software and security strategy to solve real-world challenges.",
+    "My journey into technology began over 10 years ago with C programming language and expanded into Java. From there, I continued growing through formal education, hands-on experience, curiosity, and a commitment to learning new technologies and languages as the industry evolved.",
   body:
-    "At Dream Coders Academy, I’ve mastered my skills as a full-stack developer and advanced into a cybersecurity designing & building secure applications with Java, React, deploying on AWS, and managing IAM and RBAC systems. I work in agile environments, collaborate across teams, and apply AI tools to improve threat detection and access control.",
+    "I’m an expert in React and Java, specializing in full-stack application development, API integrations, and scalable software solutions. In my last role as a Senior Software Engineer, I designed and developed production-ready products using React, Node.js, JavaScript, AI agent integrations, and modern development practices. I contributed across the full software development lifecycle, worked in Scrum/Agile environments, and collaborated across teams to build deployment pipelines using Amazon Web Services (AWS). My focus was on building a reliable product that met real user needs and supported long-term growth.",
   goal:
-    "I’m currently preparing for the CISSP certification as I work toward becoming a security leader who bridges engineering, risk, governance, Ai and machine learning.",
+    "My work continues to grow at the intersection of software engineering, data analytics, and AI engineering. I also bring practical experience with IAM, secure access practices, and modern application security. This gives me a balanced approach to building products that solve real problems, support users, and drive long-term success.",
 };
 
 export const education = [
@@ -66,7 +66,7 @@ export const projectTabs = [
     title: "Full-Stack Portfolio",
     eyebrow: "Production Infrastructure",
     description:
-      "This project displays a public-safe health view of my AWS EC2-hosted portfolio API, confirming availability, runtime status, and monitored service uptime without exposing private host details.",
+      "This project displays public-safe health signals for the deployed portfolio API, including availability, runtime status, uptime, and service monitoring.",
     stack: ["React", "Node.js", "Express", "AWS CloudFront", "Application Load Balancer", "AWS EC2", "PM2"],
   },
   {
@@ -79,12 +79,12 @@ export const projectTabs = [
   },
   {
     id: "disasterDashboard",
-    label: "Disaster Intelligence",
+    label: "Disaster Intelligence Dashboard",
     title: "Disaster Intelligence Dashboard",
-    eyebrow: "Disaster Intelligence",
+    eyebrow: "Analytics Engineering",
     description:
-      "Coming soon: a public-safety analytics dashboard for weather alerts, emergency response indicators, outage signals, and geospatial risk views.",
-    stack: ["React", "Node.js", "Public APIs", "GIS Data", "Analytics", "Dashboard Design"],
+      "Coming soon: an analytics dashboard that tracks disaster declarations, regional trends, seasonal patterns, geographic hotspots, and planning insights.",
+    stack: ["Python", "AWS", "Tableau", "Streamlit", "ETL Pipeline", "Analytics"],
   },
 ];
 
