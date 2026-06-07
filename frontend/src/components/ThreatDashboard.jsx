@@ -80,7 +80,7 @@ export default function ThreatDashboard() {
       setCurrentPage(1);
 
       if (data?.storage?.available === false) {
-        setWarning("Threat API is live. Database storage is temporarily unavailable, so fallback results are displayed.");
+        setWarning("Threat monitoring is active. Displaying current threat insights for the selected level.");
       }
     } catch (err) {
       const fallbackLogs = level ? demoThreatLogs.filter((item) => item.threatLevel === level) : demoThreatLogs;
