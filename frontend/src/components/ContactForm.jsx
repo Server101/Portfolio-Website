@@ -1,3 +1,5 @@
+// ContactForm.jsx
+// Contact form component for submitting messages
 import React, { useState } from "react";
 import apiClient from "../services/apiClient";
 
