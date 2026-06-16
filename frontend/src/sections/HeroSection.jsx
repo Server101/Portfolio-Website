@@ -39,7 +39,7 @@ export default function HeroSection() {
           </div>
           <div className="portrait-caption">
             <strong>{profile.name}</strong>
-            <span>Software • Security • Cloud • AI</span>
+            <span>Software • Data • AI</span>
           </div>
           <div className="social-links" aria-label="Social links">
             {socialLinks.map((link) => (
